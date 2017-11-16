@@ -3,9 +3,8 @@
 //ВНИМАНИЕ: будьте аккуратны с этими параметрами, возможна потеря данных при неправильном указании. Программа поставляется "как есть" и ее разработчик не несет никакой ответственности. 
 //CAUTION: be careful with this settings, data loss may occur. This software is distributed "as is", and author is not responsible for any problems you might get using it (including data loss or corruption)!
 
-//Change this value to 1 after adjusting your settings.
-//Измените на 1 после внесения настроек в этот файл.
-$configured = 0;  
+//Rename this file to config.php after adjusting your settings.
+//Переименуйте этот файл в config.php после внесения настроек.
 
 //Make sure you understand what the following options mean before continuing.
 //Прежде чем продолжить, убедитесь что понимаете значение всех параметров.
