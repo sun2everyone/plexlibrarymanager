@@ -2,7 +2,9 @@
 A web-based library manager for Plex Media Server, that helps organizing your media for plex to easily recognize it. 
 It uses symlinks, so you don't have to rename and move your media files (which is especially useful, when you download them using torrents and whant to continue sharing them with others).
 
-Current version designed specially for anime libraries and most of the messages are in russian. Translation to english and support of other library and media types may be added in future.
+Current version designed specially for anime libraries and most of the messages are in russian. Multilanguage support in process. 
+
+Support of other library and media types may be added in future.
 
 <b>Disclaimer:</b>
 

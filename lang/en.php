@@ -7,6 +7,8 @@ $strings['no_folder_selected']="You have to select folder with video!";
 $strings['title_add_success']="Title %s (season %s) successfully saved to library.";
 $strings['no_edit_function']="Edit functionality unwritten yet. You can delete title/season ar simpy re-add it :)";
 $strings['del_success']="Deleted successfully.";
+$strings['title_exists']="Library already has title with this name! If you continue this folder will be added as %s season of %s.";
+$strings['season_exists']="%s season of %s is already in the library. If you continue it will be overwritten!";
 
 //Errors
 $strings['err_folder_contents']="Error trying to get folder contents!";
@@ -19,6 +21,9 @@ $strings['err_no_title']="Unable to delete - no such title.";
 $strings['err_title_del_name']="Unable to delete - wrong title name.";
 $strings['err_no_vid_in_dir']="No video files found in directory %s!";
 $strings['err_vid_dir']="Wrong video directory!";
+$strings['err_title_name_length']="Bad title name! Title name should have from 1 to 50 charactes!";
+$strings['err_title_name_symbol']="Bad title name! No special symbols!";
+$strings['err_select_season']="You have to select season!";
 
 //Template
 $strings['disclaimer']='*Symlinks used to create library. This software is distributed "as is", <br>and author is not responsible for any problems you might get using it, <font color="red">including data loss or corruption!</font>*<br >';
