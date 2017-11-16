@@ -123,7 +123,7 @@
                if($("input[name=\'src_folder_media\']:checked").length) {
                   $('form[name=\'parse_folder\']').submit();
                } else {
-                  $('div.folders').before('<div class="error" onclick="$(this).remove();">Не выбрано ни одной папки с видео!</div>'); 
+                  $('div.folders').before('<div class="error" onclick="$(this).remove();"><?php echo $strings['no_folder_selected']; ?></div>'); 
                }
             }
             
@@ -139,22 +139,22 @@
                         $('.status').remove();
                         $('.info').remove();
                         $("div.link.submit").remove();
-                        $('div.link.validate').html("Добавить в библиотеку");
+                        $('div.link.validate').html("<?php echo($strings['add_to_lib']); ?>");
                          //$('#folders').after('<img class="wait status" name="' + path +'" src="img/loader.gif">');
                          $("div.link.validate").after('<img class="wait status" name="title_validation" src="img/loader.gif">');
                     },
                     success: function(json){
                         if (json['error']) {
-                            $('div.link.validate').before('<div class="error" onclick="$(this).remove();">Ошибка:' + json['error'] + '</div>');
+                            $('div.link.validate').before('<div class="error" onclick="$(this).remove();"><?php echo($strings['error']); ?>' + json['error'] + '</div>');
                         } else if (json['warning']) {
-                            $('div.link.validate').before('<div class="warning" onclick="$(this).remove();">Внимание: ' + json['warning'] + '</div>');
+                            $('div.link.validate').before('<div class="warning" onclick="$(this).remove();"><?php echo($strings['warning']); ?>' + json['warning'] + '</div>');
                             $('div.link.validate').html("Проверить снова");
-                            $('div.link.validate').after('<div class="link submit" onClick="validateTitle(\'_submit\');">Добавить в библиотеку</div>');
+                            $('div.link.validate').after('<div class="link submit" onClick="validateTitle(\'_submit\');"><?php echo($strings['add_to_lib']); ?></div>');
                         } else if(json['status'] === "valid") {
                             validateTitle('_submit');
                         } else if(json['status'] !== "valid") {
                             $('div.link.validate').before('<div class="info" onclick="$(this).remove();">' + json['status'] + '</div>');
-                            $('div.link.validate').after('<div class="link submit" onClick="document.location.href=\'<?php echo $hostname; ?>?mode=view\'">Просмотр библиотеки</div>');
+                            $('div.link.validate').after('<div class="link submit" onClick="document.location.href=\'<?php echo $hostname; ?>?mode=view\'"><?php echo($strings['view_library']); ?></div>');
                         } else {
                             alert("Some errors occured =(");
                         }

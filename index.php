@@ -1,13 +1,20 @@
 <?php
-/*written by sun2everyone*/
-ini_set("display_errors","on"); //Debug option
-ini_set("max_execution_time","10"); //Debug option
+/*
+ * written by sun2everyone@gmail.com
+ * 2017
+ *  */
+//Debug functions
+ini_set("display_errors","on"); 
+ini_set("max_execution_time","10"); 
 function dump($msg) {
    echo '<pre>';
    print_r($msg);
    echo '</pre>';
 }
+//
+
 require 'config.php';
+require "lang/$lang.php";
 require 'auth.php';
 require 'log.php';
 require 'template.php';
@@ -16,9 +23,8 @@ require 'classes/episode.php';
 require 'classes/season.php';
 require 'classes/title.php';
 require 'classes/library.php';
-require 'url.php';
 require 'functions.php';
-require "lang/$lang.php";
+
 
 if($require_authentication) {
 authenticate();
@@ -34,17 +40,15 @@ if (!$configured) {
 }
 
 //Initialization
-$url = new url();
 $log = new Log();
 $tpl = new Template();
 $data = array();
 $root_media = new Folder(SRC_FOLDER);
 $library = new Library(PLEX_LIB);
 $library->loadLibrary();
-//dump($library);
 $ajax=0;
 
-//Data
+//Data (main template array)
 $data['auth_user'] = $auth_user;
 $data['strings']=$strings;
 $data['hostname'] = HOSTNAME;
@@ -52,8 +56,8 @@ $data['src_root_path'] = SRC_FOLDER;
 $data['plex_root_path'] = PLEX_LIB;
 $data['root_folder'] = $root_media->getFolder();
 
-//AJAX
-//Получение дерева папок
+//AJAX functions////////////////////////////////////////////////////////////////
+//Getting folder tree
 if (isset($post['getfolder'])) {
     $ajax = 1;
     $json = array();
@@ -62,14 +66,14 @@ if (isset($post['getfolder'])) {
        if ($folder) {
        $json['folder']=$folder->getFolder();
         } else {
-          $json['error'] ="Error trying to get folder contents!";
+          $json['error'] =$strings['err_folder_contents'];
         }
     } else {
-        $json['error'] = 'Cannot get folder contents - path empty!';
+        $json['error'] = $strings['err_empty_path'];
     }
     echo json_encode($json);
 }
-//Проверка данных формы тайтла
+//Validating title form data
 if (isset($get['action']) && ($get['action'] == "validate_title")) {
     $ajax = 1;
     $json = array();
@@ -77,14 +81,14 @@ if (isset($get['action']) && ($get['action'] == "validate_title")) {
         $title_data=$post['title_data'];
         $json=validateTitleData($title_data,$library);
     } else {
-        $json['error'] = 'Данные тайтла не получены!';
+        $json['error'] = $strings['err_title_data'];
     }
     if (!isset($json['error']) && !isset($json['warning'])) {
         $json['status']="valid";
     }
     echo json_encode($json);
 }
-//Добавление тайтла в библиотеку
+//Adding title to library
 if (isset($get['action']) && ($get['action'] == "validate_title_submit")) {
     $ajax = 1;
     ini_set("display_errors","off");
@@ -93,10 +97,11 @@ if (isset($get['action']) && ($get['action'] == "validate_title_submit")) {
         $title_data=$post['title_data'];
         $json=validateTitleData($title_data,$library);
         if (!isset($json['error'])) { 
-            //Проверка пройдена, создаем структуру тайтла
+            //Creating title structure
             $title_name=trim($title_data['name']);
             if ($library->hasTitle($title_name)) {
-                $title=$library->getTitle($title_name); //Если тайтл есть, подгружаем его из библиотеки
+                //If title exists, loading it from library
+                $title=$library->getTitle($title_name); 
             } else{
               $title=new Title();
             }
@@ -119,77 +124,63 @@ if (isset($get['action']) && ($get['action'] == "validate_title_submit")) {
                  }
                  $title->addEpisode($title_data['season'], $episode, $episode_data['id']);
              }
-            //Добавляем тайтл в библиотеку
+            //Adding title to library
             if ($library->addTitle($title)) {
-                //И записываем изменения на диск
+                //And writinh
                 if($library->Save($title_name)) {
-                    $json['status']="Тайтл $title_name (сезон ".$title_data['season'].") успешно сохранен в библиотеку.";
+                    $json['status']=sprintf($strings['title_add_success'],$title_name,$title_data['season']);
                     unset($json['warning']); 
                 } else {
-                    $json['error']="Не удалось сохранить библиотеку.";
+                    $json['error']=$strings['err_lib_save'];
                 }
             } else {
-                $json['error']="Не удалось добавить тайтл в библиотеку.";
+                $json['error']=$strings['err_title_add'];
             }
             
         }
     } else {
-        $json['error'] = 'Данные тайтла не получены!';
+        $json['error'] = $strings['err_title_data'];
     }
     echo json_encode($json);
 }
-//AJAX END
+//AJAX END//////////////////////////////////////////////////////////////////////
 
-//Main cycle
+//MAIN CYCLE////////////////////////////////////////////////////////////////////
 if (!isset($get['mode']) || empty($get['mode'])) {
     $data['mode']="view";
 } else {
     $data['mode']=$get['mode'];
 }
-if ($data['mode'] == "edit") { //Редактирование тайтла/сезона
-    /*
-    if(isset($post['title_name']) && !empty($title_name)) {
-        if (isset($post['season']) && $post['season']>0) {
-            //Загрузка формы для редактирования тайтла
-            
-            //
-        } else {
-           $data['error']="Невозможно отредактировать - нет такого сезона."; 
-        }
-    } else {
-        $data['error']="Невозможно отредактировать - неверное название тайтла.";
-    }
-     * 
-     */
-    $data['warning']="Функция редактирования еще не написана. Можно удалить тайтл/сезон или просто добавить его заново :)";
+if ($data['mode'] == "edit") { //Title/season editing
+    
+    $data['warning']=$strings['no_edit_function'];
     $data['mode']="view";
-} elseif ($data['mode'] == "del") { //Удаление тайтла/сезона
+} elseif ($data['mode'] == "del") { //Deleting title/season
     if(isset($post['title_name']) && !empty($post['title_name'])) {
         if (isset($post['season']) && $post['season']>0) {
-            //Загрузка формы для редактирования тайтла
             if(!$library->delTitleSeason($post['title_name'],$post['season'])) {
-                 $data['error']="Невозможно удалить - нет такого сезона.";
+                 $data['error']=$strings['err_no_season'];
             } 
             //
         } elseif (!isset($post['season']) || ($post['season']=='0')) {
            if(!$library->delTitle($post['title_name'])) {
-                 $data['error']="Невозможно удалить - нет такого тайтла.";
+                 $data['error']=$strings['err_no_title'];
             }
         }
     } else {
-        $data['error']="Невозможно удалить - неверное название тайтла.";
+        $data['error']=$strings['err_title_del_name'];
     }
     if(!isset($data['error'])) {
-        $data['status']="Удаление успешно.";
+        $data['status']=$strings['del_success'];
         $data['mode']="view";
     }
-} elseif ($data['mode'] == "parse") { //Парсинг директории с аниме-сериалом
+} elseif ($data['mode'] == "parse") { //Parsing source media folder direcroty
   if (isset($post['src_folder_media']) && !empty($post['src_folder_media'])) {
       $data['src_folder_media']=$post['src_folder_media'];  
       $title_data=parseAnime($post['src_folder_media'],isset($post['src_folder_sub']) ? $post['src_folder_sub'] : "",isset($post['src_folder_audio']) ? $post['src_folder_audio'] : "");
       if ($title_data) {
           $title=array();
-          //Вывод данных парсинга в поля формы
+          //Output parsing data into form
           $title['name']=$title_data->getName();
           $title['sub_folders']=$title_data->getSub_folders(1);
           $title['aud_folders']=$title_data->getAud_folders(1);
@@ -207,15 +198,15 @@ if ($data['mode'] == "edit") { //Редактирование тайтла/се�
           }
           $data['title_data']=$title;
       } else {
-           $data['error']="Не удалось найти видеофайлы в директории ".$post['src_folder_media']."!";
+           $data['error']=sprintf($strings['err_no_vid_in_dir'],$post['src_folder_media']); 
             $data['mode']="add";
       }
   }  else {
-      $data['error']="Неверно указана дирекотория с видео!";
+      $data['error']=$strings['err_vid_dir'];
       $data['mode']="add";
   }
 } 
-if ($data['mode'] == "view") { //Просмотр библиотеки
+if ($data['mode'] == "view") { //View library
       $data['titles']=array();
       $titles=$library->getTitles();  
       if(!empty($titles)) {
@@ -223,13 +214,14 @@ if ($data['mode'] == "view") { //Просмотр библиотеки
             $data['titles'][$key]['name']=$title->getName(); 
             $seasons=$title->getSeasons();
             foreach ($seasons as $id=>$season) {
-               $data['titles'][$key]['seasons'][$id]=$season->episodesCount();//Подгружаем число эпизодов 
+               //Loading episodes count for season
+               $data['titles'][$key]['seasons'][$id]=$season->episodesCount(); 
             }
           }
       }
 }
 
-//Main Template
+//Main Template output//////////////////////////////////////////////////////////
 if (!$ajax) {
 $tpl->data = $data;
 $html = $tpl->fetch('template.html');

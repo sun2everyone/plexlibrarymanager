@@ -1,15 +1,10 @@
 <?php
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-//Рекурсивное добавление субтитров и озвучки
+//Recursive subtitle and audio adding
 function addMediaRecursive($sub_folders,$media_folder,$title,$season,$media_type="sub") { 
   if (!empty($sub_folders)) {
         foreach ($sub_folders as $path) {
-            //Проверяем на подпапки
+            //Checking if folder has subfolders
             $folder = new Folder($path);
             $subfolders = $folder->getSubfolders();
             if ($subfolders) {
@@ -36,16 +31,17 @@ function addMediaRecursive($sub_folders,$media_folder,$title,$season,$media_type
     } 
     return $title;
 }
-//Парсинг имени с убиранием лишнего
+//Stripping title name
 function parseName($name) {
     $name=$name;
-    //Регулярные выражения
+    //Place for regular expressions
     $name=preg_replace('/\[\S*\]/',"",$name);
-    $name=trim($name);
     //
+    $name=trim($name);
+
     return $name;
 }
-//Угадывание номера эпизода
+//Guessing episode number
 function guessEpisodeNumber($name) {
     $num=0;
     $name=preg_replace('/s?[0-9]{1,2}e/'," ",$name);
