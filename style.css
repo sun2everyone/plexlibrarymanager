@@ -1,0 +1,136 @@
+#content {
+   width: 1200px;
+   height: auto;
+}
+table {
+    border-collapse: collapse;
+    width: 60%;
+}
+table td {
+    height: 30px;
+    overflow: hidden;
+}
+table thead {
+    text-align: center;
+    background-color: #b7b7b7;
+}
+table .status {
+    text-align: center;
+}
+table .comment {
+    font-size: 12px;
+    width: 170px;
+}
+img.circle {
+    width: 20px; 
+}
+div.info {
+    width: 58%;
+    border: 1px solid;
+    border-radius: 5px;
+    border-color: #649d63;
+    background-color: #c0e6bf;
+    padding-bottom: 5px;
+    font-size: 12px;
+    padding-left: 20px;
+    padding-top: 5px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+div.warning {
+    width: 58%;
+    border: 1px solid;
+    border-radius: 5px;
+    border-color: #649d63;
+    background-color: #f3e814;
+    padding-bottom: 5px;
+    font-size: 12px;
+    padding-left: 20px;
+    padding-top: 5px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+div.error {
+    width: 58%;
+    border: 1px solid;
+    border-radius: 5px;
+    border-color: #c24643;
+    background-color: #fcc7c6;
+    padding-bottom: 5px;
+    font-size: 12px;
+    padding-left: 20px;
+    padding-top: 5px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+div.small {
+    font-size: 11px;
+}
+div.folders, div.title, div.library {
+    width:auto;
+    padding:10px;
+    display:table;
+    white-space: nowrap;
+    border-collapse: collapse;
+}
+div.theader div.td {
+   padding-left: 5px;
+   padding-right: 5px;
+   font-size: 10px;
+}
+div.option {
+    min-width:30px;
+    text-align: center;
+}
+div.td {
+    display:table-cell;
+    vertical-align: middle;
+    height: 34px;
+}
+div.td img {
+    width:30px;
+    max-height: 30px;
+}
+div.td .small img {
+    width:12px;
+    max-height: 12px;
+}
+div.library img {
+    padding: 2px;
+    cursor: pointer;
+    width:20px;
+    max-height: 20px;
+}
+div.library div.td.title {
+    width: 400px;
+}
+div.td img.child {
+    position:absolute;
+    margin-top: -15px;
+}
+div.tr {
+    display: table-row;
+}
+div.title.episodes, div.library div.tr div.td {
+    padding-left: 5px;
+    padding-right: 5px; 
+}
+
+img.wait {
+    position: absolute;
+    z-index: 10;
+}
+div.folders img.wait {
+    left: 5px;
+    margin-top: 7px;
+}
+div.links {
+    width: 100%;
+    min-height: 30px;
+}
+div.link {
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 10px;
+    float: left;
+}
