@@ -14,10 +14,8 @@ Currently tested only in Firefox 56.0
 
 <b>Requirements:</b>
 
-<code>
--Webserver with php5.6+
-  
--OS and filesystem that supports symbolic (soft, like "ln -s ..") links
+<code>Webserver with php5.6+</code>
 
--Modern web browser with Javascript and CSS
-</code>
+<code>OS and filesystem that supports symbolic (soft, like "ln -s ..") links</code>
+
+<code>Modern web browser with Javascript and CSS</code>

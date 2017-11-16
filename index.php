@@ -55,7 +55,7 @@ $library->loadLibrary();
 $ajax=0;
 
 //Data (main template array)
-$data['auth_user'] = $auth_user;
+isset($auth_user) ? $data['auth_user'] = $auth_user : $data['auth_user']="Anonymous";
 $data['strings']=$strings;
 $data['hostname'] = HOSTNAME;
 $data['src_root_path'] = SRC_FOLDER;
