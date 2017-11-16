@@ -6,9 +6,7 @@ Current version designed specially for anime libraries and most of the messages 
 
 Disclaimer:
 
-<b>
-This software is distributed "as is", and author is not responsible for any problems you might get using it (including data loss or corruption)!.
-</b>
+<b>This software is distributed "as is", and author is not responsible for any problems you might get using it (including data loss or corruption)!.</b>
 
 Requirements:
 
