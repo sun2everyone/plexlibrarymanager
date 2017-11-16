@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>~Sun2 PlexAnilib</title>
+        <title>PlexLibraryManager by sun2</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" type="image/png" href="favicon.ico" />
@@ -193,17 +193,16 @@
     </head>
     <body>
         <div id="content">
-            <div><h1>Plex Anime Library Manager</h1></div>
+            <div><h1>Plex Library Manager</h1></div>
             <div class="small">
-                *Для создания библиотеки используются символические ссылки. Программа поставляется "как есть" <br> 
-                и ее создатель не несет ответственности за возможные последствия использования. <font color="red">Возможна потеря данных!</font>*<br >
-                Путь к корневой папке видео-файлов: <?php echo $src_root_path; ?><br >
-                Путь к папке аниме-библиотеки plex: <?php echo $plex_root_path; ?>
+                <?php echo($strings['disclaimer']); ?>
+                <?php echo($strings['path_to_root_media']); ?><?php echo $src_root_path; ?><br >
+                <?php echo($strings['path_to_root_library']); ?><?php echo $plex_root_path; ?>
             </div>
             <div class="links">
-                <div class="link" onClick="document.location.href='<?php echo $hostname; ?>'">Главная</div>
-                <div class="link" onClick="document.location.href='<?php echo $hostname; ?>?mode=view'">Просмотр библиотеки</div>
-                <div class="link" onClick="document.location.href='<?php echo $hostname; ?>?mode=add'">Добавление тайтла</div>
+                <div class="link" onClick="document.location.href='<?php echo $hostname; ?>'"><?php echo($strings['main_page']); ?></div>
+                <div class="link" onClick="document.location.href='<?php echo $hostname; ?>?mode=view'"><?php echo($strings['view_library']); ?></div>
+                <div class="link" onClick="document.location.href='<?php echo $hostname; ?>?mode=add'"><?php echo($strings['add_title']); ?></div>
             </div>    
             <?php if (isset($error)) { ?>
             <div class="error" onclick="$(this).remove();"><?php echo $error; ?></div>

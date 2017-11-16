@@ -18,6 +18,7 @@ require 'classes/title.php';
 require 'classes/library.php';
 require 'url.php';
 require 'functions.php';
+require "lang/$lang.php";
 
 if($require_authentication) {
 authenticate();
@@ -28,7 +29,7 @@ $get = filter_input_array(INPUT_GET);
 
 //Check configuration
 if (!$configured) {
-    echo "Before use you should adjust settings in config.php!";
+    echo $strings['unconfigured'];
     exit();
 }
 
@@ -45,6 +46,7 @@ $ajax=0;
 
 //Data
 $data['auth_user'] = $auth_user;
+$data['strings']=$strings;
 $data['hostname'] = HOSTNAME;
 $data['src_root_path'] = SRC_FOLDER;
 $data['plex_root_path'] = PLEX_LIB;
