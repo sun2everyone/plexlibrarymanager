@@ -12,6 +12,7 @@ const PLEX_LIB = "/var/www/plex/library/Anime";  //Абсолютный путь
 //const PLEX_LIB = "/var/www/plex/library";  //Пример рекомендуемого пути
                                          //ВНИМАНИЕ: крайне не рекомендуется использовать действующую библиотеку, т.к. данная программа вероятно не сможет ее правильно обработать и часть данных библиотеки будет потеряна.
 
+$require_authentication=1; //HTTP authentication. You may disable this if you have another authentication enabled or when your webserver is available only from local network
 //Служебные
 const MAXDEPTH = 10; //Максимальная глубина относительных симлинков (без особой нужды не менять).
        

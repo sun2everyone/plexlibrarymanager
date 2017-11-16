@@ -19,8 +19,10 @@ require 'classes/library.php';
 require 'url.php';
 require 'functions.php';
 
+if($require_authentication) {
 authenticate();
 $auth_user = $_SERVER['PHP_AUTH_USER'];
+}
 $post = filter_input_array(INPUT_POST);
 $get = filter_input_array(INPUT_GET);
 
