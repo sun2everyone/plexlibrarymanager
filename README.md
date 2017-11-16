@@ -11,5 +11,7 @@ This software is distributed "as is", and author is not responsible for any prob
 <b>Requirements:</b>
 
 <code>
-Webserver on linux-based system with php5.6+
+Webserver with php5.6+
+  
+OS and filesystem that supports symbolic links
 </code>
