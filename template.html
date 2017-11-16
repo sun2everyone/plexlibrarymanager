@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>~Sun2 PlexAnilib</title>
+        <title>PlexLibraryManager by sun2</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" type="image/png" href="favicon.ico" />
@@ -193,10 +193,9 @@
     </head>
     <body>
         <div id="content">
-            <div><h1>Plex Anime Library Manager</h1></div>
+            <div><h1>Plex Library Manager</h1></div>
             <div class="small">
-                *Для создания библиотеки используются символические ссылки. Программа поставляется "как есть" <br> 
-                и ее создатель не несет ответственности за возможные последствия использования. <font color="red">Возможна потеря данных!</font>*<br >
+                <?php echo($strings['disclaimer']); ?>
                 Путь к корневой папке видео-файлов: <?php echo $src_root_path; ?><br >
                 Путь к папке аниме-библиотеки plex: <?php echo $plex_root_path; ?>
             </div>

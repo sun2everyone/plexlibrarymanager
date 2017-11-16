@@ -5,7 +5,7 @@
 $configured = 0; //Измените на 1 после внесения настроек в этот файл. 
 //Прежде чем продолжить, убедитесь что понимаете значение всех параметров.
 
-const HOSTNAME = "https://yourdomain.com/plexanimelib/"; //Адрес вашего PlexLibraryManager со слешем на конце
+const HOSTNAME = "https://yourdomain.com/plexlibrarymanager/"; //Адрес вашего PlexLibraryManager со слешем на конце
 const SRC_FOLDER = "/var/www/plex/media";               //Абсолютный путь до папки относительно корня вебсервера ,куда вы качаете тайтлы, например папки с торрентами. 
 //const SRC_FOLDER = "/var/www/plex/media"; //Рекомендуется сделать ее симлинком на реальную папку
 const PLEX_LIB = "/var/www/plex/library/Anime";  //Абсолютный путь до папки с Аниме-библиотекой plex относительно корня вебсервера. 
