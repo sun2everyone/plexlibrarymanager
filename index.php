@@ -13,7 +13,13 @@ function dump($msg) {
 }
 //
 
-require 'config.php';
+if (is_file('config.php')) {
+    require 'config.php';
+    $configured=1;
+} else {
+    require 'config_base.php';
+    $configured=0;
+}
 require "lang/$lang.php";
 require 'auth.php';
 require 'log.php';
