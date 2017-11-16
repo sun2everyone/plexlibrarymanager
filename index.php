@@ -1,7 +1,7 @@
 <?php
 /*written by sun2everyone*/
-ini_set("display_errors","on"); //Отладочная опция
-ini_set("max_execution_time","10"); //Отладочная опция
+ini_set("display_errors","on"); //Debug option
+ini_set("max_execution_time","10"); //Debug option
 function dump($msg) {
    echo '<pre>';
    print_r($msg);
@@ -19,8 +19,10 @@ require 'classes/library.php';
 require 'url.php';
 require 'functions.php';
 
+if($require_authentication) {
 authenticate();
 $auth_user = $_SERVER['PHP_AUTH_USER'];
+}
 $post = filter_input_array(INPUT_POST);
 $get = filter_input_array(INPUT_GET);
 
