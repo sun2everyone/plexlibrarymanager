@@ -26,10 +26,36 @@ $strings['err_title_name_symbol']="Неправильное имя тайтла!
 $strings['err_select_season']="Нужно выбрать сезон!";
 
 //Template
+$strings['confirmation']="Уверены? Данное действие нельзя будет отменить!";
 $strings['disclaimer']='*Для создания библиотеки используются символические ссылки. Программа поставляется "как есть" <br>и ее создатель не несет ответственности за возможные последствия использования. <font color="red">Возможна потеря данных!</font>*<br >';
 $strings['path_to_root_media']="Путь к корневой папке видео-файлов: ";
 $strings['path_to_root_library']="Путь к папке аниме-библиотеки plex: ";
+$strings['header_add_title']="Добавление тайтла в библиотеку:";
+$strings['header_view_lib']="Просмотр библиотеки:";
+$strings['header_select_folders']="Шаг 1. Отметьте подходящие папки видео, субтитров и озвучки:";
+$strings['header_check_parsing']="Шаг 2. Проверьте результат парсинга перед добавлением:";
+$strings['th_vid']="Видео:";
+$strings['th_title']="Название:";
+$strings['th_sub']="Сабы:";
+$strings['th_aud']="Озвучка:";
+$strings['th_season']="Номер сезона:";
+$strings['th_pref_sub']="Предпочитать субтитры из папки:";
+$strings['th_pref_aud']="Предпочитать аудио из папки:";
+$strings['th_ep_list']="Список эпизодов:";
+$strings['video_folder_selected']="Выбранная директория c видео: ";
+$strings['suggested_name']="Предлагаемое имя:";
+$strings['tvdb']="(Должно соответствовать TVDB/AniDB)";
+$strings['edit_field']="(Нажмите на нужное поле для редактирования)";
+$strings['entry_yes']="Есть";
+$strings['entry_no']="Нет";
+$strings['err_try_another']="Ошибка! Попробуйте выбрать другую папку!";
+$strings['title_seasons']="Сезон %s; Число эпизодов: %s";
+$strings['lib_empty']="Библиотека пока пуста!";
+
+//Links and buttons
 $strings['main_page']="Главная";
 $strings['view_library']="Просмотр библиотеки";
 $strings['add_title']="Добавление тайтла";
 $strings['add_to_lib']="Добавить в библиотеку";
+$strings['autoparsing']="Проанализировать";
+$strings['ch_folder_sel']="Изменить выбор папок";

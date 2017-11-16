@@ -26,10 +26,36 @@ $strings['err_title_name_symbol']="Bad title name! No special symbols!";
 $strings['err_select_season']="You have to select season!";
 
 //Template
+$strings['confirmation']="Are you sure? This action can't be undone!";
 $strings['disclaimer']='*Symlinks used to create library. This software is distributed "as is", <br>and author is not responsible for any problems you might get using it, <font color="red">including data loss or corruption!</font>*<br >';
 $strings['path_to_root_media']="Path to root folder of source media files: ";
 $strings['path_to_root_library']="Path to your Plex anime library: ";
+$strings['header_add_title']="Adding title to library:";
+$strings['header_view_lib']="Library contents:";
+$strings['header_select_folders']="Step 1. Select which folders for video, subtitles and audio to use:";
+$strings['header_check_parsing']="Step 2. Check parsing results:";
+$strings['th_vid']="Video:";
+$strings['th_title']="Name:";
+$strings['th_sub']="Subtitles:";
+$strings['th_aud']="Audio:";
+$strings['th_season']="Season number:";
+$strings['th_pref_sub']="Preferred subtitles folder:";
+$strings['th_pref_aud']="Preferred audio folder:";
+$strings['th_ep_list']="Episodes list:";
+$strings['video_folder_selected']="Selected video directory: ";
+$strings['suggested_name']="Suggested name:";
+$strings['tvdb']="(Must fit TVDB/AniDB)";
+$strings['edit_field']="(Click on the field to edit)";
+$strings['entry_yes']="Yes";
+$strings['entry_no']="No";
+$strings['err_try_another']="Error! Try different folder!";
+$strings['title_seasons']="Season %s; Episodes: %s";
+$strings['lib_empty']="Library is empty yet!";
+
+//Links and buttons
 $strings['main_page']="Main page";
 $strings['view_library']="View library";
 $strings['add_title']="Add new title";
 $strings['add_to_lib']="Add to library";
+$strings['autoparsing']="Analyze";
+$strings['ch_folder_sel']="Change folder selection";
