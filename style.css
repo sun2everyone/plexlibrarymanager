@@ -66,6 +66,9 @@ div.error {
 div.small {
     font-size: 11px;
 }
+form.add_folder {
+    padding-top: 20px;
+}
 div.folders, div.title, div.library {
     width:auto;
     padding:10px;

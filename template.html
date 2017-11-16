@@ -123,7 +123,7 @@
                if($("input[name=\'src_folder_media\']:checked").length) {
                   $('form[name=\'parse_folder\']').submit();
                } else {
-                  $('div.folders').before('<div class="error" onclick="$(this).remove();">Не выбрано ни одной папки с видео!</div>'); 
+                  $('div.folders').before('<div class="error" onclick="$(this).remove();"><?php echo $strings['no_folder_selected']; ?></div>'); 
                }
             }
             
@@ -139,28 +139,27 @@
                         $('.status').remove();
                         $('.info').remove();
                         $("div.link.submit").remove();
-                        $('div.link.validate').html("Добавить в библиотеку");
-                         //$('#folders').after('<img class="wait status" name="' + path +'" src="img/loader.gif">');
+                        $('div.link.validate').html("<?php echo($strings['add_to_lib']); ?>");
                          $("div.link.validate").after('<img class="wait status" name="title_validation" src="img/loader.gif">');
                     },
                     success: function(json){
                         if (json['error']) {
-                            $('div.link.validate').before('<div class="error" onclick="$(this).remove();">Ошибка:' + json['error'] + '</div>');
+                            $('div.link.validate').before('<div class="error" onclick="$(this).remove();"><?php echo($strings['error']); ?>' + json['error'] + '</div>');
                         } else if (json['warning']) {
-                            $('div.link.validate').before('<div class="warning" onclick="$(this).remove();">Внимание: ' + json['warning'] + '</div>');
+                            $('div.link.validate').before('<div class="warning" onclick="$(this).remove();"><?php echo($strings['warning']); ?>' + json['warning'] + '</div>');
                             $('div.link.validate').html("Проверить снова");
-                            $('div.link.validate').after('<div class="link submit" onClick="validateTitle(\'_submit\');">Добавить в библиотеку</div>');
+                            $('div.link.validate').after('<div class="link submit" onClick="validateTitle(\'_submit\');"><?php echo($strings['add_to_lib']); ?></div>');
                         } else if(json['status'] === "valid") {
                             validateTitle('_submit');
                         } else if(json['status'] !== "valid") {
                             $('div.link.validate').before('<div class="info" onclick="$(this).remove();">' + json['status'] + '</div>');
-                            $('div.link.validate').after('<div class="link submit" onClick="document.location.href=\'<?php echo $hostname; ?>?mode=view\'">Просмотр библиотеки</div>');
+                            $('div.link.validate').after('<div class="link submit" onClick="document.location.href=\'<?php echo $hostname; ?>?mode=view\'"><?php echo($strings['view_library']); ?></div>');
                         } else {
                             alert("Some errors occured =(");
                         }
                     },
                     error: function() {
-                        alert("Some errors occured =(");
+                        alert("Some errors occured on server side =( Check your php_errors.log");
                     },
                     complete: function() {
                         $(".wait").remove();
@@ -172,7 +171,7 @@
                 $("form[name=\'edit_title["+id+"]\']").submit();
             }
             function delTitle(id) {
-                if( confirm("Уверены? Данное действие нельзя будет отменить!")) {
+                if( confirm("<?php echo $strings['confirmation']; ?>")) {
                     $("form[name=\'edit_title["+id+"]\']").attr("action","index.php?mode=del")
                     $("form[name=\'edit_title["+id+"]\']").submit();
                 }    
@@ -182,7 +181,7 @@
                 $("form[name=\'edit_title["+t_id+"]\']").submit();
             }
             function delSeason(t_id,s_id) {
-                if( confirm("Уверены? Данное действие нельзя будет отменить!")) {
+                if( confirm("<?php echo $strings['confirmation']; ?>")) {
                     $("form[name=\'edit_title["+t_id+"]\'] input[name=\'season\']").attr("value",s_id);
                     $("form[name=\'edit_title["+t_id+"]\']").attr("action","index.php?mode=del")
                     $("form[name=\'edit_title["+t_id+"]\']").submit();
@@ -215,14 +214,14 @@
             <?php } ?>
             <div>
                 <?php if ($mode == "add") { ?>
-                <h2>Добавление файлов в библиотеку:</h2>
-                Шаг 1. Отметьте подходящие папки:<br >
+                <h2><?php echo($strings['header_add_title']); ?></h2>
+                <?php echo($strings['header_select_folders']); ?><br >
                 <form name="parse_folder" method="post" action="index.php?mode=parse">
                 <div class="folders">
                     <div class="theader tr">
-                     <div class="td">Видео</div>
-                     <div class="td">Сабы</div>
-                     <div class="td">Озвучка</div>
+                     <div class="td"><?php echo($strings['th_vid']); ?></div>
+                     <div class="td"><?php echo($strings['th_sub']); ?></div>
+                     <div class="td"><?php echo($strings['th_aud']); ?></div>
                      <div class="td"></div>
                      <div class="td"></div>
                     </div>
@@ -250,26 +249,27 @@
                 </div>
                 </form>
                 <div class="links">
-                    <div class="link" onClick="parseFolder();">Автопарсинг</div>
+                    <div class="link" onClick="parseFolder();"><?php echo($strings['autoparsing']); ?></div>
                 </div>    
                 <?php } elseif ($mode == "parse") { ?>
-                <h2>Добавление файлов в библиотеку:</h2>
-                Шаг 2. Проверьте результат парсинга:<br>
-                <div class="small">Выбранная директория c видео: <?php echo $src_folder_media; ?></div>
+                <h2><?php echo($strings['header_add_title']); ?></h2>
+                <?php echo($strings['header_check_parsing']); ?>
+                <br>
+                <div class="small"><?php echo($strings['video_folder_selected']); ?><?php echo $src_folder_media; ?></div>
                     <?php if(isset($title_data)) { ?>
-                    <form name="add_folder" method="post" action="index.php?mode=add">
+                    <form name="add_folder" class="add_folder" method="post" action="index.php?mode=add">
                     <div class="title">
                         <div class="tr">
-                            <div class="td">Предлагаемое имя:<br><div class="small">(Должно соответствовать TVDB/AniDB)</div></div>
+                            <div class="td"><?php echo($strings['suggested_name']); ?><br><div class="small"><?php echo($strings['tvdb']); ?></div></div>
                             <div class="td"><input type="text" name="title_data[name]" value="<?php echo $title_data['name']; ?>"></div>
                         </div>
                         <div class="tr">
-                            <div class="td">Сезон:</div>
+                            <div class="td"><?php echo($strings['th_season']); ?></div>
                             <div class="td"><select name="title_data[season]"><?php for($i=1; $i<=10; $i++) { ?><option><?php echo $i; ?></option><?php } ?></select></div>
                         </div>
                         <?php if(!empty($title_data['sub_folders'])) { ?>
                         <div class="tr">
-                            <div class="td">Предпочитать субтитры из папки:</div>
+                            <div class="td"><?php echo($strings['th_pref_sub']); ?></div>
                             <div class="td">
                                 <?php foreach($title_data['sub_folders'] as $key=>$entry) { ?>
                                 <input type="radio" name="title_data[pref_folder_sub]" value="<?php echo $entry; ?>" <?php echo($key == 0 ? "checked" : "" ); ?>><?php echo $entry; ?><br>
@@ -279,7 +279,7 @@
                         <?php } ?>
                         <?php if(!empty($title_data['aud_folders'])) { ?>
                         <div class="tr">
-                            <div class="td">Предпочитать аудио из папки:</div>
+                            <div class="td"><?php echo($strings['th_pref_aud']); ?></div>
                             <div class="td">
                                 <?php foreach($title_data['aud_folders'] as $key=>$entry) { ?>
                                 <input type="radio" name="title_data[pref_folder_aud]" value="<?php echo $entry; ?>" <?php echo($key == 0 ? "checked" : "" ); ?>><?php echo $entry; ?><br>
@@ -289,14 +289,14 @@
                         <?php } ?>
                     </div>
                     <?php if(!empty($title_data['episodes'])) { ?>
-                    Список эпизодов: <br>
-                    <div class="small">(Нажмите на нужное поле для редактирования)</div>
+                    <?php echo($strings['th_ep_list']); ?><br>
+                    <div class="small"><?php echo($strings['edit_field']); ?></div>
                     <div class="title episodes">
                         <div class="tr">
                            <div class="td">№:</div> 
-                           <div class="td">Название:</div> 
-                           <div class="td">Субтитры:</div> 
-                           <div class="td">Озвучка:</div> 
+                           <div class="td"><?php echo($strings['th_title']); ?></div> 
+                           <div class="td"><?php echo($strings['th_sub']); ?></div> 
+                           <div class="td"><?php echo($strings['th_aud']); ?></div> 
                         </div>  
                         <?php foreach($title_data['episodes'] as $id=>$episode) { ?>
                         <div class="tr">
@@ -304,24 +304,24 @@
                            <div class="td"><?php echo $episode['name']; ?><input type="hidden" name="title_data[episodes][<?php echo $id?>][path]" value="<?php echo $episode['path']; ?>"></div> 
                            <div class="td">
                                <?php if(!empty($episode['sub'])) { ?>
-                                Есть (<?php echo count($episode['sub']); ?>)
+                                <?php echo($strings['entry_yes']); ?> (<?php echo count($episode['sub']); ?>)
                                 <?php foreach($episode['sub'] as $s_id=>$sub) { ?>
                                 <input type="hidden" name="title_data[episodes][<?php echo $id; ?>][sub][<?php echo $s_id; ?>][path]" value="<?php echo $sub['path']; ?>">
                                 <input type="hidden" name="title_data[episodes][<?php echo $id; ?>][sub][<?php echo $s_id; ?>][name]" value="<?php echo $sub['name']; ?>">
                                 <?php } ?> 
                                <?php } else { ?>
-                                Нет
+                                <?php echo($strings['entry_no']); ?>
                                <?php } ?>
                            </div> 
                            <div class="td">
                                <?php if(!empty($episode['aud'])) { ?>
-                                Есть (<?php echo count($episode['aud']); ?>)
+                                <?php echo($strings['entry_yes']); ?> (<?php echo count($episode['aud']); ?>)
                                 <?php foreach($episode['aud'] as $a_id=>$aud) { ?>
                                 <input type="hidden" name="title_data[episodes][<?php echo $id; ?>][aud][<?php echo $a_id; ?>][path]" value="<?php echo $aud['path']; ?>">
                                 <input type="hidden" name="title_data[episodes][<?php echo $id; ?>][aud][<?php echo $a_id; ?>][name]" value="<?php echo $aud['name']; ?>">
                                 <?php } ?> 
                                <?php } else { ?>
-                                Нет
+                                <?php echo($strings['entry_no']); ?>
                                <?php } ?>
                            </div> 
                         </div>  
@@ -330,15 +330,15 @@
                     <?php } ?>
                     </form>
                     <div class="links">
-                        <div class="link validate" onClick="validateTitle('');">Добавить в библиотеку</div>
+                        <div class="link validate" onClick="validateTitle('');"><?php echo($strings['add_to_lib']); ?></div>
                     <?php } else { ?>
-                        <div class="error" onclick="$(this).remove();">Ошибка! Попробуйте выбрать другую папку!</div>
+                        <div class="error" onclick="$(this).remove();"><?php echo($strings['err_try_another']); ?></div>
                     <div class="links">
                     <?php } ?>
-                       <div class="link" onClick="javascript:history.back(); return false;">Изменить выбор папок</div>
+                       <div class="link" onClick="javascript:history.back(); return false;"><?php echo($strings['ch_folder_sel']); ?></div>
                     </div>   
                 <?php } elseif ($mode == "view") { ?>
-                <h2>Просмотр библиотеки:</h2>
+                <h2><?php echo($strings['header_view_lib']); ?></h2>
                 <div class="library">
                     <?php if(!empty($titles)) { 
                     $i=0;
@@ -357,7 +357,7 @@
                             <div class="small">
                                 <ul>                               
                                 <?php foreach ($title['seasons'] as $id=>$value) { ?>
-                                    <li>Сезон <?php echo $id; ?>; Число эпизодов - <?php echo $value; ?> 
+                                    <li><?php echo sprintf($strings['title_seasons'],$id,$value); ?> 
                                         <img src="img/icon_edit.png" onclick="editSeason('<?php echo $key?>','<?php echo $id?>');">
                                         <img src="img/icon_delete.png" onclick="delSeason('<?php echo $key?>','<?php echo $id?>');">
                                 <?php } ?> 
@@ -369,11 +369,11 @@
                     </div>
                     <?php  }
                     } else { ?>
-                    Библиотека пока пуста!
+                        <?php echo($strings['lib_empty']); ?>
                     <?php } ?>
                 </div>
                 <div class="links">
-                    <div class="link" onClick="document.location.href='<?php echo $hostname; ?>?mode=add'">Добавить новый тайтл</div>
+                    <div class="link" onClick="document.location.href='<?php echo $hostname; ?>?mode=add'"><?php echo($strings['add_title']); ?></div>
                 </div>  
                 <?php } ?>
                 
