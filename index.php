@@ -1,7 +1,7 @@
 <?php
 /*written by sun2everyone*/
-ini_set("display_errors","on"); //Отладочная опция
-ini_set("max_execution_time","10"); //Отладочная опция
+ini_set("display_errors","on"); //Debug option
+ini_set("max_execution_time","10"); //Debug option
 function dump($msg) {
    echo '<pre>';
    print_r($msg);
