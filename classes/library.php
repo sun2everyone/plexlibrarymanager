@@ -176,6 +176,8 @@ class Library {
     private function numstr($num) {
         $str="";
         if ($num<10) {
+                $str.="00".$num;
+        } else if ($num<100) {
                 $str.="0".$num;
         } else {
                 $str.="$num"; 

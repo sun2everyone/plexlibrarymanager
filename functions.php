@@ -47,9 +47,9 @@ function parseName($name) {
 //Guessing episode number
 function guessEpisodeNumber($name) {
     $num=0;
-    $name=preg_replace('/s?[0-9]{1,2}e/'," ",$name);
-    if(preg_match('/(^| )[0-9]{1,2} ?/',$name,$matches)) {
-        $num=intval(trim($matches[0]));
+    $name=preg_replace('/(s?[0-9]{2,3}e|e)/'," ",$name);
+    if(preg_match_all('/(^| )[0-9]{1,3}/',$name,$matches,PREG_SET_ORDER)) {
+        $num=intval(trim($matches[count($matches)-1][0]));
     }
     return $num;
 }

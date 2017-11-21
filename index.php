@@ -193,13 +193,23 @@ if ($data['mode'] == "edit") { //Title/season editing
           $episodes=$title_data->getEpisodes(1);
           $title['episodes']=array();
           $k=0;
+          $used_id=array();
           foreach ($episodes as $episode) {
             $id=guessEpisodeNumber($episode->getName());
             $title['episodes'][$k]['name']=$episode->getName();
             $title['episodes'][$k]['path']=$episode->getPath();
             $title['episodes'][$k]['sub']=$episode->getSubs();
             $title['episodes'][$k]['aud']=$episode->getAud();
+            if (!$id) {
+                $id=$k+1;
+            }
+            if(in_array($id,$used_id)) {
+                $id=$used_id[count($used_id)-1]+1;
+            }
+            //while (in_array($id,$used_id)) { $id++; }
             $title['episodes'][$k]['id']=$id;
+            $used_id[]=$id;
+            sort($used_id);
             $k++;
           }
           $data['title_data']=$title;
