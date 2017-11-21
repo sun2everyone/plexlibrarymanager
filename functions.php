@@ -18,7 +18,13 @@ function addMediaRecursive($sub_folders,$media_folder,$title,$season,$media_type
                 addMediaRecursive($minor, $media_folder, $title, $season, $media_type);  
             }
             //
-            $subfoldname = str_replace($media_folder."/","",$path);
+            if ($path == $media_folder) {
+                $parts=explode("/",$path);
+                $subfoldname=array_pop($parts);
+            } else {
+                $subfoldname = str_replace($media_folder."/","",$path);
+            }    
+            $subfoldname=str_replace(SRC_FOLDER."/","",$subfoldname);
             $files=$folder->getFiles();
             if (!empty($files)) {
                 foreach ($files as $file) {
