@@ -1,11 +1,5 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * Description of library
  *
@@ -81,14 +75,14 @@ class Library {
         $title = new Title();
         $title->setName($title_name);
         $title_folder = new Folder($this->path."/".$title_name);
-        //Ищем сезоны
+        //Looking for seasons
         $title_subfolders = $title_folder->getSubfolders();
         foreach ($title_subfolders as $folder) {
             if (strpos($folder,'eason')) {
                $num=intval(str_replace("Season ","",$folder));
                if ($num>0) {
                    $title->createSeason($num);
-                   //Загружаем эпизоды
+                   //Loading episodes
                    $folder=$this->path."/".$title_name."/".$folder;
                    $media_folder = new Folder($folder);
                    $vids=$media_folder->getVideos();
@@ -101,7 +95,7 @@ class Library {
                           $link=readlink($vid['name']);
                           if(!empty($link)) {
                               $episode = new Episode($link);
-                              //Загружаем симлинки субтитров
+                              //Loading subtitle symlinks
                               if(!empty($subs)) {
                                   foreach ($subs as $file) {
                                       $link=readlink($file['name']);
@@ -121,7 +115,7 @@ class Library {
                                       }
                                   }
                               }
-                              //Загружаем симлинки аудио
+                              //Loading audio symlinks
                                if(!empty($auds)) {
                                   foreach ($auds as $file) {
                                       $link=readlink($file['name']);
@@ -166,7 +160,7 @@ class Library {
                $this->titles[]=$title;
                $this->title_list[]=$name;
            } else {
-               $this->titles[$this->titleGetId($name)]=$title; //Заменяем
+               $this->titles[$this->titleGetId($name)]=$title; //Exchange
            }
            return true;
         } else {
@@ -184,8 +178,8 @@ class Library {
         }
         return $str;
     }
-    private function calcSymlinkPath($target_path,$link_dir) { //Путь для относительного симлинка
-        if (preg_match("/^\.\./",$target_path)) { //Если путь уже относительный, проверяем его валидность
+    private function calcSymlinkPath($target_path,$link_dir) { //Path to relative symlink
+        if (preg_match("/^\.\./",$target_path)) { //If already relative, checking if valid
                  $cwd=  getcwd();
                  chdir($link_dir);
                  if (!is_readable($target_path)) {
@@ -197,10 +191,10 @@ class Library {
                  }
         }
         $prefix="";
-        $rs_path=preg_replace("/^./","",$link_dir); //Убираем начало строки
+        $rs_path=preg_replace("/^./","",$link_dir); //Removing string beginning
         $i=0;
-        while (!empty($rs_path) && !strpos($target_path,$rs_path) && $i<MAXDEPTH) { //i - глубина вложений
-            $rs_path=preg_replace("/\/?[^\/]*$/","",$rs_path); //Сокращаем путь
+        while (!empty($rs_path) && !strpos($target_path,$rs_path) && $i<MAXDEPTH) { //i - folder recursion depth
+            $rs_path=preg_replace("/\/?[^\/]*$/","",$rs_path); //Shortening path
             $prefix.="../";
             $i++;
         }
@@ -210,7 +204,7 @@ class Library {
         }
         $re_path=str_replace("$rs_path","",$target_path);
         $re_path=$prefix.$re_path;
-        $re_path=preg_replace("/\/{2,5}/","/",$re_path); //Лишние слэши
+        $re_path=preg_replace("/\/{2,5}/","/",$re_path); //Slashes fix
         return $re_path;
     }
     
@@ -218,11 +212,11 @@ class Library {
         global $lang; 
         $result=true;
         $title=$this->titles[$id];
-        //Записываем данные тайтла на диск
+        //Writing title data to disk
         $name=$title->getName();
         $path=$this->path."/".$name;
         if (!is_dir($path)) {
-            mkdir($path); //Создаем папку для тайтла
+            mkdir($path); //Creating title folder
             ///$log->write("mkdir $path");
         } 
         $seasons=$title->getSeasons();
@@ -230,19 +224,19 @@ class Library {
             $s_num=$this->numstr($season->getNumber());
             $s_path=$path."/Season ".$s_num;
             if (is_dir($s_path)) {
-               $this->deldir($s_path); //Удаляем старые данные сезона
+               $this->deldir($s_path); //Removing old season data
                 ///log->write("rmdir $s_path");
             }
-            mkdir($s_path); //Создаем папку сезона
+            mkdir($s_path); //Creating season folder
             ///$log->write("mkdir $s_path");
             $episodes=$season->getEpisodes();
             $cwd=getcwd();
-            chdir($s_path); //Переходим в папку сезона
+            chdir($s_path); //Entering season folder
             foreach ($episodes as $id=>$episode) {
                 $basename=$name." - s".$s_num."e".$this->numstr($id);
                 $e_path=$episode->getPath();
                 $pathinfo=pathinfo($e_path);
-                $re_path=$this->calcSymlinkPath($e_path, $s_path); //Получаем путь симлинка
+                $re_path=$this->calcSymlinkPath($e_path, $s_path); //Getting symlink path
                 symlink($re_path,$basename.'.'.$pathinfo['extension']);
                 //Subs
                 $subs=$episode->getSubs();
@@ -255,7 +249,7 @@ class Library {
                         $substr="ru";
                     } */
                     $rs_path=$this->calcSymlinkPath($file['path'], $s_path);
-                    symlink($rs_path,$basename.".".$substr.".".$pathinfo['extension']); //Создаем симлинк на сабы
+                    symlink($rs_path,$basename.".".$substr.".".$pathinfo['extension']); //Making sub symlink
                 }
                 //Audio
                 $auds=$episode->getAud();
@@ -268,7 +262,7 @@ class Library {
                         $substr="rus";
                     } */
                     $rs_path=$this->calcSymlinkPath($file['path'], $s_path);
-                    symlink($rs_path,$basename.".".$substr.".".$pathinfo['extension']); //Создаем симлинк на озвучку
+                    symlink($rs_path,$basename.".".$substr.".".$pathinfo['extension']); //Making audio symlink
                 }
             }
             chdir($cwd);
@@ -285,7 +279,7 @@ class Library {
             $this->loadTitle($title_name);
             return true;
         } elseif (empty($title_name)) {
-            //Очищаем папку библиотеки
+            //Clearing library folder
             foreach ($this->title_list as $folder) {
                 $this->deldir($this->path."/".$folder);
             }
@@ -324,7 +318,7 @@ class Library {
         if ($this->hasTitle($title_name)) {
             if ($this->titleHasSeason($title_name, $s_id)) {
                 if($this->titles[$this->titleGetId($title_name)]->removeSeason($s_id)) {
-                    //Если тайтл стал пустым
+                    //If title became empty
                     if (!$this->titles[$this->titleGetId($title_name)]->seasonsCount()) {
                        unset($this->titles[$this->titleGetId($title_name)]); 
                     }
