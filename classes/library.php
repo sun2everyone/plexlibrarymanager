@@ -70,6 +70,7 @@ class Library {
     }
     
     public function loadTitle($title_name) {
+        global $lang;
         if (!in_array($title_name,$this->title_list)) {
             return false;
         }
@@ -110,12 +111,13 @@ class Library {
                                           if ($ttl[0] == $vid['title']) {
                                               $episode->addSub($link, $link_info['dirname']);
                                           }
-                                          if ($ttl[1] == "ru") {
+                                          if ($ttl[1] == $lang) {
                                               $episode->setPriorSub($link_info['dirname'],0);
                                           }
+                                          /*
                                           if ($ttl[1] === "rus") {
-                                              $episode->setPriorSub($link_info['dirname'],1);
-                                          }
+                                              $episode->setPriorSub($link_info['dirname'],1); //Only one prior sub left
+                                          } */ 
                                       }
                                   }
                               }
@@ -129,12 +131,12 @@ class Library {
                                           if ($ttl[0] == $vid['title']) {
                                               $episode->addAudio($link, $link_info['dirname']);
                                           }
-                                          if ($ttl[1] == "ru") {
+                                          if ($ttl[1] == $lang) {
                                               $episode->setPriorAudio($link_info['dirname'],0);
-                                          }
+                                          } /*
                                           if ($ttl[1] === "rus") {
                                               $episode->setPriorAudio($link_info['dirname'],1);
-                                          }
+                                          } */
                                       }
                                   }
                               }
@@ -211,6 +213,7 @@ class Library {
     }
     
     private function writeTitle($id) {
+        global $lang; 
         $result=true;
         $title=$this->titles[$id];
         //Записываем данные тайтла на диск
@@ -243,12 +246,12 @@ class Library {
                 $subs=$episode->getSubs();
                 foreach ($subs as $id=>$file) {
                     $pathinfo=pathinfo($file['path']);
-                    $substr="rus".$id;
+                    $substr=$lang.$id;
                     if ($id == 0) {
+                        $substr=$lang; //Only one "known_language" sub
+                    } /* elseif ($id == 1) {
                         $substr="ru";
-                    } elseif ($id == 1) {
-                        $substr="rus";
-                    }
+                    } */
                     $rs_path=$this->calcSymlinkPath($file['path'], $s_path);
                     symlink($rs_path,$basename.".".$substr.".".$pathinfo['extension']); //Создаем симлинк на сабы
                 }
@@ -256,12 +259,12 @@ class Library {
                 $auds=$episode->getAud();
                 foreach ($auds as $id=>$file) {
                     $pathinfo=pathinfo($file['path']);
-                    $substr="rus".$id;
+                    $substr=$lang.$id;
                     if ($id == 0) {
-                        $substr="ru";
-                    } elseif ($id == 1) {
+                        $substr=$lang;
+                    } /* elseif ($id == 1) {
                         $substr="rus";
-                    }
+                    } */
                     $rs_path=$this->calcSymlinkPath($file['path'], $s_path);
                     symlink($rs_path,$basename.".".$substr.".".$pathinfo['extension']); //Создаем симлинк на озвучку
                 }
