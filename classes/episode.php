@@ -1,18 +1,12 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * Description of episode
  *
  * @author sun2
  */
 class Episode {
-    //put your code here
+    
     private $vid;
     private $name;
     private $sub = array();
@@ -57,7 +51,7 @@ class Episode {
             $this->aud[]=$aud;
         }
     }
-    public function setPriorSub($dir_name,$p_id=0) { //Предпочитаемые внешние субтитры
+    public function setPriorSub($dir_name,$p_id=0) { //Setting prefererd external subtitles
         if(!empty($dir_name) && !empty($this->sub)) {
             if ($p_id > (count($this->sub)-1)) {
                 $p_id=count($this->sub)-1;
@@ -75,7 +69,7 @@ class Episode {
             return false;
         }
     }
-    public function setPriorAudio($dir_name,$p_id=0) { //Предпочитаемая внешняя озвучка
+    public function setPriorAudio($dir_name,$p_id=0) { //Setting prefererd external audio
         if(!empty($dir_name) && !empty($this->aud)) {
             foreach ($this->aud as $id=>$aud) {
                 if ($aud['name']==$dir_name && $id<>$p_id) {

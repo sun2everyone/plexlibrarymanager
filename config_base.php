@@ -25,10 +25,10 @@ const SRC_FOLDER = "/var/www/plex/media";
 //ВНИМАНИЕ: Крайне не рекомендуется использовать действующую библиотеку, т.к. данная программа вероятно не сможет ее правильно обработать и часть данных библиотеки будет потеряна.
 const PLEX_LIB = "/var/www/plex/library/Anime";   
 
-//HTTP authentication. You may disable this if you have another authentication enabled or when your webserver is available only from local network
-$require_authentication=1; 
+//HTTP authentication. You may enable this if you don't have another authentication enabled and when your webserver is available not only from local network
+$require_authentication=0; 
 
-//Interface language, default - english, русский так же доступен
+//Interface language, "default -"en" for english, "ru" - русский
 $lang="en"; 
 
 /////////Service/////

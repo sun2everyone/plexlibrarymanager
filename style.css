@@ -114,7 +114,7 @@ div.td img.child {
 div.tr {
     display: table-row;
 }
-div.title.episodes, div.library div.tr div.td {
+div.title.episodes div.tr div.td, div.library div.tr div.td {
     padding-left: 5px;
     padding-right: 5px; 
 }

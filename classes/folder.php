@@ -1,18 +1,11 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * Description of folder
  *
  * @author sun2
  */
 class Folder {
-    //put your code here
     private $path;
     private $name;
     private $subfolders = Array ();
@@ -102,7 +95,7 @@ class Folder {
            return $this->subfolders;
        } else return $empty;
     }
-    //Определение типа файла по расширению
+    //Guessing filetype by extension
     private function isVideo($ext) {
         $extensions = array(
             "avi",
