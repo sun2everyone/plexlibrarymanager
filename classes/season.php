@@ -1,18 +1,10 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * Description of title
  *
  * @author sun2
  */
 class Season {
-    //put your code here
     private $number;
     private $episodes = array();
     private $sub_folders = array();

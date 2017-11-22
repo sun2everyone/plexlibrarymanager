@@ -1,64 +1,12 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * Description of title
  *
  * @author sun2
  */
 class Title {
-    //put your code here
-    /*
-    private $name;
-    private $episodes = array();
-    private $sub_folders = array();
-    private $aud_folders = array();
-    
-    public function addEpisode($episode) {
-        $this->episodes[]=$episode;
-    }
-    public function setName($name) {
-        $this->name=$name;
-    }
-    public function getName() {
-        return $this->name;
-    }
-    public function getSub_folders() {
-        return $this->sub_folders;
-    }
-    public function getAud_folders() {
-        return $this->aud_folders;
-    }
-    public function getEpisodes() {
-            return $this->episodes;
-    }
-    public function episodesCount() {
-        return count($this->episodes);
-    }
-    public function episodeAddMedia($id,$path,$dir="",$type="") {
-        if ($type=="aud") {
-            $this->episodes[$id]->addAudio($path,$dir);
-            if (!in_array($dir, $this->aud_folders)) { $this->aud_folders[]=$dir; }
-        } elseif ($type=="sub") {
-            $this->episodes[$id]->addSub($path,$dir); 
-            if (!in_array($dir, $this->sub_folders)) { $this->sub_folders[]=$dir; }
-        }
-    }
-    public function getEpisodeByName($name) {
-        $ep_id=-1;
-        foreach ($this->episodes as $id=>$episode) {
-            if ($episode->getName() == $name) {
-                $ep_id=$id;
-                break;
-            }
-        }
-        return $ep_id;
-    } */
+   
     private $name;
     private $seasons = array();
     
