@@ -28,10 +28,26 @@ function addMediaRecursive($sub_folders,$media_folder,$title,$season,$media_type
             $files=$folder->getFiles();
             if (!empty($files)) {
                 foreach ($files as $file) {
+                    $subfoldname_extra=$subfoldname;
                     if ($file['type'] == $media_type) { 
-                        $match_id=$title->getEpisodeIdByName($season,$file['title']);
+                        if (strpos($file['title'],".")) {
+                            $parts=explode(".",$file['title']); //recognition of external media named like title.[studio].somecrap.ass
+                            $titlepart=$parts[0];
+                            $i=1;
+                            while ($i<=count($parts)) {
+                                $match_id=$title->getEpisodeIdByName($season,$titlepart);
+                                if ($match_id >=0) {
+                                    if ($i<count($parts)) $subfoldname_extra=$subfoldname_extra." ".str_replace($titlepart.".", "", $file['title']);
+                                    break;
+                                }
+                                if ($i<count($parts)) $titlepart.=".".$parts[$i];
+                                $i++;
+                            }
+                        } else {
+                            $match_id=$title->getEpisodeIdByName($season,$file['title']);
+                        }    
                         if ($match_id >=0) {
-                              $title->episodeAddMedia($season,$match_id, $file['dir']."/".$file['name'],$subfoldname, $media_type); 
+                              $title->episodeAddMedia($season,$match_id, $file['dir']."/".$file['name'],$subfoldname_extra, $media_type); 
                         }
                     }
                 }
