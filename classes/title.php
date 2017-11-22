@@ -56,6 +56,16 @@ class Title {
     public function hasSeason($number) {
        if (isset($this->seasons[intval($number)])) return true; else return false; 
     }
+    public function topSeason() {
+        if(!empty($this->seasons)) {
+            $ids=array_keys($this->seasons);
+            sort($ids);
+            $result=array_pop($ids);
+            return $result;
+        } else {
+            return 1;
+        }
+    }
     
     public function getSub_folders($season) {
         $folders=array();
