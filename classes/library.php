@@ -167,12 +167,14 @@ class Library {
             return false;
         }
     }
-    private function numstr($num) {
+    private function numstr($num,$r=2) { //r - digits count 2 or 3 (01 or 001 enumeration)
         $str="";
         if ($num<10) {
                 $str.="00".$num;
+                if ($r==2) $str=substr($str,1);
         } else if ($num<100) {
                 $str.="0".$num;
+                if ($r==2) $str=substr($str,1);
         } else {
                 $str.="$num"; 
         }
@@ -217,23 +219,21 @@ class Library {
         $path=$this->path."/".$name;
         if (!is_dir($path)) {
             mkdir($path); //Creating title folder
-            ///$log->write("mkdir $path");
         } 
         $seasons=$title->getSeasons();
         foreach ($seasons as $season) {
-            $s_num=$this->numstr($season->getNumber());
+            $s_num=$this->numstr($season->getNumber(),2);
             $s_path=$path."/Season ".$s_num;
             if (is_dir($s_path)) {
                $this->deldir($s_path); //Removing old season data
-                ///log->write("rmdir $s_path");
             }
             mkdir($s_path); //Creating season folder
-            ///$log->write("mkdir $s_path");
             $episodes=$season->getEpisodes();
+            $enumeration=$season->episodesEnumeration(); //if to use 2-digit or 3-digit enumeration
             $cwd=getcwd();
             chdir($s_path); //Entering season folder
             foreach ($episodes as $id=>$episode) {
-                $basename=$name." - s".$s_num."e".$this->numstr($id);
+                $basename=$name." - s".$s_num."e".$this->numstr($id,$enumeration);
                 $e_path=$episode->getPath();
                 $pathinfo=pathinfo($e_path);
                 $re_path=$this->calcSymlinkPath($e_path, $s_path); //Getting symlink path

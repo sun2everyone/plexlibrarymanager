@@ -50,6 +50,14 @@ class Season {
     public function episodesCount() {
         return count($this->episodes);
     }
+    public function episodesEnumeration() { //2-digit or 3-digit
+        $ids=array_keys($this->episodes);
+        $max=-1;
+        foreach ($ids as $id) {
+            if ($id > $max) $max=$id;
+        }
+        if ($max>=100) return 3; else return 2;
+    }
     public function episodeAddMedia($id,$path,$dir="",$type="") {
         if ($type=="aud") {
             $this->episodes[$id]->addAudio($path,$dir);
