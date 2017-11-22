@@ -44,21 +44,31 @@ function addMediaRecursive($sub_folders,$media_folder,$title,$season,$media_type
 function parseName($name) {
     $name=$name;
     //Place for regular expressions
-    $name=preg_replace('/\[\S*\]/',"",$name);
+    $name=preg_replace('/\[[^\]]*\]/',"",$name); //removing all in []
     //
     $name=trim($name);
 
     return $name;
 }
-//Guessing episode number
+//Guessing episode number (when changing - test on following)
 function guessEpisodeNumber($name) {
     $num=0;
-    $name=preg_replace('/(s?[0-9]{2,3}e|e)/'," ",$name);
+    //Regular expr
+    $name=preg_replace('/\[[^\]]*\]/',"",$name); //removing all in []
+    $name=preg_replace('/\([^\)]*\)/',"",$name); //removing all in ()
+    $name=preg_replace('/s?[0-9]{0,3}ep?/i'," ",$name); //removing s01e, EP and such things before number
     if(preg_match_all('/(^| )[0-9]{1,3}/',$name,$matches,PREG_SET_ORDER)) {
         $num=intval(trim($matches[count($matches)-1][0]));
     }
     return $num;
 }
+
+/*
+ * Place for parser-checking names
+[Yousei-raws] Sakurasou no Pet na Kanojo 01 [BDrip 1920x1080 x264 FLAC]
+[Leopard-Raws] Bakuman. - 01 RAW (NHKE 1280x720 x264 AAC)
+Steins;Gate EP01 [BDRip 1080p x264-Hi10P FLAC]
+ */
 
 //Main title parsing function
 function parseAnime($media_folder,$sub_folders=array(),$audio_folders=array()) {
