@@ -24,6 +24,7 @@ $strings['err_vid_dir']="Неверно указана дирекотория с
 $strings['err_title_name_length']="Неправильное имя тайтла! Имя должно содержать от 1 до 50 символов!";
 $strings['err_title_name_symbol']="Неправильное имя тайтла! Введен недопустимый символ!";
 $strings['err_select_season']="Нужно выбрать сезон!";
+$strings['err_select_episode']="Нужно выбрать как минимум один эпизод!";
 
 //Template
 $strings['confirmation']="Уверены? Данное действие нельзя будет отменить!";

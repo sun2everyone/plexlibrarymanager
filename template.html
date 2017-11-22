@@ -293,6 +293,7 @@
                     <div class="small"><?php echo($strings['edit_field']); ?></div>
                     <div class="title episodes">
                         <div class="tr">
+                           <div class="option td"><input type="checkbox" name="select_all_episodes" onclick="$('div.episodes input[type=\'checkbox\'].episodes').prop('checked',$(this).prop('checked'))" value="" checked></div>
                            <div class="td">№:</div> 
                            <div class="td"><?php echo($strings['th_title']); ?></div> 
                            <div class="td"><?php echo($strings['th_sub']); ?></div> 
@@ -300,6 +301,7 @@
                         </div>  
                         <?php foreach($title_data['episodes'] as $id=>$episode) { ?>
                         <div class="tr">
+                            <div class="option td"><input type="checkbox" class="episodes" name="title_data[use_episodes][]" value="<?php echo $id?>" checked></div>
                             <div class="td"><?php echo $episode['id']; ?><input type="hidden" name="title_data[episodes][<?php echo $id?>][id]" value="<?php echo $episode['id']; ?>"></div> 
                            <div class="td"><?php echo $episode['name']; ?><input type="hidden" name="title_data[episodes][<?php echo $id?>][path]" value="<?php echo $episode['path']; ?>"></div> 
                            <div class="td">

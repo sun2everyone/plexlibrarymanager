@@ -116,22 +116,24 @@ if (isset($get['action']) && ($get['action'] == "validate_title_submit")) {
             }
              $title->setName($title_name);
              $title->createSeason($title_data['season']);
-             foreach ($title_data['episodes'] as $episode_data) {
-                 $episode=new Episode($episode_data['path']);
-                 $episode->setName($episode_data['id']);
-                 if(isset($episode_data['sub']) && !empty($episode_data['sub'])) {
-                     foreach ($episode_data['sub'] as $sub) {
-                         $episode->addSub($sub['path'], $sub['name']);
+             foreach ($title_data['episodes'] as $key=>$episode_data) {
+                 if (in_array($key,$title_data['use_episodes'])) {
+                     $episode=new Episode($episode_data['path']);
+                     $episode->setName($episode_data['id']);
+                     if(isset($episode_data['sub']) && !empty($episode_data['sub'])) {
+                         foreach ($episode_data['sub'] as $sub) {
+                             $episode->addSub($sub['path'], $sub['name']);
+                         }
+                         $episode->setPriorSub($title_data['pref_folder_sub']);
+                     }  
+                     if(isset($episode_data['aud']) && !empty($episode_data['aud'])) {
+                         foreach ($episode_data['aud'] as $aud) {
+                             $episode->addAudio($aud['path'], $aud['name']);
+                         }
+                         $episode->setPriorAudio($title_data['pref_folder_sub']);
                      }
-                     $episode->setPriorSub($title_data['pref_folder_sub']);
-                 }  
-                 if(isset($episode_data['aud']) && !empty($episode_data['aud'])) {
-                     foreach ($episode_data['aud'] as $aud) {
-                         $episode->addAudio($aud['path'], $aud['name']);
-                     }
-                     $episode->setPriorAudio($title_data['pref_folder_sub']);
-                 }
-                 $title->addEpisode($title_data['season'], $episode, $episode_data['id']);
+                     $title->addEpisode($title_data['season'], $episode, $episode_data['id']);
+                 }   
              }
             //Adding title to library
             if ($library->addTitle($title)) {
