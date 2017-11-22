@@ -64,7 +64,7 @@ class Library {
     }
     
     public function loadTitle($title_name) {
-        global $lang;
+        global $media_lang;
         if (!in_array($title_name,$this->title_list)) {
             return false;
         }
@@ -105,7 +105,7 @@ class Library {
                                           if ($ttl[0] == $vid['title']) {
                                               $episode->addSub($link, $link_info['dirname']);
                                           }
-                                          if ($ttl[1] == $lang) {
+                                          if ($ttl[1] == $media_lang) {
                                               $episode->setPriorSub($link_info['dirname'],0);
                                           }
                                           /*
@@ -125,7 +125,7 @@ class Library {
                                           if ($ttl[0] == $vid['title']) {
                                               $episode->addAudio($link, $link_info['dirname']);
                                           }
-                                          if ($ttl[1] == $lang) {
+                                          if ($ttl[1] == $media_lang) {
                                               $episode->setPriorAudio($link_info['dirname'],0);
                                           } /*
                                           if ($ttl[1] === "rus") {
@@ -211,7 +211,7 @@ class Library {
     }
     
     private function writeTitle($id) {
-        global $lang; 
+        global $media_lang; 
         $result=true;
         $title=$this->titles[$id];
         //Writing title data to disk
@@ -242,9 +242,9 @@ class Library {
                 $subs=$episode->getSubs();
                 foreach ($subs as $id=>$file) {
                     $pathinfo=pathinfo($file['path']);
-                    $substr=$lang.$id;
+                    $substr=$media_lang.$id;
                     if ($id == 0) {
-                        $substr=$lang; //Only one "known_language" sub
+                        $substr=$media_lang; //Only one "known_language" sub
                     } /* elseif ($id == 1) {
                         $substr="ru";
                     } */
@@ -255,9 +255,9 @@ class Library {
                 $auds=$episode->getAud();
                 foreach ($auds as $id=>$file) {
                     $pathinfo=pathinfo($file['path']);
-                    $substr=$lang.$id;
+                    $substr=$media_lang.$id;
                     if ($id == 0) {
-                        $substr=$lang;
+                        $substr=$media_lang;
                     } /* elseif ($id == 1) {
                         $substr="rus";
                     } */

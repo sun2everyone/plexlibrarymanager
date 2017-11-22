@@ -31,6 +31,10 @@ $require_authentication=0;
 //Interface language, "default -"en" for english, "ru" - русский
 $lang="en"; 
 
+//Default media language for external subtitle and audio to show in Plex intergace, "en" for english, or you can choose any code from ISO 639-1 https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+//Какой язык назначать предпочитаемым внешним субтитрам и аудиодорожкам для отображения в интерфейсе Plex, "ru" - русский, или можно выбрать любой подходящий код из ISO 639-1 https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+$media_lang="en"; 
+
 /////////Service/////
 //Maximum depth of relative symlinks (do not adujust without knowing, what you do!)
 //Максимальная глубина относительных симлинков (без особой нужды не менять).

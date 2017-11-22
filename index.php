@@ -44,6 +44,9 @@ if (!$configured) {
     echo $strings['unconfigured'];
     exit();
 }
+if (!isset($media_lang)) { //use interface language if media language not set
+    $media_lang=$lang;
+}
 
 //Initialization
 $log = new Log();
@@ -113,22 +116,24 @@ if (isset($get['action']) && ($get['action'] == "validate_title_submit")) {
             }
              $title->setName($title_name);
              $title->createSeason($title_data['season']);
-             foreach ($title_data['episodes'] as $episode_data) {
-                 $episode=new Episode($episode_data['path']);
-                 $episode->setName($episode_data['id']);
-                 if(isset($episode_data['sub']) && !empty($episode_data['sub'])) {
-                     foreach ($episode_data['sub'] as $sub) {
-                         $episode->addSub($sub['path'], $sub['name']);
+             foreach ($title_data['episodes'] as $key=>$episode_data) {
+                 if (in_array($key,$title_data['use_episodes'])) {
+                     $episode=new Episode($episode_data['path']);
+                     $episode->setName($episode_data['id']);
+                     if(isset($episode_data['sub']) && !empty($episode_data['sub'])) {
+                         foreach ($episode_data['sub'] as $sub) {
+                             $episode->addSub($sub['path'], $sub['name']);
+                         }
+                         $episode->setPriorSub($title_data['pref_folder_sub']);
+                     }  
+                     if(isset($episode_data['aud']) && !empty($episode_data['aud'])) {
+                         foreach ($episode_data['aud'] as $aud) {
+                             $episode->addAudio($aud['path'], $aud['name']);
+                         }
+                         $episode->setPriorAudio($title_data['pref_folder_sub']);
                      }
-                     $episode->setPriorSub($title_data['pref_folder_sub']);
-                 }  
-                 if(isset($episode_data['aud']) && !empty($episode_data['aud'])) {
-                     foreach ($episode_data['aud'] as $aud) {
-                         $episode->addAudio($aud['path'], $aud['name']);
-                     }
-                     $episode->setPriorAudio($title_data['pref_folder_sub']);
-                 }
-                 $title->addEpisode($title_data['season'], $episode, $episode_data['id']);
+                     $title->addEpisode($title_data['season'], $episode, $episode_data['id']);
+                 }   
              }
             //Adding title to library
             if ($library->addTitle($title)) {
@@ -192,26 +197,38 @@ if ($data['mode'] == "edit") { //Title/season editing
           $title['aud_folders']=$title_data->getAud_folders(1);
           $episodes=$title_data->getEpisodes(1);
           $title['episodes']=array();
-          $k=0;
           $used_id=array();
-          foreach ($episodes as $episode) {
-            $id=guessEpisodeNumber($episode->getName());
-            $title['episodes'][$k]['name']=$episode->getName();
-            $title['episodes'][$k]['path']=$episode->getPath();
-            $title['episodes'][$k]['sub']=$episode->getSubs();
-            $title['episodes'][$k]['aud']=$episode->getAud();
-            if (!$id) {
-                $id=$k+1;
-            }
-            if(in_array($id,$used_id)) {
-                $id=$used_id[count($used_id)-1]+1;
-            }
-            //while (in_array($id,$used_id)) { $id++; }
-            $title['episodes'][$k]['id']=$id;
-            $used_id[]=$id;
-            sort($used_id);
-            $k++;
+          $guessed=array(); //Array for episodes with recognized number
+          $not_guessed=array(); //Array for episodes with unrecognized number
+          $k=0;
+          $j=0;
+          $max_id=0;
+          foreach ($episodes as $episode) { //Splitting episode data by these two arrays for later sorting
+             $id=guessEpisodeNumber($episode->getName());
+             if ($id && !in_array($id, $used_id)) {
+                $guessed[$j]['name']=$episode->getName();
+                $guessed[$j]['path']=$episode->getPath();
+                $guessed[$j]['sub']=$episode->getSubs();
+                $guessed[$j]['aud']=$episode->getAud(); 
+                $guessed[$j]['id']=$id;
+                $used_id[]=$id;
+                $max_id=($id > $max_id ? $id : $max_id);
+                $j++;
+             } else {
+                $not_guessed[$k]['name']=$episode->getName();
+                $not_guessed[$k]['path']=$episode->getPath();
+                $not_guessed[$k]['sub']=$episode->getSubs();
+                $not_guessed[$k]['aud']=$episode->getAud(); 
+                $not_guessed[$k]['id']=$k+1; 
+                $k++;
+             }
           }
+          usort($guessed,"episodes_usort");
+          for ($i=0;$i<count($not_guessed);$i++) { //Shifting unrecognized and duplicate episodes to the end
+              $not_guessed[$i]['id']=$not_guessed[$i]['id']+$max_id;
+          }
+          $title['episodes']=array_merge($guessed, $not_guessed);
+          //Sorting finished
           $data['title_data']=$title;
       } else {
            $data['error']=sprintf($strings['err_no_vid_in_dir'],$post['src_folder_media']); 
