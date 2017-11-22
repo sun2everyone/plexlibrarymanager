@@ -211,12 +211,12 @@ if ($data['mode'] == "edit") { //Title/season editing
             if(in_array($id,$used_id)) {
                 $id=$used_id[count($used_id)-1]+1;
             }
-            //while (in_array($id,$used_id)) { $id++; }
             $title['episodes'][$k]['id']=$id;
             $used_id[]=$id;
             sort($used_id);
             $k++;
           }
+          usort($title['episodes'],  "episodes_usort"); //sorting episodes by guessed id
           $data['title_data']=$title;
       } else {
            $data['error']=sprintf($strings['err_no_vid_in_dir'],$post['src_folder_media']); 

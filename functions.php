@@ -121,4 +121,11 @@ function validateTitleData($title_data,$library) {
         }
         return $json;
 }
+
+function episodes_usort($a,$b) { //Sorting episodes array by guessed id before printing into template
+    if ($a['id'] == $b['id']) {
+        return 0;
+    }
+    return ($a['id'] < $b['id']) ? -1 : 1;
+}
 ?>
