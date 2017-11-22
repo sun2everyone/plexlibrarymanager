@@ -44,6 +44,9 @@ if (!$configured) {
     echo $strings['unconfigured'];
     exit();
 }
+if (!isset($media_lang)) { //use interface language if media language not set
+    $media_lang=$lang;
+}
 
 //Initialization
 $log = new Log();
