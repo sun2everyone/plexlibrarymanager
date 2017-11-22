@@ -265,7 +265,7 @@
                         </div>
                         <div class="tr">
                             <div class="td"><?php echo($strings['th_season']); ?></div>
-                            <div class="td"><select name="title_data[season]"><?php for($i=1; $i<=10; $i++) { ?><option><?php echo $i; ?></option><?php } ?></select></div>
+                            <div class="td"><select name="title_data[season]"><?php for($i=1; $i<=10; $i++) { ?><option <?php if ($i == $title_data['season_num']) echo "selected"; ?>><?php echo $i; ?></option><?php } ?></select></div>
                         </div>
                         <?php if(!empty($title_data['sub_folders'])) { ?>
                         <div class="tr">

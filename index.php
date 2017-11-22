@@ -193,9 +193,11 @@ if ($data['mode'] == "edit") { //Title/season editing
           $title=array();
           //Output parsing data into form
           $title['name']=$title_data->getName();
-          $title['sub_folders']=$title_data->getSub_folders(1);
-          $title['aud_folders']=$title_data->getAud_folders(1);
-          $episodes=$title_data->getEpisodes(1);
+          $season_num=$title_data->topSeason();
+          $title['sub_folders']=$title_data->getSub_folders($season_num);
+          $title['aud_folders']=$title_data->getAud_folders($season_num);
+          $episodes=$title_data->getEpisodes($season_num);
+          $title['season_num']=$season_num;
           $title['episodes']=array();
           $used_id=array();
           $guessed=array(); //Array for episodes with recognized number

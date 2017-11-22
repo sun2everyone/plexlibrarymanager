@@ -61,10 +61,21 @@ function parseName($name) {
     $name=$name;
     //Place for regular expressions
     $name=preg_replace('/\[[^\]]*\]/',"",$name); //removing all in []
+    $name=preg_replace('/(TV|season ?)[0-9]{1,2}/Ui',"",$name); //removing season enumeration
     //
     $name=trim($name);
 
     return $name;
+}
+function guessSeason($name) { //guessing season number
+    $num=1;
+    //Place for regular expressions
+    if (preg_match('/(TV|season ?)[0-9]{1,2}/Ui',$name,$matches)) {
+       $res=intval(preg_replace("/[^0-9]*/","",$matches[0]));
+       if ($res < 10 && $res > 1) $num=$res;
+    }
+    //
+    return $num;
 }
 //Guessing episode number (when changing - test on following)
 function guessEpisodeNumber($name) {
@@ -94,21 +105,22 @@ function parseAnime($media_folder,$sub_folders=array(),$audio_folders=array()) {
     if (!empty($files)) {
         $title = new Title();
         $title->setName(parseName($media->getName()));
-        $title->createSeason();
+        $season_num=guessSeason($media->getName());
+        $title->createSeason($season_num);
         //Filling title with episodes
         foreach ($files as $file) {
             if ($file['type'] == 'vid') { 
                 $episode = new Episode($file['dir']."/".$file['name'],$file['title']);
-                $title->addEpisode(1,$episode);
+                $title->addEpisode($season_num,$episode);
             }
         }
-        if (!$title->episodesCount(1)) {
+        if (!$title->episodesCount($season_num)) {
             return false;
         }
         //Adding subtitles to episodes
-          $title=addMediaRecursive($sub_folders, $media_folder, $title, 1, "sub");
+          $title=addMediaRecursive($sub_folders, $media_folder, $title, $season_num, "sub");
         //Adding audio to episodes
-          $title=addMediaRecursive($audio_folders, $media_folder, $title, 1, "aud");
+          $title=addMediaRecursive($audio_folders, $media_folder, $title, $season_num, "aud");
         //
    } else {
        return false;
