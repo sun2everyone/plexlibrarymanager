@@ -10,7 +10,7 @@ Support of other library and media types may be added in future. And no fancy UI
 
 This software is distributed "as is", and author is not responsible for any problems you might get using it (including data loss or corruption)!
 
-Currently tested only in Firefox 56.0+
+Currently tested only in Firefox 56.0++
 
 <b>Requirements:</b>
 
