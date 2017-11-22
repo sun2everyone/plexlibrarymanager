@@ -130,7 +130,7 @@ if (isset($get['action']) && ($get['action'] == "validate_title_submit")) {
                          foreach ($episode_data['aud'] as $aud) {
                              $episode->addAudio($aud['path'], $aud['name']);
                          }
-                         $episode->setPriorAudio($title_data['pref_folder_sub']);
+                         $episode->setPriorAudio($title_data['pref_folder_aud']);
                      }
                      $title->addEpisode($title_data['season'], $episode, $episode_data['id']);
                  }   

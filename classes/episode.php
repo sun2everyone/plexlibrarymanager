@@ -71,6 +71,9 @@ class Episode {
     }
     public function setPriorAudio($dir_name,$p_id=0) { //Setting prefererd external audio
         if(!empty($dir_name) && !empty($this->aud)) {
+            if ($p_id > (count($this->aud)-1)) {
+                $p_id=count($this->aud)-1;
+            }
             foreach ($this->aud as $id=>$aud) {
                 if ($aud['name']==$dir_name && $id<>$p_id) {
                    $tmp=$this->aud[$p_id]; 
