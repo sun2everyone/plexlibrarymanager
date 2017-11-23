@@ -36,7 +36,7 @@ $strings['header_view_lib']="Library contents:";
 $strings['header_select_folders']="Step 1. Select which folders for video, subtitles and audio to use:";
 $strings['header_check_parsing']="Step 2. Check parsing results:";
 $strings['th_vid']="Video";
-$strings['th_title']="Name:";
+$strings['th_title']="Source name";
 $strings['th_sub']="Subtitles";
 $strings['th_aud']="Audio";
 $strings['th_season']="Season number:";
@@ -53,7 +53,7 @@ $strings['err_try_another']="Error! Try different folder!";
 $strings['title_seasons']="Season %s; Episodes: %s";
 $strings['lib_empty']="Library is empty yet!";
 
-//Links and buttons
+//Links, hints and buttons
 $strings['main_page']="Main page";
 $strings['view_library']="View library";
 $strings['add_title']="Add new title";
@@ -61,3 +61,4 @@ $strings['add_to_lib']="Add to library";
 $strings['autoparsing']="Analyze";
 $strings['ch_folder_sel']="Change folder selection";
 $strings['go_top']="Page top";
+$strings['change']="Change";

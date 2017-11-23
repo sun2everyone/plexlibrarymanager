@@ -46,33 +46,6 @@ div.warning {
 div.error {
     background-color: #fcc7c6; 
 }
-/*
-div.warning {
-    width: 58%;
-    border: 1px solid;
-    border-radius: 5px;
-    border-color: #649d63;
-    
-    padding-bottom: 5px;
-    font-size: 12px;
-    padding-left: 20px;
-    padding-top: 5px;
-    margin-bottom: 20px;
-    margin-top: 10px;
-}
-div.error {
-    width: 58%;
-    border: 1px solid;
-    border-radius: 5px;
-    border-color: #c24643;
-    
-    padding-bottom: 5px;
-    font-size: 20px;
-    padding-left: 20px;
-    padding-top: 5px;
-    margin-bottom: 20px;
-    margin-top: 10px;
-} */
 div.small {
     font-size: 11px;
 }
@@ -89,12 +62,24 @@ div.folders, div.title, div.library {
 div.theader div.td {
    padding-left: 5px;
    padding-right: 5px;
-   font-size: 10px;
    text-align: center;
+   border-bottom:1px dotted #c9c9c9;
+}
+div.folders div.theader div.td {
+   font-size: 10px; 
 }
 div.option {
     min-width:60px;
     text-align: center;
+}
+div.ep-id {
+    text-align: center;
+    min-width: 35px;
+}
+div.ep-title {
+    min-width: 300px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 .folder.tr div.option:hover, .episodes .tr div.option:hover {
     background-color:rgba(243, 205, 20, 0.35);
@@ -109,7 +94,6 @@ div.td {
 div.td.folder-link:hover {
     cursor:pointer;
     text-decoration: underline;
-    /* color:#727171; */
     background-color:rgba(243, 205, 20, 0.35);
     border-radius: 5px;
     padding-right:10px;
