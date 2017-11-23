@@ -87,9 +87,9 @@
                                         var subpath=path + '/' + entry;
                                         html+='<div class="folder tr'+parents_str+'" name="'+subpath+'">';
                                         html+='<div class="option td"><input type="hidden" name="parents" value="'+parents_str+'">';
-                                        html+='<input class="ajax_loaded" style="left:'+20*depth+'px;" type="radio" name="src_folder_media" value="'+subpath+'"></div>';
-                                        html+='<div class="td option"><input class="ajax_loaded" style="left:'+20*depth+'px;" type="checkbox" name="src_folder_sub[]" value="'+subpath+'"></div>';
-                                        html+='<div class="td option"><input class="ajax_loaded" style="left:'+20*depth+'px;" type="checkbox" name="src_folder_audio[]" value="'+subpath+'"></div>';
+                                        html+='<input title="<?php echo($strings['th_vid']); ?>" class="ajax_loaded" style="left:'+20*depth+'px;" type="radio" name="src_folder_media" value="'+subpath+'"></div>';
+                                        html+='<div class="td option"><input title="<?php echo($strings['th_sub']); ?>" class="ajax_loaded" style="left:'+20*depth+'px;" type="checkbox" name="src_folder_sub[]" value="'+subpath+'"></div>';
+                                        html+='<div class="td option"><input title="<?php echo($strings['th_aud']); ?>" class="ajax_loaded" style="left:'+20*depth+'px;" type="checkbox" name="src_folder_audio[]" value="'+subpath+'"></div>';
                                         html+='<div class="icon td"><img class="child" src="img/icon_folder.png" style="padding-left:'+20*depth+'px;"></div>'
                                         html+='<div class="td" style="padding-left:'+20*depth+'px;" name="'+subpath+'" onclick="doExpand(\''+subpath+'\','+depth+')">'+entry+'</div>';
                                         html+='</div>';
@@ -230,9 +230,9 @@
                              $subfolder_path=$root_folder['path']."/".$subfolder;
                             ?> 
                             <div class="folder tr" name="<?php echo $subfolder_path; ?>">
-                              <div class="option td"><input type="hidden" name="parents" value=""><input type="radio" name="src_folder_media" value="<?php echo $subfolder_path; ?>"></div>
-                              <div class="td option"><input type="checkbox" name="src_folder_sub[]" value="<?php echo $subfolder_path; ?>"></div>
-                              <div class="td option"><input type="checkbox" name="src_folder_audio[]" value="<?php echo $subfolder_path; ?>"></div>
+                              <div class="option td"><input type="hidden" name="parents" value=""><input title="<?php echo($strings['th_vid']); ?>" type="radio" name="src_folder_media" value="<?php echo $subfolder_path; ?>"></div>
+                              <div class="td option"><input type="checkbox" name="src_folder_sub[]" value="<?php echo $subfolder_path; ?>"  title="<?php echo($strings['th_sub']); ?>"></div>
+                              <div class="td option"><input type="checkbox" name="src_folder_audio[]" value="<?php echo $subfolder_path; ?>"  title="<?php echo($strings['th_aud']); ?>"></div>
                               <div class="icon td"><img src="img/icon_folder.png"></div>
                               <div class="td" name="<?php echo $subfolder_path; ?>" onclick="doExpand('<?php echo $subfolder_path; ?>',0)"><?php echo $subfolder; ?></div>
                             </div>  
