@@ -95,7 +95,23 @@
                                         html+='</div>';
                                          //child.after(html);
                                    }); 
+                                   //Automated scrolling when opening folder
                                    $("div[name=\'" + path + "\'].folder").after(html);
+                                   if ($(document).height() > $(window).innerHeight()) {
+                                       var y=window.scrollY+$(window).innerHeight();
+                                            if ($("div"+parents_str.replace(/ /g,'.')).length) {
+                                            var offset=$("div"+parents_str.replace(/ /g,'.')).last().offset().top+100;
+                                            if (offset >= y) { //children overflow
+                                                if ((offset-y) > $(window).innerHeight()) { //big folder, more than screen
+                                                    offset=$("div[name=\'" + path + "\'].folder").offset().top-10; //parent folder to the top
+                                                } else {
+                                                    offset=offset-$(window).innerHeight();
+                                                }
+                                                $("html,body").animate({"scrollTop":offset},"slow");
+                                            }
+                                       } 
+                                   }
+                                   
                                 }
                                 $("div[name=\'" + path + "\'].folder").addClass('expanded');
                                 } 
