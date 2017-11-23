@@ -24,25 +24,35 @@ table .comment {
 img.circle {
     width: 20px; 
 }
-div.info {
+div.info, div.error, div.warning {
     width: 58%;
     border: 1px solid;
     border-radius: 5px;
     border-color: #649d63;
-    background-color: #c0e6bf;
     padding-bottom: 5px;
-    font-size: 12px;
+    font-size: 20px;
     padding-left: 20px;
     padding-top: 5px;
-    margin-bottom: 20px;
-    margin-top: 10px;
+    position: fixed;
+    top: 20px;
+    z-index: 5;
 }
+div.info {
+    background-color: #c0e6bf; 
+}
+div.warning {
+    background-color: #f3e814;
+}
+div.error {
+    background-color: #fcc7c6; 
+}
+/*
 div.warning {
     width: 58%;
     border: 1px solid;
     border-radius: 5px;
     border-color: #649d63;
-    background-color: #f3e814;
+    
     padding-bottom: 5px;
     font-size: 12px;
     padding-left: 20px;
@@ -55,14 +65,14 @@ div.error {
     border: 1px solid;
     border-radius: 5px;
     border-color: #c24643;
-    background-color: #fcc7c6;
+    
     padding-bottom: 5px;
-    font-size: 12px;
+    font-size: 20px;
     padding-left: 20px;
     padding-top: 5px;
     margin-bottom: 20px;
     margin-top: 10px;
-}
+} */
 div.small {
     font-size: 11px;
 }
@@ -152,9 +162,25 @@ div.links {
     width: 100%;
     min-height: 30px;
 }
+div.links.add, div.links.parse {
+    background-color: white;
+}
 div.link {
     text-decoration: underline;
     cursor: pointer;
     padding: 10px;
     float: left;
+}
+div.link:hover {
+    background-color:rgba(243, 205, 20, 0.35);
+    border-radius: 5px; 
+}
+div.links.add.overlay, div.links.parse.overlay {
+    position:fixed;
+    bottom:0px;
+    z-index:5;
+    border-top:1px dotted #c9c9c9;
+}
+div.footerplace {
+    padding-bottom: 30px;
 }

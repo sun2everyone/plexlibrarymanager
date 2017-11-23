@@ -60,3 +60,4 @@ $strings['add_title']="Add new title";
 $strings['add_to_lib']="Add to library";
 $strings['autoparsing']="Analyze";
 $strings['ch_folder_sel']="Change folder selection";
+$strings['go_top']="Page top";

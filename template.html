@@ -201,6 +201,17 @@
                     $('div.episodes input[name=\'select_all_episodes\']').on("change", function() {
                         $('div.episodes input:checkbox').prop("checked",$(this).prop('checked'));
                     });
+                    //Fixed buttons
+                    $(window).on("load",function() { 
+                        if ($(document).height() > $(window).innerHeight()) {
+                            $('div.links.add, div.links.parse').addClass('overlay');
+                            $('div.links.add, div.links.parse').children('.link').last().after('<div class="link gotop"><?php echo $strings['go_top']; ?></div>');
+                            $("#content").addClass('footerplace');
+                        }
+                    });
+                    $('div.links').on("click", "div.link.gotop", function(){
+                       $("html,body").animate({"scrollTop":0},"slow");
+                    });
                 });
             
         </script>
@@ -263,8 +274,9 @@
                         <?php } ?>
                 </div>
                 </form>
-                <div class="links">
+                <div class="links parse">
                     <div class="link" onClick="parseFolder();"><?php echo($strings['autoparsing']); ?></div>
+                    <div class="link" onClick="document.location.href='<?php echo $hostname; ?>?mode=view'"><?php echo($strings['view_library']); ?></div>
                 </div>    
                 <?php } elseif ($mode == "parse") { ?>
                 <h2><?php echo($strings['header_add_title']); ?></h2>
@@ -346,11 +358,11 @@
                     </div>
                     <?php } ?>
                     </form>
-                    <div class="links">
+                    <div class="links add">
                         <div class="link validate" onClick="validateTitle('');"><?php echo($strings['add_to_lib']); ?></div>
                     <?php } else { ?>
                         <div class="error" onclick="$(this).remove();"><?php echo($strings['err_try_another']); ?></div>
-                    <div class="links">
+                    <div class="links add">
                     <?php } ?>
                        <div class="link" onClick="javascript:history.back(); return false;"><?php echo($strings['ch_folder_sel']); ?></div>
                     </div>   
@@ -389,7 +401,7 @@
                         <?php echo($strings['lib_empty']); ?>
                     <?php } ?>
                 </div>
-                <div class="links">
+                <div class="links add">
                     <div class="link" onClick="document.location.href='<?php echo $hostname; ?>?mode=add'"><?php echo($strings['add_title']); ?></div>
                 </div>  
                 <?php } ?>
