@@ -10,12 +10,10 @@ Support of other library and media types may be added in future. And no fancy UI
 
 This software is distributed "as is", and author is not responsible for any problems you might get using it (including data loss or corruption)!
 
-Currently tested only in Firefox 56.0++
-
 <b>Requirements:</b>
 
 <code>Webserver with php5.6+</code>
 
 <code>OS and filesystem that supports symbolic (soft, like "ln -s ..") links</code>
 
-<code>Modern web browser with Javascript and CSS</code>
+<code>Modern web browser with Javascript and CSS (Currently tested in Firefox 56.0+ and Chrome 49.0)</code>
