@@ -87,9 +87,9 @@
                                         var subpath=path + '/' + entry;
                                         html+='<div class="folder tr'+parents_str+'" name="'+subpath+'">';
                                         html+='<div class="option td"><input type="hidden" name="parents" value="'+parents_str+'">';
-                                        html+='<input type="radio" name="src_folder_media" value="'+subpath+'"></div>';
-                                        html+='<div class="td option"><input type="checkbox" name="src_folder_sub[]" value="'+subpath+'"></div>';
-                                        html+='<div class="td option"><input type="checkbox" name="src_folder_audio[]" value="'+subpath+'"></div>';
+                                        html+='<input class="ajax_loaded" style="left:'+20*depth+'px;" type="radio" name="src_folder_media" value="'+subpath+'"></div>';
+                                        html+='<div class="td option"><input class="ajax_loaded" style="left:'+20*depth+'px;" type="checkbox" name="src_folder_sub[]" value="'+subpath+'"></div>';
+                                        html+='<div class="td option"><input class="ajax_loaded" style="left:'+20*depth+'px;" type="checkbox" name="src_folder_audio[]" value="'+subpath+'"></div>';
                                         html+='<div class="icon td"><img class="child" src="img/icon_folder.png" style="padding-left:'+20*depth+'px;"></div>'
                                         html+='<div class="td" style="padding-left:'+20*depth+'px;" name="'+subpath+'" onclick="doExpand(\''+subpath+'\','+depth+')">'+entry+'</div>';
                                         html+='</div>';

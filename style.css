@@ -127,6 +127,9 @@ div.folders img.wait {
     left: 5px;
     margin-top: 7px;
 }
+div.folder input.ajax_loaded {
+    position: relative;
+}
 div.links {
     width: 100%;
     min-height: 30px;
