@@ -229,6 +229,40 @@
                     $('div.links').on("click", "div.link.gotop", function(){
                        $("html,body").animate({"scrollTop":0},"slow");
                     });
+                    //Episode id editing
+                    $('div.episodes').on("click", "div.ep-id", function(e) {
+                        //alert($(this).children('input').attr('value'));
+                        /*$(".id-edit").remove();*/
+                        var hidden_name=$(this).children('input').attr('name');
+                        var hidden_id=$(this).children('input').prop('value');
+                        var html='<input type="text" value="" maxlength="3">';
+                        $(this).html(html);
+                        $(this).children('input').focus();
+                        $(this).children('input').on("change click keyup input paste", function() { //filtering input
+                            var val=$(this).prop('value');
+                            //checking val
+                            val=val.replace(/[^0-9]/g,'');
+                            //  
+                            $(this).prop('value',val);
+                        });
+                        $(this).children('input').on("focusout", function() {
+                            var val=$(this).prop('value');
+                            //checking val
+                            val=val.replace(/[^0-9]/g,'');
+                            //
+                            if ((val !== "") && (val>0) && (val<999)) {
+                                if($("div.episodes div.ep-id input[value='"+val+"']:hidden").length) {
+                                    //alert('Same ID not allowed!');
+                                    $(this).parent().addClass("failed");
+                                    val=hidden_id;
+                                }  
+                            } else {
+                               val=hidden_id;
+                            }
+                            $(this).parent().html(val+'<input type="hidden" name="'+hidden_name+'" value="'+val+'">');
+                            setTimeout(function(){ $("div.episodes div.ep-id").removeClass('failed');},500);
+                        });
+                    });    
                 });
             
         </script>
@@ -344,7 +378,7 @@
                            <div class="td"><?php echo($strings['th_aud']); ?></div> 
                         </div>  
                         <?php foreach($title_data['episodes'] as $id=>$episode) { ?>
-                        <div class="tr">
+                        <div class="tr episode">
                             <div class="option td"><input type="checkbox" class="episodes" name="title_data[use_episodes][]" value="<?php echo $id?>" checked></div>
                             <div class="td ep-id" title="<?php echo $strings['change']; ?>"><?php echo $episode['id']; ?><input type="hidden" name="title_data[episodes][<?php echo $id?>][id]" value="<?php echo $episode['id']; ?>"></div> 
                            <div class="td ep-title"><?php echo $episode['name']; ?><input type="hidden" name="title_data[episodes][<?php echo $id?>][path]" value="<?php echo $episode['path']; ?>"></div> 

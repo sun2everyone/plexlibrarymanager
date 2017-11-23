@@ -85,13 +85,28 @@ div.ep-title {
     background-color:rgba(243, 205, 20, 0.35);
     border-radius: 5px;
 }
+div.id-edit {
+    position: absolute;
+    padding: 20px;
+    z-index: 5;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px dotted #c9c9c9;
+} 
+div.ep-id input[type='text'] {
+    width:18px;
+}
+div.ep-id.failed {
+    background-color: #fea4b2;
+    border-radius: 5px;
+}
 div.td {
     display:table-cell;
     vertical-align: middle;
     height: 34px;
     position:relative;
 }
-div.td.folder-link:hover {
+div.td.folder-link:hover, div.td.ep-id:hover {
     cursor:pointer;
     text-decoration: underline;
     background-color:rgba(243, 205, 20, 0.35);
