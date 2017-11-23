@@ -80,15 +80,33 @@ div.theader div.td {
    padding-left: 5px;
    padding-right: 5px;
    font-size: 10px;
+   text-align: center;
 }
 div.option {
-    min-width:30px;
+    min-width:60px;
     text-align: center;
+}
+.folder.tr div.option:hover, .episodes .tr div.option:hover {
+    background-color:rgba(243, 205, 20, 0.35);
+    border-radius: 5px;
 }
 div.td {
     display:table-cell;
     vertical-align: middle;
     height: 34px;
+    position:relative;
+}
+div.td.folder-link:hover {
+    cursor:pointer;
+    text-decoration: underline;
+    /* color:#727171; */
+    background-color:rgba(243, 205, 20, 0.35);
+    border-radius: 5px;
+    padding-right:10px;
+}
+div.td.folder-link {
+    padding-left:10px;
+    position:relative;
 }
 div.td img {
     width:30px;
@@ -108,8 +126,8 @@ div.library div.td.title {
     width: 400px;
 }
 div.td img.child {
-    position:absolute;
-    margin-top: -15px;
+    position:relative;
+    /* margin-top: -15px; */
 }
 div.tr {
     display: table-row;
