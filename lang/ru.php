@@ -63,3 +63,4 @@ $strings['autoparsing']="Проанализировать";
 $strings['ch_folder_sel']="Изменить выбор папок";
 $strings['go_top']="Наверх";
 $strings['change']="Изменить";
+$strings['sort']="Упорядочить";

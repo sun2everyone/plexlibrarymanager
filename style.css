@@ -73,6 +73,23 @@ div.option {
     min-width:60px;
     text-align: center;
 }
+div.episodes .theader img {
+    width:15px;
+    position: relative;
+    cursor: pointer;
+    padding: 5px;
+    top: 2px;
+}
+div.episodes .theader img:hover {
+   border-radius: 2px;
+   background-color:rgba(243, 205, 20, 0.35);
+}
+div.episodes .ep-id-header > div:first-child {
+    width: 50%;
+    float:left;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
 div.ep-id {
     text-align: center;
     min-width: 35px;

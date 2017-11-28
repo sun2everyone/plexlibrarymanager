@@ -205,6 +205,18 @@
                 }    
             }
             
+            function episodes_sort() { //Episodes table sorting
+                $('.episodes div.tr.episode').each(function(index,element) {
+                    var val=parseInt($(this).find('.ep-id input').prop('value'));
+                     $('.episodes div.tr.episode').each(function(index2,element2) {
+                        var c_val=parseInt($(this).find('.ep-id input').prop('value'));
+                        if ((val > c_val) && (index < index2)) {
+                           $(element2).after(element);
+                        } 
+                     });
+                });
+            }
+            
             //Bindings
             $(function(){
                     //Nice highlighted checkboxes with background clicking
@@ -231,9 +243,10 @@
                     });
                     //Episode id editing
                     $('div.episodes').on("click", "div.ep-id", function(e) {
-                        var hidden_name=$(this).children('input').attr('name');
-                        var hidden_id=$(this).children('input').prop('value');
-                        var html='<input type="text" value="" maxlength="3">';
+                        $('.error').remove();
+                        var hidden_name=$(this).find('input[type=\'hidden\']').attr('name');
+                        var hidden_id=$(this).find('input[type=\'hidden\']').prop('value');
+                        var html='<input type="text" value="" maxlength="3"><input type="hidden" name="'+hidden_name+'" value="'+hidden_id+'">';
                         $(this).html(html);
                         $(this).children('input').focus();
                         $(this).children('input').on("change click keyup input paste", function(event) { //filtering input
@@ -249,9 +262,9 @@
                         $(this).children('input').on("focusout", function() {
                             var val=$(this).prop('value');
                             //checking val
-                            val=val.replace(/[^0-9]/g,'');
+                            val=parseInt(val.replace(/[^0-9]/g,''));
                             //
-                            if ((val !== "") && (val>0) && (val<999)) {
+                            if ((val !== "") && (val>0) && (val<999) && (val !== 'undefined')) {
                                 if($("div.episodes div.ep-id input[value='"+val+"']:hidden").length) {
                                     $(this).parent().addClass("failed");
                                     $('div.title.episodes').before('<div class="error" onclick="$(this).remove();"><?php echo($strings['error'].$strings['err_ep_id']); ?></div>');
@@ -375,7 +388,7 @@
                     <div class="title episodes">
                         <div class="tr theader">
                            <div class="option td"><input type="checkbox" name="select_all_episodes" value="" checked></div>
-                           <div class="td">№</div> 
+                           <div class="td ep-id-header"><div>№</div><div><img title="<?php echo $strings['sort']; ?>" src="img/icon_asc_num.png" onClick="episodes_sort();"></div></div> 
                            <div class="td"><?php echo($strings['th_title']); ?></div> 
                            <div class="td"><?php echo($strings['th_sub']); ?></div> 
                            <div class="td"><?php echo($strings['th_aud']); ?></div> 
