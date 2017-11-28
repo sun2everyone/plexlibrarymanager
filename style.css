@@ -36,6 +36,7 @@ div.info, div.error, div.warning {
     position: fixed;
     top: 20px;
     z-index: 5;
+    cursor: pointer;
 }
 div.info {
     background-color: #c0e6bf; 
@@ -72,6 +73,23 @@ div.option {
     min-width:60px;
     text-align: center;
 }
+div.episodes .theader img {
+    width:15px;
+    position: relative;
+    cursor: pointer;
+    padding: 5px;
+    top: 2px;
+}
+div.episodes .theader img:hover {
+   border-radius: 2px;
+   background-color:rgba(243, 205, 20, 0.35);
+}
+div.episodes .ep-id-header > div:first-child {
+    width: 50%;
+    float:left;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
 div.ep-id {
     text-align: center;
     min-width: 35px;
@@ -85,13 +103,28 @@ div.ep-title {
     background-color:rgba(243, 205, 20, 0.35);
     border-radius: 5px;
 }
+div.id-edit {
+    position: absolute;
+    padding: 20px;
+    z-index: 5;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px dotted #c9c9c9;
+} 
+div.ep-id input[type='text'] {
+    width:18px;
+}
+div.ep-id.failed {
+    background-color: #fea4b2;
+    border-radius: 5px;
+}
 div.td {
     display:table-cell;
     vertical-align: middle;
     height: 34px;
     position:relative;
 }
-div.td.folder-link:hover {
+div.td.folder-link:hover, div.td.ep-id:hover {
     cursor:pointer;
     text-decoration: underline;
     background-color:rgba(243, 205, 20, 0.35);
@@ -111,13 +144,47 @@ div.td .small img {
     max-height: 12px;
 }
 div.library img {
-    padding: 2px;
     cursor: pointer;
     width:20px;
     max-height: 20px;
+    padding: 4px;
+    position: relative;
+    border-radius: 5px;
+    top: 1px;
+}
+div.library .tr {
+    border-top: 1px dotted #c9c9c9;
+    border-bottom: 1px dotted #c9c9c9;
+}
+div.library .tr:first-child {
+    border-top: none;
+}    
+div.library .tr:last-child {
+    border-bottom: none;
+} 
+div.library img:hover {
+    background-color:rgba(243, 205, 20, 0.35);
+}
+div.library img.edit {
+    display:none;  
 }
 div.library div.td.title {
-    width: 400px;
+    min-width: 500px;
+    max-width: 500px;
+    width:auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+div.library div.td.seasons {
+    min-width:200px;
+    text-align: right;
+}
+div.library div.td.manage {
+    width:60px;
+}
+div.library .seasons .small > div {
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 div.td img.child {
     position:relative;
@@ -125,6 +192,7 @@ div.td img.child {
 }
 div.tr {
     display: table-row;
+    width: 100%;
 }
 div.title.episodes div.tr div.td, div.library div.tr div.td {
     padding-left: 5px;
@@ -163,7 +231,7 @@ div.links.add.overlay, div.links.parse.overlay {
     position:fixed;
     bottom:0px;
     z-index:5;
-    border-top:1px dotted #c9c9c9;
+    border-top:2px dotted #c98939;
 }
 div.footerplace {
     padding-bottom: 30px;

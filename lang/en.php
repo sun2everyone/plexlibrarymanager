@@ -21,10 +21,11 @@ $strings['err_no_title']="Unable to delete - no such title.";
 $strings['err_title_del_name']="Unable to delete - wrong title name.";
 $strings['err_no_vid_in_dir']="No video files found in directory %s!";
 $strings['err_vid_dir']="Wrong video directory!";
-$strings['err_title_name_length']="Bad title name! Title name should have from 1 to 50 charactes!";
+$strings['err_title_name_length']="Bad title name! Title name should have from 1 to 100 charactes!";
 $strings['err_title_name_symbol']="Bad title name! No special symbols!";
 $strings['err_select_season']="You have to select season!";
 $strings['err_select_episode']="You have to select at least one episode!";
+$strings['err_ep_id']="Episode number must be inique and above zero!";
 
 //Template
 $strings['confirmation']="Are you sure? This action can't be undone!";
@@ -62,3 +63,5 @@ $strings['autoparsing']="Analyze";
 $strings['ch_folder_sel']="Change folder selection";
 $strings['go_top']="Page top";
 $strings['change']="Change";
+$strings['del']="Delete";
+$strings['sort']="Sort";

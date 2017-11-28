@@ -134,7 +134,7 @@ function validateTitleData($title_data,$library) {
         $json=array();
         global $strings; //Loading language
         $title_data['name']=trim($title_data['name']);
-        if (strlen($title_data['name']) < 1 || strlen($title_data['name']) > 50) {
+        if (strlen($title_data['name']) < 1 || strlen($title_data['name']) > 100) {
             $json['error'] = $strings['err_title_name_length'];
         } elseif (preg_match('/[\/<>&\'"]+/',$title_data['name'])) {
             $json['error'] = $strings['err_title_name_symbol'];

@@ -205,6 +205,18 @@
                 }    
             }
             
+            function episodes_sort() { //Episodes table sorting
+                $('.episodes div.tr.episode').each(function(index,element) {
+                    var val=parseInt($(this).find('.ep-id input').prop('value'));
+                     $('.episodes div.tr.episode').each(function(index2,element2) {
+                        var c_val=parseInt($(this).find('.ep-id input').prop('value'));
+                        if ((val > c_val) && (index < index2)) {
+                           $(element2).after(element);
+                        } 
+                     });
+                });
+            }
+            
             //Bindings
             $(function(){
                     //Nice highlighted checkboxes with background clicking
@@ -229,6 +241,44 @@
                     $('div.links').on("click", "div.link.gotop", function(){
                        $("html,body").animate({"scrollTop":0},"slow");
                     });
+                    //Episode id editing
+                    $('div.episodes').on("click", "div.ep-id", function(e) {
+                        $('.error').remove();
+                        var hidden_name=$(this).find('input[type=\'hidden\']').attr('name');
+                        var hidden_id=$(this).find('input[type=\'hidden\']').prop('value');
+                        var html='<input type="text" value="" maxlength="3"><input type="hidden" name="'+hidden_name+'" value="'+hidden_id+'">';
+                        $(this).html(html);
+                        $(this).children('input').focus();
+                        $(this).children('input').on("change click keyup input paste", function(event) { //filtering input
+                            var val=$(this).prop('value');
+                            //checking val
+                            val=val.replace(/[^0-9]/g,'');
+                            //  
+                            $(this).prop('value',val);
+                            if(event.keyCode == 13){
+                                $(this).trigger('focusout');
+                            }
+                        });
+                        $(this).children('input').on("focusout", function() {
+                            var val=$(this).prop('value');
+                            //checking val
+                            val=parseInt(val.replace(/[^0-9]/g,''));
+                            //
+                            if ((val !== "") && (val>0) && (val<999) && (val !== 'undefined')) {
+                                if($("div.episodes div.ep-id input[value='"+val+"']:hidden").length) {
+                                    $(this).parent().addClass("failed");
+                                    $('div.title.episodes').before('<div class="error" onclick="$(this).remove();"><?php echo($strings['error'].$strings['err_ep_id']); ?></div>');
+                                    val=hidden_id;
+                                }  
+                            } else {
+                               $(this).parent().addClass("failed");
+                               $('div.title.episodes').before('<div class="error" onclick="$(this).remove();"><?php echo($strings['error'].$strings['err_ep_id']); ?></div>'); 
+                               val=hidden_id;
+                            }
+                            $(this).parent().html(val+'<input type="hidden" name="'+hidden_name+'" value="'+val+'">');
+                            setTimeout(function(){ $("div.episodes div.ep-id").removeClass('failed');},500);
+                        });
+                    });    
                 });
             
         </script>
@@ -305,7 +355,7 @@
                     <div class="title">
                         <div class="tr">
                             <div class="td"><?php echo($strings['suggested_name']); ?><br><div class="small"><?php echo($strings['tvdb']); ?></div></div>
-                            <div class="td"><input type="text" name="title_data[name]" value="<?php echo $title_data['name']; ?>"></div>
+                            <div class="td"><input type="text" name="title_data[name]" value="<?php echo $title_data['name']; ?>" maxlength="100"></div>
                         </div>
                         <div class="tr">
                             <div class="td"><?php echo($strings['th_season']); ?></div>
@@ -338,13 +388,13 @@
                     <div class="title episodes">
                         <div class="tr theader">
                            <div class="option td"><input type="checkbox" name="select_all_episodes" value="" checked></div>
-                           <div class="td">№</div> 
+                           <div class="td ep-id-header"><div>№</div><div><img title="<?php echo $strings['sort']; ?>" src="img/icon_asc_num.png" onClick="episodes_sort();"></div></div> 
                            <div class="td"><?php echo($strings['th_title']); ?></div> 
                            <div class="td"><?php echo($strings['th_sub']); ?></div> 
                            <div class="td"><?php echo($strings['th_aud']); ?></div> 
                         </div>  
                         <?php foreach($title_data['episodes'] as $id=>$episode) { ?>
-                        <div class="tr">
+                        <div class="tr episode">
                             <div class="option td"><input type="checkbox" class="episodes" name="title_data[use_episodes][]" value="<?php echo $id?>" checked></div>
                             <div class="td ep-id" title="<?php echo $strings['change']; ?>"><?php echo $episode['id']; ?><input type="hidden" name="title_data[episodes][<?php echo $id?>][id]" value="<?php echo $episode['id']; ?>"></div> 
                            <div class="td ep-title"><?php echo $episode['name']; ?><input type="hidden" name="title_data[episodes][<?php echo $id?>][path]" value="<?php echo $episode['path']; ?>"></div> 
@@ -392,25 +442,33 @@
                     <div class="tr">
                         <form name="edit_title[<?php echo $key?>]" method="post" action="index.php?mode=edit">
                         <div class="td">
-                            <img src="img/icon_edit.png" onclick="editTitle('<?php echo $key?>');">
-                            <img src="img/icon_delete.png" onclick="delTitle('<?php echo $key?>');">
+                            <img class="edit" src="img/icon_edit.png" onclick="editTitle('<?php echo $key?>');" title="<?php echo $strings['change']; ?>">
+                            <img src="img/icon_delete.png" onclick="delTitle('<?php echo $key?>');" title="<?php echo $strings['del']; ?>">
                             <input type="hidden" name="title_name" value="<?php echo $title['name']; ?>">
                             <input type="hidden" name="season" value="0">
                         </div>
                         <div class="td title"><?php echo $i.". ".$title['name']; ?></div>
-                        <div class="td">
+                        <div class="td seasons">
                             <?php if(!empty($title['seasons'])) { ?>
-                            <div class="small">
-                                <ul>                               
+                            <div class="small">                         
                                 <?php foreach ($title['seasons'] as $id=>$value) { ?>
-                                    <li><?php echo sprintf($strings['title_seasons'],$id,$value); ?> 
-                                        <img src="img/icon_edit.png" onclick="editSeason('<?php echo $key?>','<?php echo $id?>');">
-                                        <img src="img/icon_delete.png" onclick="delSeason('<?php echo $key?>','<?php echo $id?>');">
+                                    <div><?php echo sprintf($strings['title_seasons'],$id,$value); ?> </div>
                                 <?php } ?> 
-                                </ul>
                             </div>   
                             <?php } ?>
                         </div>
+                        <div class="td manage">
+                            <?php if(!empty($title['seasons'])) { ?>
+                            <div class="small">
+                                <?php foreach ($title['seasons'] as $id=>$value) { ?>
+                                <div>
+                                        <img class="edit" src="img/icon_edit.png" onclick="editSeason('<?php echo $key?>','<?php echo $id?>');" title="<?php echo $strings['change']; ?>">
+                                        <img src="img/icon_delete.png" onclick="delSeason('<?php echo $key?>','<?php echo $id?>');" title="<?php echo $strings['del']; ?>">
+                                </div>        
+                                <?php } ?> 
+                            </div>   
+                            <?php } ?>
+                        </div>    
                         </form>
                     </div>
                     <?php  }
