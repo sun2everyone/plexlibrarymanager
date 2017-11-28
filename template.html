@@ -231,19 +231,20 @@
                     });
                     //Episode id editing
                     $('div.episodes').on("click", "div.ep-id", function(e) {
-                        //alert($(this).children('input').attr('value'));
-                        /*$(".id-edit").remove();*/
                         var hidden_name=$(this).children('input').attr('name');
                         var hidden_id=$(this).children('input').prop('value');
                         var html='<input type="text" value="" maxlength="3">';
                         $(this).html(html);
                         $(this).children('input').focus();
-                        $(this).children('input').on("change click keyup input paste", function() { //filtering input
+                        $(this).children('input').on("change click keyup input paste", function(event) { //filtering input
                             var val=$(this).prop('value');
                             //checking val
                             val=val.replace(/[^0-9]/g,'');
                             //  
                             $(this).prop('value',val);
+                            if(event.keyCode == 13){
+                                $(this).trigger('focusout');
+                            }
                         });
                         $(this).children('input').on("focusout", function() {
                             var val=$(this).prop('value');
@@ -252,11 +253,13 @@
                             //
                             if ((val !== "") && (val>0) && (val<999)) {
                                 if($("div.episodes div.ep-id input[value='"+val+"']:hidden").length) {
-                                    //alert('Same ID not allowed!');
                                     $(this).parent().addClass("failed");
+                                    $('div.title.episodes').before('<div class="error" onclick="$(this).remove();"><?php echo($strings['error'].$strings['err_ep_id']); ?></div>');
                                     val=hidden_id;
                                 }  
                             } else {
+                               $(this).parent().addClass("failed");
+                               $('div.title.episodes').before('<div class="error" onclick="$(this).remove();"><?php echo($strings['error'].$strings['err_ep_id']); ?></div>'); 
                                val=hidden_id;
                             }
                             $(this).parent().html(val+'<input type="hidden" name="'+hidden_name+'" value="'+val+'">');

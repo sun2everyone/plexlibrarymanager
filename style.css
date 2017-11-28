@@ -36,6 +36,7 @@ div.info, div.error, div.warning {
     position: fixed;
     top: 20px;
     z-index: 5;
+    cursor: pointer;
 }
 div.info {
     background-color: #c0e6bf; 

@@ -25,6 +25,7 @@ $strings['err_title_name_length']="Неправильное имя тайтла!
 $strings['err_title_name_symbol']="Неправильное имя тайтла! Введен недопустимый символ!";
 $strings['err_select_season']="Нужно выбрать сезон!";
 $strings['err_select_episode']="Нужно выбрать как минимум один эпизод!";
+$strings['err_ep_id']="Номер эпизода должен быть больше нуля и уникален!";
 
 //Template
 $strings['confirmation']="Уверены? Данное действие нельзя будет отменить!";
