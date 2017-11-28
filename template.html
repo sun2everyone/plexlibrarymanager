@@ -398,27 +398,37 @@
                             <div class="option td"><input type="checkbox" class="episodes" name="title_data[use_episodes][]" value="<?php echo $id?>" checked></div>
                             <div class="td ep-id" title="<?php echo $strings['change']; ?>"><?php echo $episode['id']; ?><input type="hidden" name="title_data[episodes][<?php echo $id?>][id]" value="<?php echo $episode['id']; ?>"></div> 
                            <div class="td ep-title"><?php echo $episode['name']; ?><input type="hidden" name="title_data[episodes][<?php echo $id?>][path]" value="<?php echo $episode['path']; ?>"></div> 
-                           <div class="td">
-                               <?php if(!empty($episode['sub'])) { ?>
-                                <?php echo($strings['entry_yes']); ?> (<?php echo count($episode['sub']); ?>)
-                                <?php foreach($episode['sub'] as $s_id=>$sub) { ?>
-                                <input type="hidden" name="title_data[episodes][<?php echo $id; ?>][sub][<?php echo $s_id; ?>][path]" value="<?php echo $sub['path']; ?>">
-                                <input type="hidden" name="title_data[episodes][<?php echo $id; ?>][sub][<?php echo $s_id; ?>][name]" value="<?php echo $sub['name']; ?>">
-                                <?php } ?> 
-                               <?php } else { ?>
-                                <?php echo($strings['entry_no']); ?>
-                               <?php } ?>
+                           <div class="td sub">
+                               <div>
+                                   <?php if(!empty($episode['sub'])) { ?>
+                                   <?php echo($strings['entry_yes']); ?> (<?php echo count($episode['sub']); ?>)
+                                    <?php foreach($episode['sub'] as $s_id=>$sub) { ?>
+                                    <input type="hidden" name="title_data[episodes][<?php echo $id; ?>][sub][<?php echo $s_id; ?>][path]" value="<?php echo $sub['path']; ?>">
+                                    <input type="hidden" name="title_data[episodes][<?php echo $id; ?>][sub][<?php echo $s_id; ?>][name]" value="<?php echo $sub['name']; ?>">
+                                    <?php } ?> 
+                                   <?php } else { ?>
+                                    <?php echo($strings['entry_no']); ?>
+                                   <?php } ?>
+                               </div>
+                               <div>
+                                <img src="img/icon_edit.png" title="<?php echo $strings['change']; ?>">
+                               </div>
                            </div> 
-                           <div class="td">
-                               <?php if(!empty($episode['aud'])) { ?>
-                                <?php echo($strings['entry_yes']); ?> (<?php echo count($episode['aud']); ?>)
-                                <?php foreach($episode['aud'] as $a_id=>$aud) { ?>
-                                <input type="hidden" name="title_data[episodes][<?php echo $id; ?>][aud][<?php echo $a_id; ?>][path]" value="<?php echo $aud['path']; ?>">
-                                <input type="hidden" name="title_data[episodes][<?php echo $id; ?>][aud][<?php echo $a_id; ?>][name]" value="<?php echo $aud['name']; ?>">
-                                <?php } ?> 
-                               <?php } else { ?>
-                                <?php echo($strings['entry_no']); ?>
-                               <?php } ?>
+                           <div class="td aud">
+                               <div>
+                                   <?php if(!empty($episode['aud'])) { ?>
+                                    <?php echo($strings['entry_yes']); ?> (<?php echo count($episode['aud']); ?>)
+                                    <?php foreach($episode['aud'] as $a_id=>$aud) { ?>
+                                    <input type="hidden" name="title_data[episodes][<?php echo $id; ?>][aud][<?php echo $a_id; ?>][path]" value="<?php echo $aud['path']; ?>">
+                                    <input type="hidden" name="title_data[episodes][<?php echo $id; ?>][aud][<?php echo $a_id; ?>][name]" value="<?php echo $aud['name']; ?>">
+                                    <?php } ?> 
+                                   <?php } else { ?>
+                                    <?php echo($strings['entry_no']); ?>
+                                   <?php } ?>
+                               </div>
+                               <div>
+                                <img src="img/icon_edit.png" title="<?php echo $strings['change']; ?>">
+                               </div>
                            </div> 
                         </div>  
                         <?php } ?>

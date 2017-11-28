@@ -95,7 +95,11 @@ div.ep-id {
     min-width: 35px;
 }
 div.ep-title {
-    min-width: 300px;
+    min-width: 600px;
+    max-width: 600px;
+    width:auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
     padding-left: 10px;
     padding-right: 10px;
 }
@@ -117,6 +121,24 @@ div.ep-id input[type='text'] {
 div.ep-id.failed {
     background-color: #fea4b2;
     border-radius: 5px;
+}
+div.title.episodes div.tr div.td.sub, div.title.episodes div.tr div.td.aud  {
+    width: 100px;
+    border-left:1px dotted #c9c9c9;
+    border-right: 1px dotted #c9c9c9;
+}
+div.episodes .sub > div:first-child, div.episodes .aud > div:first-child {
+    width: 60px;
+    float: left;
+    padding-top:5px;
+    padding-right: 10px;
+}
+div.episodes .sub > div:last-child, div.episodes .aud > div:last-child {
+    width: 30px;
+    float: left;
+}
+div.episodes .tr.episode:last-child {
+     border-bottom: 1px dotted #c9c9c9;
 }
 div.td {
     display:table-cell;
@@ -143,7 +165,7 @@ div.td .small img {
     width:12px;
     max-height: 12px;
 }
-div.library img {
+div.library img, div.episodes img {
     cursor: pointer;
     width:20px;
     max-height: 20px;
@@ -162,7 +184,7 @@ div.library .tr:first-child {
 div.library .tr:last-child {
     border-bottom: none;
 } 
-div.library img:hover {
+div.library img:hover, div.episodes img:hover {
     background-color:rgba(243, 205, 20, 0.35);
 }
 div.library img.edit {
