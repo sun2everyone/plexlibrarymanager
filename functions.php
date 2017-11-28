@@ -81,6 +81,7 @@ function guessSeason($name) { //guessing season number
 function guessEpisodeNumber($name) {
     $num=0;
     //Regular expr
+    $name=preg_replace('/\[([0-9][0-9])\]/i',' ${1} ',$name); // getting [01] style enumeration 
     $name=preg_replace('/\[[^\]]*\]/',"",$name); //removing all in []
     $name=preg_replace('/\([^\)]*\)/',"",$name); //removing all in ()
     $name=preg_replace('/s?[0-9]{0,3}ep?/i'," ",$name); //removing s01e, EP and such things before number
