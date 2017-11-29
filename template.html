@@ -217,6 +217,7 @@
                 });
             }
             
+            
             //Bindings
             $(function(){
                     //Nice highlighted checkboxes with background clicking
@@ -278,7 +279,19 @@
                             $(this).parent().html(val+'<input type="hidden" name="'+hidden_name+'" value="'+val+'">');
                             setTimeout(function(){ $("div.episodes div.ep-id").removeClass('failed');},500);
                         });
-                    });    
+                    });
+                    //Episode subs editing
+                    $('div.episodes .episode .sub img.edit').click(function() {
+                        var ep_id=$(this).parents('.episode').find('input.episodes').prop('value');
+                        var html='<div class="media-edit">';
+                        $(this).parents('.sub').find('.sub-data').each(function(index,element) {
+                            var path=$(this).find('input.sub-path').prop('value');
+                            var sub_name=$(this).find('input.sub-path').attr('name');
+                            html+='<input type="text" value="'+path+'" name="'+sub_name+'"><br>';
+                        });
+                        html+="</div>"
+                        $('div.episodes').before(html);
+                    });
                 });
             
         </script>
@@ -403,15 +416,17 @@
                                    <?php if(!empty($episode['sub'])) { ?>
                                    <?php echo($strings['entry_yes']); ?> (<?php echo count($episode['sub']); ?>)
                                     <?php foreach($episode['sub'] as $s_id=>$sub) { ?>
-                                    <input type="hidden" name="title_data[episodes][<?php echo $id; ?>][sub][<?php echo $s_id; ?>][path]" value="<?php echo $sub['path']; ?>">
-                                    <input type="hidden" name="title_data[episodes][<?php echo $id; ?>][sub][<?php echo $s_id; ?>][name]" value="<?php echo $sub['name']; ?>">
+                                    <div class="sub-data">    
+                                    <input type="hidden" class="sub-path" name="title_data[episodes][<?php echo $id; ?>][sub][<?php echo $s_id; ?>][path]" value="<?php echo $sub['path']; ?>">
+                                    <input type="hidden" class="sub-name" name="title_data[episodes][<?php echo $id; ?>][sub][<?php echo $s_id; ?>][name]" value="<?php echo $sub['name']; ?>">
+                                    </div>
                                     <?php } ?> 
                                    <?php } else { ?>
                                     <?php echo($strings['entry_no']); ?>
                                    <?php } ?>
                                </div>
                                <div>
-                                <img src="img/icon_edit.png" title="<?php echo $strings['change']; ?>">
+                                <img class="edit" src="img/icon_edit.png" title="<?php echo $strings['change']; ?>">
                                </div>
                            </div> 
                            <div class="td aud">
@@ -419,8 +434,8 @@
                                    <?php if(!empty($episode['aud'])) { ?>
                                     <?php echo($strings['entry_yes']); ?> (<?php echo count($episode['aud']); ?>)
                                     <?php foreach($episode['aud'] as $a_id=>$aud) { ?>
-                                    <input type="hidden" name="title_data[episodes][<?php echo $id; ?>][aud][<?php echo $a_id; ?>][path]" value="<?php echo $aud['path']; ?>">
-                                    <input type="hidden" name="title_data[episodes][<?php echo $id; ?>][aud][<?php echo $a_id; ?>][name]" value="<?php echo $aud['name']; ?>">
+                                    <input type="hidden" class="aud-path" name="title_data[episodes][<?php echo $id; ?>][aud][<?php echo $a_id; ?>][path]" value="<?php echo $aud['path']; ?>">
+                                    <input type="hidden" class="aud-name" name="title_data[episodes][<?php echo $id; ?>][aud][<?php echo $a_id; ?>][name]" value="<?php echo $aud['name']; ?>">
                                     <?php } ?> 
                                    <?php } else { ?>
                                     <?php echo($strings['entry_no']); ?>
