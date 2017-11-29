@@ -258,3 +258,60 @@ div.links.add.overlay, div.links.parse.overlay {
 div.footerplace {
     padding-bottom: 30px;
 }
+form.add_folder div.media-edit {
+    position: absolute;
+    width: 800px;
+    left: 50px;
+    z-index: 5;
+    height: auto;
+    padding: 20px 20px 0px 20px;
+    border: 2px dotted  #f98d00; /*#c98939;*/
+    border-radius: 10px;
+    background-color: #fffbef;
+}
+form.add_folder div.media-edit img.close {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    cursor: pointer;
+    padding: 5px;
+}
+form.add_folder div.media-edit img.close:hover {
+    background-color:rgba(243, 205, 20, 0.35);
+    border-radius: 5px;
+}
+form.add_folder div.media-edit div.sub-data {
+    width:100%;
+    padding-left: 10px;
+}
+form.add_folder div.media-edit div.input-text {
+    border: 1px dashed #f98d00;
+    width: 750px;
+    max-width: 750px;
+    overflow: hidden;
+    text-align: left;
+    font-size: 12px;
+    white-space: nowrap;
+    text-overflow:ellipsis;
+    padding-left: 5px;
+    float:left
+}     
+form.add_folder div.media-edit div.actions {
+    float: left;
+}
+form.add_folder div.media-edit div.actions.final {
+    width:100%;
+    padding-left: 350px;
+}
+form.add_folder div.media-edit div.actions img {
+    cursor: pointer;
+    width:15px;
+    max-height: 15px;
+    padding: 4px;
+    position: relative;
+    border-radius: 5px;
+    top: -4px;
+}
+form.add_folder div.media-edit div.actions img:hover {
+   background-color:rgba(243, 205, 20, 0.35); 
+}

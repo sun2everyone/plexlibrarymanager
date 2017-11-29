@@ -64,4 +64,6 @@ $strings['ch_folder_sel']="Change folder selection";
 $strings['go_top']="Page top";
 $strings['change']="Change";
 $strings['del']="Delete";
+$strings['add']="Add";
+$strings['submit']="Submit";
 $strings['sort']="Sort";

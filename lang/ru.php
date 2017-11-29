@@ -64,4 +64,6 @@ $strings['ch_folder_sel']="Изменить выбор папок";
 $strings['go_top']="Наверх";
 $strings['change']="Изменить";
 $strings['del']="Удалить";
+$strings['add']="Добавить";
+$strings['submit']="Применить";
 $strings['sort']="Упорядочить";

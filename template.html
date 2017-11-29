@@ -289,17 +289,63 @@
                             setTimeout(function(){ $("div.episodes div.ep-id").removeClass('failed');},500);
                         });
                     });
-                    //Episode subs editing
-                    $('div.episodes .episode .sub img.edit').click(function() {
-                        var ep_id=$(this).parents('.episode').find('input.episodes').prop('value');
-                        var html='<div class="media-edit">';
+                    //Episode subs editing dialogue
+                    $('div.episodes .episode .sub').on("click", "img.edit", function() {
+                        var html='<img class="close" src="img/icon_close.png">'; //Buttons to add if empty sub-data
                         $(this).parents('.sub').find('.sub-data').each(function(index,element) {
                             var path=$(this).find('input.sub-path').prop('value');
                             var sub_name=$(this).find('input.sub-path').attr('name');
-                            html+='<input type="text" value="'+path+'" name="'+sub_name+'"><br>';
+                            var namestr=$(this).find('input.sub-name').prop('value');
+                            var namestr_name=$(this).find('input.sub-name').attr('name');
+                            //Short-path
+                            var short_path=path.replace(/<?php echo addcslashes($src_root_path,'^$.*+?=!:|\/()[]{}-'); ?>/,"");
+                            if (short_path.length>102) { //Если не влезает в отображение
+                                short_path="..."+short_path.substr(short_path.length-102);
+                            }
+                            //
+                            html+='<div class="sub-data"><div class="input-text">'+short_path+'</div>';
+                            html+='<input type="hidden" class="sub-path" name="'+sub_name+'" value="'+path+'">';
+                            html+='<input type="hidden" class="sub-name" name="'+namestr_name+'" value="'+namestr+'">';
+                            html+='<div class="actions"><img class="delete" src="img/icon_delete.png" title="<?php echo $strings['del']; ?>"></div></div>';
                         });
-                        html+="</div>"
-                        $('div.episodes').before(html);
+                        html+='<div class="actions final"><img class="add" src="img/icon_add.png" title="<?php echo $strings['add']; ?>"><img class="submit" src="img/icon_submit.png" title="<?php echo $strings['submit']; ?>"></div>';
+                        if (html !== "") {
+                            $('div.media-edit').html(html);
+                            var div_h=$('div.media-edit').height();
+                            var y=window.scrollY;
+                            if (div_h > $(window).innerHeight()) {
+                                y=y+50;
+                            } else {
+                               y=y+parseInt(($(window).innerHeight()-div_h)/2); 
+                            }
+                            $('div.media-edit').css({'top': +y+'px'});
+                            $('div.media-edit').show();
+                            src_obj=$(this).parents('.sub');
+                            $("form.add_folder div.media-edit").on("click", "img.submit", function() {
+                                src_obj.trigger('submit');
+                                $('form.add_folder div.media-edit').hide();
+                            });
+                        }
+                    });
+                    $("form.add_folder div.media-edit").on("click", "img.close", function() {
+                        $(this).parent().hide();
+                    });
+                    $("form.add_folder div.media-edit").on("click", "img.delete", function() {
+                            $(this).parents('div.sub-data').remove();
+                    });
+                    $('div.episodes .episode .sub').on("submit", function() { //Copying new subtitle data function renew
+                       $(this).children('div:first-child').html("");
+                       $("form.add_folder div.media-edit div.sub-data").find('.input-text, .actions').remove();
+                       //alert($("form.add_folder div.media-edit").html());
+                       $(this).children('div:first-child').html($("form.add_folder div.media-edit .sub-data"));
+                       count=$(this).find('.sub-data').length;
+                       var html=$(this).html();
+                       if (count>0) {
+                          $(this).find('.sub-data:first-child').before("<?php echo($strings['entry_yes']); ?> ("+count+")"); 
+                       } else {
+                          $(this).find('div:first-child').html("<?php echo($strings['entry_no']); ?>"); 
+                       } 
+                       $("form.add_folder div.media-edit").off("click", "img.submit");
                     });
                 });
             
@@ -407,6 +453,7 @@
                     <?php if(!empty($title_data['episodes'])) { ?>
                     <?php echo($strings['th_ep_list']); ?><br>
                     <div class="small"><?php echo($strings['edit_field']); ?></div>
+                    <div class="media-edit" style="display:none;"></div>
                     <div class="title episodes">
                         <div class="tr theader">
                            <div class="option td"><input type="checkbox" name="select_all_episodes" value="" checked></div>
