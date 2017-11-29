@@ -45,6 +45,20 @@
                   $(id).show('slow');
               }
             }
+            function addFixedNavigation() { //If content overflow - add navigation bar at the bottom, else - del
+                if ($(document).height() > $(window).innerHeight()) {
+                            $('div.links.add, div.links.parse').addClass('overlay');
+                            if(!$('div.links div.link.gotop').length) {
+                                $('div.links.add, div.links.parse').children('.link').last().after('<div class="link gotop"><?php echo $strings['go_top']; ?></div>');
+                            }    
+                            $("#content").addClass('footerplace');
+                        } else {
+                            $("#content").removeClass('footerplace');
+                            $('div.links.add, div.links.parse').removeClass('overlay');
+                            $('div.links div.link.gotop').remove();
+                        }
+            }
+            
             function getFolder(path,depth) {  
                $.ajax({
                     url: '<?php echo $hostname; ?>index.php',
@@ -78,7 +92,6 @@
                                          html+='<div class="td" style="padding-left:'+20*depth+'px;">'+filename+'</div>';
                                          html+='</div>';
                                     });
-                                    //child.after(html);
                                     $("div[name=\'" + path + "\'].folder").after(html);
                                 }
                                if(json['folder']['subfolders'] != null) {
@@ -93,7 +106,6 @@
                                         html+='<div class="icon td" style="left:'+20*depth+'px;"><img class="child" src="img/icon_folder.png"></div>'
                                         html+='<div class="td folder-link" style="left:'+20*depth+'px;" name="'+subpath+'" onclick="doExpand(\''+subpath+'\','+depth+')">'+entry+'</div>';
                                         html+='</div>';
-                                         //child.after(html);
                                    }); 
                                    //Automated scrolling when opening folder
                                    $("div[name=\'" + path + "\'].folder").after(html);
@@ -116,6 +128,7 @@
                                 }
                                 $("div[name=\'" + path + "\'].folder").addClass('expanded');
                                 } 
+                                addFixedNavigation();
                             }
                     },
                     error: function() {
@@ -127,12 +140,12 @@
                 });
             }    
             function doExpand(folder,depth) {
-                if(!$("div[name=\'" + folder + "\'].expanded").length) {
+              if(!$("div[name=\'" + folder + "\'].expanded").length) {
                  getFolder(folder,depth);
-              } else {
-                //$("div[name=\'" + folder + "\'].folder").children('.tr').remove();  
+              } else { 
                 $("div.tr."+md5(folder)).remove();
                 $("div[name=\'" + folder + "\'].folder").removeClass('expanded');
+                addFixedNavigation(); //Collapse
               }
             }
             function parseFolder() {
@@ -232,11 +245,7 @@
                     });
                     //Fixed buttons
                     $(window).on("load",function() { 
-                        if ($(document).height() > $(window).innerHeight()) {
-                            $('div.links.add, div.links.parse').addClass('overlay');
-                            $('div.links.add, div.links.parse').children('.link').last().after('<div class="link gotop"><?php echo $strings['go_top']; ?></div>');
-                            $("#content").addClass('footerplace');
-                        }
+                        addFixedNavigation();
                     });
                     $('div.links').on("click", "div.link.gotop", function(){
                        $("html,body").animate({"scrollTop":0},"slow");
