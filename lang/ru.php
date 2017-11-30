@@ -26,6 +26,7 @@ $strings['err_title_name_symbol']="Неправильное имя тайтла!
 $strings['err_select_season']="Нужно выбрать сезон!";
 $strings['err_select_episode']="Нужно выбрать как минимум один эпизод!";
 $strings['err_ep_id']="Номер эпизода должен быть больше нуля и уникален!";
+$strings['err_file_already_added']="Файл уже добавлен.";
 
 //Template
 $strings['confirmation']="Уверены? Данное действие нельзя будет отменить!";
@@ -53,6 +54,7 @@ $strings['entry_no']="Нет";
 $strings['err_try_another']="Ошибка! Попробуйте выбрать другую папку!";
 $strings['title_seasons']="Сезон %s; Число эпизодов: %s";
 $strings['lib_empty']="Библиотека пока пуста!";
+$strings['select_file']="Выберите файл:";
 
 //Links and buttons
 $strings['main_page']="Главная";

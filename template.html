@@ -65,6 +65,7 @@
                     type: 'POST',
                     data: 'getfolder=' + path,
                     dataType: 'json',
+                    //async: false,
                     beforeSend: function() {
                         $('.error').remove();
                          //$('#folders').after('<img class="wait status" name="' + path +'" src="img/loader.gif">');
@@ -80,7 +81,6 @@
                                 parents_str+=' '+md5(path);
                                 if(json['folder']['files'] != null) {
                                     var html="";
-                                    //var child=$("div[name=\'" + path + "\'].folder").children().last();
                                    Object.keys(json['folder']['files']).forEach(function(key) { 
                                      var filename=json['folder']['files'][key]['name'];
                                      var filetype=json['folder']['files'][key]['type'];
@@ -89,7 +89,7 @@
                                          html+='<div class="option td"></div>';
                                          html+='<div class="option td"></div>';
                                          html+='<div class="icon td"><img class="child" src="img/icon_'+filetype+'.png" style="left:'+20*depth+'px;"></div>'
-                                         html+='<div class="td" style="padding-left:'+20*depth+'px;">'+filename+'</div>';
+                                         html+='<div class="td filename '+filetype+'" style="left:'+20*depth+'px;">'+filename+'</div>';
                                          html+='</div>';
                                     });
                                     $("div[name=\'" + path + "\'].folder").after(html);
@@ -129,6 +129,7 @@
                                 $("div[name=\'" + path + "\'].folder").addClass('expanded');
                                 } 
                                 addFixedNavigation();
+                                $("form.add_folder div.media-edit").trigger('change');
                             }
                     },
                     error: function() {
@@ -220,14 +221,23 @@
             
             function episodes_sort() { //Episodes table sorting
                 $('.episodes div.tr.episode').each(function(index,element) {
-                    var val=parseInt($(this).find('.ep-id input').prop('value'));
+                    var val=parseInt($(this).find('.ep-id input').prop('value'),10);
                      $('.episodes div.tr.episode').each(function(index2,element2) {
-                        var c_val=parseInt($(this).find('.ep-id input').prop('value'));
+                        var c_val=parseInt($(this).find('.ep-id input').prop('value'),10);
                         if ((val > c_val) && (index < index2)) {
                            $(element2).after(element);
                         } 
                      });
                 });
+            }
+            
+            function shortPath(path) {
+                //Short-path to display in div
+                var short_path=path.replace(/<?php echo addcslashes($src_root_path,'^$.*+?=!:|\/()[]{}-'); ?>/,"");
+                if (short_path.length>102) { 
+                    short_path="..."+short_path.substr(short_path.length-102);
+                }
+                return short_path;
             }
             
             
@@ -251,7 +261,8 @@
                     $('div.links').on("click", "div.link.gotop", function(){
                        $("html,body").animate({"scrollTop":0},"slow");
                     });
-                    //Episode id editing
+                    ////////////////////////////////////////////////////////
+                    ////Episode id editing
                     $('div.episodes').on("click", "div.ep-id", function(e) {
                         $('.error').remove();
                         var hidden_name=$(this).find('input[type=\'hidden\']').attr('name');
@@ -272,7 +283,7 @@
                         $(this).children('input').on("focusout", function() {
                             var val=$(this).prop('value');
                             //checking val
-                            val=parseInt(val.replace(/[^0-9]/g,''));
+                            val=parseInt(val.replace(/[^0-9]/g,''),10);
                             //
                             if ((val !== "") && (val>0) && (val<999) && (val !== 'undefined')) {
                                 if($("div.episodes div.ep-id input[value='"+val+"']:hidden").length) {
@@ -289,57 +300,79 @@
                             setTimeout(function(){ $("div.episodes div.ep-id").removeClass('failed');},500);
                         });
                     });
+                    ///////////////////////////////////////////////////////////////
                     //Episode external media editing dialogue
                     $('div.episodes .episode').on("click", "img.edit", function() {
-                        if ($(this).hasClass('sub')) {
+                        if ($(this).hasClass('sub')) { //selecting action -subs or audio
                             var targt="sub";
                         } else {
                             var targt="aud";
                         }
+                        //creating base dialogue layer
                         var html='<img class="close" src="img/icon_close.png">'; //Buttons to add if empty sub-data
-                        $(this).parents('.'+targt).find('.'+targt+'-data').each(function(index,element) {
+                        var ep_id=parseInt($(this).parents('.episode').find('input.episodes').prop('value'),10); //Episode system id remembering
+                        $(this).parents('.'+targt).find('.'+targt+'-data').each(function(index,element) { //loading existing media data
                             var path=$(this).find('input.'+targt+'-path').prop('value');
+                            var md_str=md5(path);
                             var sub_name=$(this).find('input.'+targt+'-path').attr('name');
                             var namestr=$(this).find('input.'+targt+'-name').prop('value');
                             var namestr_name=$(this).find('input.'+targt+'-name').attr('name');
-                            //Short-path
-                            var short_path=path.replace(/<?php echo addcslashes($src_root_path,'^$.*+?=!:|\/()[]{}-'); ?>/,"");
-                            if (short_path.length>102) { //Если не влезает в отображение
-                                short_path="..."+short_path.substr(short_path.length-102);
-                            }
-                            //
-                            html+='<div class="'+targt+'-data"><div class="input-text">'+short_path+'</div>';
+                            var short_path=shortPath(path);
+                            html+='<div class="'+targt+'-data '+md_str+'"><div class="input-text">'+short_path+'</div>';
                             html+='<input type="hidden" class="'+targt+'-path" name="'+sub_name+'" value="'+path+'">';
                             html+='<input type="hidden" class="'+targt+'-name" name="'+namestr_name+'" value="'+namestr+'">';
                             html+='<div class="actions"><img class="delete" src="img/icon_delete.png" title="<?php echo $strings['del']; ?>"></div></div>';
                         });
                         html+='<div class="actions final"><img class="add" src="img/icon_add.png" title="<?php echo $strings['add']; ?>"><img class="submit" src="img/icon_submit.png" title="<?php echo $strings['submit']; ?>"></div>';
-                        if (html !== "") {
+                        if (html !== "") { //filling layer with data
                             $('div.media-edit').html(html);
-                            var div_h=$('div.media-edit').height();
+                            var div_h=$('div.media-edit-container').height();
                             var y=window.scrollY;
                             if (div_h > $(window).innerHeight()) {
                                 y=y+50;
                             } else {
-                               y=y+parseInt(($(window).innerHeight()-div_h)/2); 
+                               y=y+parseInt(($(window).innerHeight()-div_h)/2, 10); 
                             }
-                            $('div.media-edit').css({'top': +y+'px'});
-                            $('div.media-edit').show();
+                            $('div.media-edit-container').css({'top': +y+'px'});
+                            $('div.media-edit-container').show();
+                        ///
+                        //Adding js functions to buttons
                             src_obj=$(this).parents('.'+targt);
                             $("form.add_folder div.media-edit").on("click", "img.submit", function() {
                                 src_obj.trigger('submit');
-                                $('form.add_folder div.media-edit').hide();
+                                $('form.add_folder div.media-edit-container').hide();
+                                $('.warning').remove();
+                                $("form.add_folder div.media-edit").off("click", "img.submit");
                             });
                         }
-                        $("form.add_folder div.media-edit").off("click", "img.delete");
+                        $("form.add_folder div.media-edit").off("click", "img.delete"); //Delete media entry
                         $("form.add_folder div.media-edit").on("click", "img.delete", function() {
                                 $(this).parents('div.'+targt+'-data').remove();
                         });
+                        $("form.add_folder div.media-edit").off("click", "img.add"); //Add media entry
+                        $("form.add_folder div.media-edit").on("click", "img.add", function() {
+                            if (!$('form.add_folder div.media-edit .filemanager').length) { //create filemanager layer
+                                html='<div class="filemanager"><?php echo $strings['select_file']; ?>';
+                                html+='<div class="folders">';
+                                var basefolder='<?php echo addcslashes($src_root_path,"'"); ?>';
+                                html+='<div class="folder tr" name="'+basefolder+'" style="display:hidden;"><input type="hidden" name="parents" value=""></div>';
+                                html+='</div></div>';
+                                $(this).parent().before(html);
+                                $(this).attr('src','img/icon_delete.png');
+                                getFolder(basefolder,0);
+                            } else {
+                                $('form.add_folder div.media-edit .filemanager').remove();
+                                $(this).attr('src','img/icon_add.png');
+                            }    
+                        });
+                        $("form.add_folder div.media-edit").off("change"); //trigger from getFolder() to choose what type of files will be addable
+                        $("form.add_folder div.media-edit").on("change", function() {
+                            $(this).find('.filename.'+targt).addClass('selectable');
+                        });
                         $('div.episodes .episode .'+targt).off("submit");
-                        $('div.episodes .episode .'+targt).on("submit", function() { //Copying new subtitle data function renew
+                        $('div.episodes .episode .'+targt).on("submit", function() { //Copying new subtitle data to main form
                            $(this).children('div:first-child').html("");
                            $("form.add_folder div.media-edit div."+targt+"-data").find('.input-text, .actions').remove();
-                           //alert($("form.add_folder div.media-edit").html());
                            $(this).children('div:first-child').html($("form.add_folder div.media-edit ."+targt+"-data"));
                            count=$(this).find('.'+targt+'-data').length;
                            var html=$(this).html();
@@ -348,11 +381,43 @@
                            } else {
                               $(this).find('div:first-child').html("<?php echo($strings['entry_no']); ?>"); 
                            } 
-                           $("form.add_folder div.media-edit").off("click", "img.submit");
+                        });
+                        $("form.add_folder div.media-edit").off("click",".filename.selectable"); //adding media entry
+                        $("form.add_folder div.media-edit").on("click",".filename.selectable", function() {
+                           var filename=$(this).html();
+                           var path=$(this).parents('.file.tr').attr('name');
+                           path=path+"/"+filename;
+                           var md_str=md5(path);
+                           if(!$("form.add_folder div.media-edit ."+targt+"-data."+md_str).length) { //checking if duplicate
+                               var short_path=shortPath(path);
+                               var html="";
+                               //getting previous ID and episode ID
+                               if ($("form.add_folder div.media-edit .sub-data").length) {
+                                   var prev_name=$("form.add_folder div.media-edit .sub-data:last").find('input.'+targt+'-path').attr('name');
+                                   var arr=prev_name.split("][sub][");
+                                   var sub_id = parseInt(arr[1].replace(/\D*/g,""),10)+1;
+                               } else {
+                                  var sub_id=0;
+                               }
+                               //TODO: Getting dir name
+                               var namestr=path;
+                               
+                               //
+                               html+='<div class="'+targt+'-data '+md_str+'"><div class="input-text">'+short_path+'</div>';
+                               html+='<input type="hidden" class="'+targt+'-path" name="title_data[episodes]['+ep_id+']['+targt+']['+sub_id+'][path]" value="'+path+'">';
+                               html+='<input type="hidden" class="'+targt+'-name" name="title_data[episodes]['+ep_id+']['+targt+']['+sub_id+'][name]" value="'+namestr+'">';
+                               html+='<div class="actions"><img class="delete" src="img/icon_delete.png" title="<?php echo $strings['del']; ?>"></div></div>';
+                               $("form.add_folder div.media-edit .filemanager").before(html);
+                               $("form.add_folder div.media-edit img.add").attr('src','img/icon_add.png');
+                               $("form.add_folder div.media-edit .filemanager").remove();
+                            } else { //duplicate
+                               $('div.title.episodes').before('<div class="warning" onclick="$(this).remove();"><?php echo $strings['err_file_already_added']; ?></div>');
+                            }
                         });
                     });
                     $("form.add_folder div.media-edit").on("click", "img.close", function() {
-                        $(this).parent().hide();
+                        $('.media-edit-container').hide();
+                        $('.warning').remove();
                     });
                 });
             
@@ -460,7 +525,9 @@
                     <?php if(!empty($title_data['episodes'])) { ?>
                     <?php echo($strings['th_ep_list']); ?><br>
                     <div class="small"><?php echo($strings['edit_field']); ?></div>
-                    <div class="media-edit" style="display:none;"></div>
+                    <div class="media-edit-container" style="display:none;">
+                        <div class="media-edit"></div>
+                    </div>    
                     <div class="title episodes">
                         <div class="tr theader">
                            <div class="option td"><input type="checkbox" name="select_all_episodes" value="" checked></div>

@@ -157,6 +157,10 @@ div.td.folder-link {
     padding-left:10px;
     position:relative;
 }
+div.td.filename {
+    padding-left:10px;
+    position:relative;
+}
 div.td img {
     width:30px;
     max-height: 30px;
@@ -252,22 +256,27 @@ div.link:hover {
 div.links.add.overlay, div.links.parse.overlay {
     position:fixed;
     bottom:0px;
-    z-index:5;
+    z-index:10;
     border-top:2px dotted #c98939;
 }
 div.footerplace {
     padding-bottom: 30px;
 }
-form.add_folder div.media-edit {
+form.add_folder div.media-edit-container {
     position: absolute;
-    width: 800px;
     left: 50px;
-    z-index: 5;
+    z-index: 10;
+    background-color: transparent;
+    padding: 100px;
+}
+form.add_folder div.media-edit {
+    width: 800px;
     height: auto;
     padding: 20px 20px 0px 20px;
     border: 2px dotted  #f98d00; /*#c98939;*/
     border-radius: 10px;
     background-color: #fffbef;
+    position: relative;
 }
 form.add_folder div.media-edit img.close {
     position: absolute;
@@ -294,14 +303,12 @@ form.add_folder div.media-edit div.input-text {
     white-space: nowrap;
     text-overflow:ellipsis;
     padding-left: 5px;
-    float:left
+    float: left; 
 }     
-form.add_folder div.media-edit div.actions {
-    float: left;
-}
 form.add_folder div.media-edit div.actions.final {
     width:100%;
     padding-left: 350px;
+    padding-top: 10px;
 }
 form.add_folder div.media-edit div.actions img {
     cursor: pointer;
@@ -314,4 +321,20 @@ form.add_folder div.media-edit div.actions img {
 }
 form.add_folder div.media-edit div.actions img:hover {
    background-color:rgba(243, 205, 20, 0.35); 
+}
+form.add_folder div.media-edit div.filemanager {
+   width:100%;
+   height: auto;
+   overflow-x: scroll;
+   padding-left: 10px;
+}
+form.add_folder div.media-edit div.filemanager .td.option {
+    display:none;
+}
+form.add_folder div.media-edit div.filemanager .filename.selectable:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    border-radius: 5px;
+    padding-right:10px;
+    background-color:rgba(0, 128, 0, 0.27);
 }
