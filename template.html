@@ -343,6 +343,7 @@
                                 $('form.add_folder div.media-edit-container').hide();
                                 $('.warning').remove();
                                 $("form.add_folder div.media-edit").off("click", "img.submit");
+                                addFixedNavigation();
                             });
                         }
                         $("form.add_folder div.media-edit").off("click", "img.delete"); //Delete media entry
@@ -381,6 +382,24 @@
                            } else {
                               $(this).find('div:first-child').html("<?php echo($strings['entry_no']); ?>"); 
                            } 
+                           //Copying new media_priority to main form
+                           $(this).find('div.'+targt+'-data input.'+targt+'-name').each(function() {
+                               var namestr=$(this).prop('value');
+                               //create table place if not exist
+                               if(!$('.add_folder .title .pref-'+targt).length) {
+                                   if (targt == 'sub') {
+                                    var str='<?php echo($strings['th_pref_sub']); ?>';
+                                   } else { 
+                                    var str='<?php echo($strings['th_pref_aud']); ?>';
+                                   } 
+                                   var html='<div class="tr pref-'+targt+'"><div class="td">'+str+'</div><div class="td"><input type="radio" name="title_data[pref_folder_'+targt+']" value="'+namestr+'" checked>'+namestr+'<br></div></div>'
+                                   $('.add_folder .title .tr.season').after(html);
+                               }
+                               //
+                               if (!$('input[name=\'title_data[pref_folder_'+targt+']\'][value=\''+namestr+'\']').length) {
+                                   $('input[name=\'title_data[pref_folder_'+targt+']\']').parent().find('br:last').after('<input type="radio" name="title_data[pref_folder_'+targt+']" value="'+namestr+'">'+namestr+'<br>');
+                               } 
+                           });
                         });
                         $("form.add_folder div.media-edit").off("click",".filename.selectable"); //adding media entry
                         $("form.add_folder div.media-edit").on("click",".filename.selectable", function() {
@@ -392,9 +411,9 @@
                                var short_path=shortPath(src);
                                var html="";
                                //getting previous ID and episode ID
-                               if ($("form.add_folder div.media-edit .sub-data").length) {
-                                   var prev_name=$("form.add_folder div.media-edit .sub-data:last").find('input.'+targt+'-path').attr('name');
-                                   var arr=prev_name.split("][sub][");
+                               if ($("form.add_folder div.media-edit ."+targt+"-data").length) {
+                                   var prev_name=$("form.add_folder div.media-edit ."+targt+"-data:last").find('input.'+targt+'-path').attr('name');
+                                   var arr=prev_name.split("]["+targt+"][");
                                    var sub_id = parseInt(arr[1].replace(/\D*/g,""),10)+1;
                                } else {
                                   var sub_id=0;
@@ -435,6 +454,7 @@
                     $("form.add_folder div.media-edit").on("click", "img.close", function() {
                         $('.media-edit-container').hide();
                         $('.warning').remove();
+                        addFixedNavigation();
                     });
                 });
             
@@ -514,12 +534,12 @@
                             <div class="td"><?php echo($strings['suggested_name']); ?><br><div class="small"><?php echo($strings['tvdb']); ?></div></div>
                             <div class="td"><input type="text" name="title_data[name]" value="<?php echo $title_data['name']; ?>" maxlength="100"></div>
                         </div>
-                        <div class="tr">
+                        <div class="tr season">
                             <div class="td"><?php echo($strings['th_season']); ?></div>
                             <div class="td"><select name="title_data[season]"><?php for($i=1; $i<=10; $i++) { ?><option <?php if ($i == $title_data['season_num']) echo "selected"; ?>><?php echo $i; ?></option><?php } ?></select></div>
                         </div>
                         <?php if(!empty($title_data['sub_folders'])) { ?>
-                        <div class="tr">
+                        <div class="tr pref-sub">
                             <div class="td"><?php echo($strings['th_pref_sub']); ?></div>
                             <div class="td">
                                 <?php foreach($title_data['sub_folders'] as $key=>$entry) { ?>
@@ -529,7 +549,7 @@
                         </div>
                         <?php } ?>
                         <?php if(!empty($title_data['aud_folders'])) { ?>
-                        <div class="tr">
+                        <div class="tr pref-aud">
                             <div class="td"><?php echo($strings['th_pref_aud']); ?></div>
                             <div class="td">
                                 <?php foreach($title_data['aud_folders'] as $key=>$entry) { ?>
