@@ -386,10 +386,10 @@
                         $("form.add_folder div.media-edit").on("click",".filename.selectable", function() {
                            var filename=$(this).html();
                            var path=$(this).parents('.file.tr').attr('name');
-                           path=path+"/"+filename;
-                           var md_str=md5(path);
+                           var src=path+"/"+filename;
+                           var md_str=md5(src);
                            if(!$("form.add_folder div.media-edit ."+targt+"-data."+md_str).length) { //checking if duplicate
-                               var short_path=shortPath(path);
+                               var short_path=shortPath(src);
                                var html="";
                                //getting previous ID and episode ID
                                if ($("form.add_folder div.media-edit .sub-data").length) {
@@ -399,12 +399,29 @@
                                } else {
                                   var sub_id=0;
                                }
-                               //TODO: Getting dir name
+                               //Getting dir name to be able to set priority, as in functions.php>addMediaRecursive()
+                               if (path === '<?php echo (isset($src_folder_media) ? $src_folder_media : ""); ?>') {
+                                   path=path.replace(/^.*\//,"");
+                               } else {
+                                   path=path.replace(/<?php echo addcslashes((isset($src_folder_media) ? $src_folder_media : ""),'^$.*+?=!:|\/()[]{}-'); ?>\//,"");
+                               }
+                               path=path.replace(/<?php echo addcslashes($src_root_path,'^$.*+?=!:|\/()[]{}-'); ?>\//,"");
                                var namestr=path;
-                               
+                               var arr=filename.split(".");
+                               if (arr.length>2) { //if filename complex, like title.[something-else].dumb.ass
+                                   var i=1;
+                                   namestr+=" ";
+                                   while ((i<(arr.length-1)) && (i<10)) {
+                                    namestr+=arr[i];   
+                                    i++;
+                                    if (i<(arr.length-1)) {
+                                      namestr+=".";  
+                                    }
+                                   }
+                               }
                                //
                                html+='<div class="'+targt+'-data '+md_str+'"><div class="input-text">'+short_path+'</div>';
-                               html+='<input type="hidden" class="'+targt+'-path" name="title_data[episodes]['+ep_id+']['+targt+']['+sub_id+'][path]" value="'+path+'">';
+                               html+='<input type="hidden" class="'+targt+'-path" name="title_data[episodes]['+ep_id+']['+targt+']['+sub_id+'][path]" value="'+src+'">';
                                html+='<input type="hidden" class="'+targt+'-name" name="title_data[episodes]['+ep_id+']['+targt+']['+sub_id+'][name]" value="'+namestr+'">';
                                html+='<div class="actions"><img class="delete" src="img/icon_delete.png" title="<?php echo $strings['del']; ?>"></div></div>';
                                $("form.add_folder div.media-edit .filemanager").before(html);

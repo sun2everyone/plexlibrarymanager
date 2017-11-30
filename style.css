@@ -35,7 +35,7 @@ div.info, div.error, div.warning {
     padding-top: 5px;
     position: fixed;
     top: 20px;
-    z-index: 5;
+    z-index: 99;
     cursor: pointer;
 }
 div.info {
