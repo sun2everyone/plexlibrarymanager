@@ -35,7 +35,7 @@ div.info, div.error, div.warning {
     padding-top: 5px;
     position: fixed;
     top: 20px;
-    z-index: 5;
+    z-index: 99;
     cursor: pointer;
 }
 div.info {
@@ -95,7 +95,11 @@ div.ep-id {
     min-width: 35px;
 }
 div.ep-title {
-    min-width: 300px;
+    min-width: 600px;
+    max-width: 600px;
+    width:auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
     padding-left: 10px;
     padding-right: 10px;
 }
@@ -118,6 +122,28 @@ div.ep-id.failed {
     background-color: #fea4b2;
     border-radius: 5px;
 }
+div.title:not(.episodes) .tr {
+    border-top:1px dotted #c9c9c9;
+    border-bottom:1px dotted #c9c9c9;
+}
+div.title.episodes div.tr div.td.sub, div.title.episodes div.tr div.td.aud  {
+    width: 100px;
+    border-left:1px dotted #c9c9c9;
+    border-right: 1px dotted #c9c9c9;
+}
+div.episodes .sub > div:first-child, div.episodes .aud > div:first-child {
+    width: 60px;
+    float: left;
+    padding-top:5px;
+    padding-right: 10px;
+}
+div.episodes .sub > div:last-child, div.episodes .aud > div:last-child {
+    width: 30px;
+    float: left;
+}
+div.episodes .tr.episode:last-child {
+     border-bottom: 1px dotted #c9c9c9;
+}
 div.td {
     display:table-cell;
     vertical-align: middle;
@@ -135,6 +161,10 @@ div.td.folder-link {
     padding-left:10px;
     position:relative;
 }
+div.td.filename {
+    padding-left:10px;
+    position:relative;
+}
 div.td img {
     width:30px;
     max-height: 30px;
@@ -143,7 +173,7 @@ div.td .small img {
     width:12px;
     max-height: 12px;
 }
-div.library img {
+div.library img, div.episodes img {
     cursor: pointer;
     width:20px;
     max-height: 20px;
@@ -162,7 +192,7 @@ div.library .tr:first-child {
 div.library .tr:last-child {
     border-bottom: none;
 } 
-div.library img:hover {
+div.library img:hover, div.episodes img:hover {
     background-color:rgba(243, 205, 20, 0.35);
 }
 div.library img.edit {
@@ -230,9 +260,85 @@ div.link:hover {
 div.links.add.overlay, div.links.parse.overlay {
     position:fixed;
     bottom:0px;
-    z-index:5;
+    z-index:10;
     border-top:2px dotted #c98939;
 }
 div.footerplace {
     padding-bottom: 30px;
+}
+form.add_folder div.media-edit-container {
+    position: absolute;
+    left: 50px;
+    z-index: 10;
+    background-color: transparent;
+    padding: 100px;
+}
+form.add_folder div.media-edit {
+    width: 800px;
+    height: auto;
+    padding: 20px 20px 0px 20px;
+    border: 2px dotted  #f98d00; /*#c98939;*/
+    border-radius: 10px;
+    background-color: #fffbef;
+    position: relative;
+}
+form.add_folder div.media-edit img.close {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    cursor: pointer;
+    padding: 5px;
+}
+form.add_folder div.media-edit img.close:hover {
+    background-color:rgba(243, 205, 20, 0.35);
+    border-radius: 5px;
+}
+form.add_folder div.media-edit div.sub-data {
+    width:100%;
+    padding-left: 10px;
+}
+form.add_folder div.media-edit div.input-text {
+    border: 1px dashed #f98d00;
+    width: 750px;
+    max-width: 750px;
+    overflow: hidden;
+    text-align: left;
+    font-size: 12px;
+    white-space: nowrap;
+    text-overflow:ellipsis;
+    padding-left: 5px;
+    float: left; 
+}     
+form.add_folder div.media-edit div.actions.final {
+    width:100%;
+    padding-left: 350px;
+    padding-top: 10px;
+}
+form.add_folder div.media-edit div.actions img {
+    cursor: pointer;
+    width:15px;
+    max-height: 15px;
+    padding: 4px;
+    position: relative;
+    border-radius: 5px;
+    top: -4px;
+}
+form.add_folder div.media-edit div.actions img:hover {
+   background-color:rgba(243, 205, 20, 0.35); 
+}
+form.add_folder div.media-edit div.filemanager {
+   width:100%;
+   height: auto;
+   overflow-x: scroll;
+   padding-left: 10px;
+}
+form.add_folder div.media-edit div.filemanager .td.option {
+    display:none;
+}
+form.add_folder div.media-edit div.filemanager .filename.selectable:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    border-radius: 5px;
+    padding-right:10px;
+    background-color:rgba(0, 128, 0, 0.27);
 }
