@@ -392,14 +392,26 @@
                                    } else { 
                                     var str='<?php echo($strings['th_pref_aud']); ?>';
                                    } 
-                                   var html='<div class="tr pref-'+targt+'"><div class="td">'+str+'</div><div class="td"><input type="radio" name="title_data[pref_folder_'+targt+']" value="'+namestr+'" checked>'+namestr+'<br></div></div>'
+                                   var html='<div class="tr pref-'+targt+'"><div class="td">'+str+'</div><div class="td"><div><input type="radio" name="title_data[pref_folder_'+targt+']" value="'+namestr+'" checked>'+namestr+'<br></div></div></div>'
                                    $('.add_folder .title .tr.season').after(html);
-                               }
-                               //
+                               } 
                                if (!$('input[name=\'title_data[pref_folder_'+targt+']\'][value=\''+namestr+'\']').length) {
-                                   $('input[name=\'title_data[pref_folder_'+targt+']\']').parent().find('br:last').after('<input type="radio" name="title_data[pref_folder_'+targt+']" value="'+namestr+'">'+namestr+'<br>');
+                                   if(!$('.add_folder .title .pref-'+targt+' input:checked').length) {
+                                       var checked=" checked";
+                                   } else {
+                                       var checked="";
+                                   }
+                                   var html=$('.add_folder .title .pref-'+targt+' div.td:last').html()+'<div><input type="radio" name="title_data[pref_folder_'+targt+']" value="'+namestr+'"'+checked+'>'+namestr+'<br></div>';
+                                   $('.add_folder .title .pref-'+targt+' div.td:last').html(html);
                                } 
                            });
+                            //Remove unnecessary radio buttons
+                           $('.add_folder .title .pref-'+targt+' input').each(function() {
+                               if(!$('div.episodes .episode input.'+targt+'-name[value=\''+$(this).prop('value')+'\']').length) {
+                                   $(this).parent('div').remove();
+                               }
+                           });
+                           ///
                         });
                         $("form.add_folder div.media-edit").off("click",".filename.selectable"); //adding media entry
                         $("form.add_folder div.media-edit").on("click",".filename.selectable", function() {
@@ -543,7 +555,7 @@
                             <div class="td"><?php echo($strings['th_pref_sub']); ?></div>
                             <div class="td">
                                 <?php foreach($title_data['sub_folders'] as $key=>$entry) { ?>
-                                <input type="radio" name="title_data[pref_folder_sub]" value="<?php echo $entry; ?>" <?php echo($key == 0 ? "checked" : "" ); ?>><?php echo $entry; ?><br>
+                                <div><input type="radio" name="title_data[pref_folder_sub]" value="<?php echo $entry; ?>" <?php echo($key == 0 ? "checked" : "" ); ?>><?php echo $entry; ?><br></div>
                                 <?php } ?>
                             </div>
                         </div>
@@ -553,7 +565,7 @@
                             <div class="td"><?php echo($strings['th_pref_aud']); ?></div>
                             <div class="td">
                                 <?php foreach($title_data['aud_folders'] as $key=>$entry) { ?>
-                                <input type="radio" name="title_data[pref_folder_aud]" value="<?php echo $entry; ?>" <?php echo($key == 0 ? "checked" : "" ); ?>><?php echo $entry; ?><br>
+                                <div><input type="radio" name="title_data[pref_folder_aud]" value="<?php echo $entry; ?>" <?php echo($key == 0 ? "checked" : "" ); ?>><?php echo $entry; ?><br></div>
                                 <?php } ?>
                             </div>
                         </div>
