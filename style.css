@@ -122,6 +122,10 @@ div.ep-id.failed {
     background-color: #fea4b2;
     border-radius: 5px;
 }
+div.title:not(.episodes) .tr {
+    border-top:1px dotted #c9c9c9;
+    border-bottom:1px dotted #c9c9c9;
+}
 div.title.episodes div.tr div.td.sub, div.title.episodes div.tr div.td.aud  {
     width: 100px;
     border-left:1px dotted #c9c9c9;
