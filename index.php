@@ -206,24 +206,28 @@ if ($data['mode'] == "edit") { //Title/season editing
           $j=0;
           $max_id=0;
           foreach ($episodes as $episode) { //Splitting episode data by these two arrays for later sorting
-             $id=guessEpisodeNumber($episode->getName());
-             if ($id && !in_array($id, $used_id)) {
-                $guessed[$j]['name']=$episode->getName();
-                $guessed[$j]['path']=$episode->getPath();
-                $guessed[$j]['sub']=$episode->getSubs();
-                $guessed[$j]['aud']=$episode->getAud(); 
-                $guessed[$j]['id']=$id;
-                $used_id[]=$id;
-                $max_id=($id > $max_id ? $id : $max_id);
-                $j++;
-             } else {
-                $not_guessed[$k]['name']=$episode->getName();
-                $not_guessed[$k]['path']=$episode->getPath();
-                $not_guessed[$k]['sub']=$episode->getSubs();
-                $not_guessed[$k]['aud']=$episode->getAud(); 
-                $not_guessed[$k]['id']=$k+1; 
-                $k++;
-             }
+                  if (isset($post['guess_ep_numbers'])) {
+                     $id=guessEpisodeNumber($episode->getName()); 
+                  } else {
+                      $id=0;
+                  }
+                 if ($id && !in_array($id, $used_id)) {
+                    $guessed[$j]['name']=$episode->getName();
+                    $guessed[$j]['path']=$episode->getPath();
+                    $guessed[$j]['sub']=$episode->getSubs();
+                    $guessed[$j]['aud']=$episode->getAud(); 
+                    $guessed[$j]['id']=$id;
+                    $used_id[]=$id;
+                    $max_id=($id > $max_id ? $id : $max_id);
+                    $j++;
+                 } else {
+                    $not_guessed[$k]['name']=$episode->getName();
+                    $not_guessed[$k]['path']=$episode->getPath();
+                    $not_guessed[$k]['sub']=$episode->getSubs();
+                    $not_guessed[$k]['aud']=$episode->getAud(); 
+                    $not_guessed[$k]['id']=$k+1; 
+                    $k++;
+                 }
           }
           usort($guessed,"episodes_usort");
           for ($i=0;$i<count($not_guessed);$i++) { //Shifting unrecognized and duplicate episodes to the end

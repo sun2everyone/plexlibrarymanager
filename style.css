@@ -66,6 +66,10 @@ div.theader div.td {
    text-align: center;
    border-bottom:1px dotted #c9c9c9;
 }
+form[name='parse_folder'] div.settings {
+    padding-bottom: 10px;
+    font-size: 12px;
+}
 div.folders div.theader div.td {
    font-size: 10px; 
 }
