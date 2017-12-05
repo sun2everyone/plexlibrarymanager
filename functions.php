@@ -61,7 +61,8 @@ function parseName($name) {
     $name=$name;
     //Place for regular expressions
     $name=preg_replace('/\[[^\]]*\]/',"",$name); //removing all in []
-    $name=preg_replace('/(TV|season ?)[0-9]{1,2}/Ui',"",$name); //removing season enumeration
+    $name=preg_replace('/(TV|season ?)[0-9]{1,2}/Ui',"",$name); //removing season numeration
+    $name=preg_replace('/\([0-9]{4}\)/',"",$name); //removing year
     //
     $name=trim($name);
 
@@ -78,12 +79,16 @@ function guessSeason($name) { //guessing season number
     return $num;
 }
 //Guessing episode number (when changing - test on following)
-function guessEpisodeNumber($name) {
+function guessEpisodeNumber($name,$title_name="") {
     $num=0;
     //Regular expr
-    $name=preg_replace('/\[([0-9][0-9])\]/i',' ${1} ',$name); // getting [01] style enumeration 
+    $name=str_replace($title_name,"",$name); //removing title name
+    $name=preg_replace('/\[([0-9][0-9])\]/i',' ${1} ',$name); // getting [01] style numeration 
+    $name=preg_replace('/\(([0-9][0-9])\)/i',' ${1} ',$name); // getting (01) style numeration
     $name=preg_replace('/\[[^\]]*\]/',"",$name); //removing all in []
     $name=preg_replace('/\([^\)]*\)/',"",$name); //removing all in ()
+    $name=preg_replace('/\'[^\']*\'/',"",$name); //removing all in 'quotes'
+    $name=preg_replace('/"[^\']*"/',"",$name); //removing all in "quotes"
     $name=preg_replace('/s?[0-9]{0,3}ep?/i'," ",$name); //removing s01e, EP and such things before number
     if(preg_match_all('/(^| )[0-9]{1,3}/',$name,$matches,PREG_SET_ORDER)) {
         $num=intval(trim($matches[count($matches)-1][0]));
@@ -96,6 +101,10 @@ function guessEpisodeNumber($name) {
 [Yousei-raws] Sakurasou no Pet na Kanojo 01 [BDrip 1920x1080 x264 FLAC]
 [Leopard-Raws] Bakuman. - 01 RAW (NHKE 1280x720 x264 AAC)
 Steins;Gate EP01 [BDRip 1080p x264-Hi10P FLAC]
+[OZC] Ghost in the Shell Ep 01 'Section 9' [Blu-Ray 720p]
+[OZC] Ghost in the Shell Ep 08 "Section 19" [Blu-Ray 720p]
+[Leopard-Raws] Bakuman 2 - 01 RAW (NHKE 1280x720 x264 AAC)
+[Leopard-Raws] Bakuman 3.0 - 01 RAW (NHKE 1280x720 x264 AAC)
  */
 
 //Main title parsing function
