@@ -63,12 +63,10 @@
                $.ajax({
                     url: '<?php echo $hostname; ?>index.php',
                     type: 'POST',
-                    data: 'getfolder=' + path,
+                    data: 'getfolder=' + encodeURIComponent(path),
                     dataType: 'json',
-                    //async: false,
                     beforeSend: function() {
                         $('.error').remove();
-                         //$('#folders').after('<img class="wait status" name="' + path +'" src="img/loader.gif">');
                          $("div[name=\'" + path + "\'].folder").before('<img class="wait status" name="' + path +'" src="img/loader.gif">');
                     },
                     success: function(json){
@@ -133,7 +131,7 @@
                             }
                     },
                     error: function() {
-                        alert("Some errors occured =(");
+                        alert("Some errors occured on server side =(");
                     },
                     complete: function() {
                         $(".wait[name=\'" + path + "\']").remove();
