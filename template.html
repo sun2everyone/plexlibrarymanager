@@ -17,34 +17,16 @@
         <script type="text/javascript" src="jquery-1.11.3.min.js"></script>
         <script type="text/javascript" src="md5.min.js"></script>
         <script type="text/javascript">
-            function print_r(theObj){
-               var html="";
-              if(theObj.constructor == Array ||
-                 theObj.constructor == Object){
-                html+="<ul>";
-                for(var p in theObj){
-                  if(theObj[p].constructor == Array||
-                     theObj[p].constructor == Object){
-                    html+="<li>["+p+"] => "+typeof(theObj)+"</li>";
-                    html+="<ul>";
-                    print_r(theObj[p]);
-                    html+="</ul>";
-                  } else {
-                    html+="<li>["+p+"] => "+theObj[p]+"</li>";
-                  }
-                }
-                    html+="</ul>";
-              }
-              return html;
+
+            function s_quotes(str) {
+                str=str.replace(/&sq;/g,"'").replace(/&dq;/g,'"');
+                return str;
+            }
+            function e_quotes(str) {
+                str=str.replace(/"/g,"&dq;").replace(/'/g,"&sq;");
+                return str;
             }
             
-            function showHide(element) {
-              if ($(id).css('display') !== 'none') {
-                  $(id).hide('slow');
-              }  else {
-                  $(id).show('slow');
-              }
-            }
             function addFixedNavigation() { //If content overflow - add navigation bar at the bottom, else - del
                 if ($(document).height() > $(window).innerHeight()) {
                             $('div.links.add, div.links.parse').addClass('overlay');
@@ -63,7 +45,7 @@
                $.ajax({
                     url: '<?php echo $hostname; ?>index.php',
                     type: 'POST',
-                    data: 'getfolder=' + encodeURIComponent(path),
+                    data: 'getfolder=' + encodeURIComponent(s_quotes(path)),
                     dataType: 'json',
                     beforeSend: function() {
                         $('.error').remove();
@@ -96,13 +78,14 @@
                                    var html="";
                                    json['folder']['subfolders'].forEach(function(entry) {
                                         var subpath=path + '/' + entry;
-                                        html+='<div class="folder tr'+parents_str+'" name="'+subpath+'">';
+                                        var e_subpath=e_quotes(subpath);
+                                        html+='<div class="folder tr'+parents_str+'" name="'+e_subpath+'">';
                                         html+='<div class="option td" title="<?php echo($strings['th_vid']); ?>" style="left:'+20*depth+'px;"><input type="hidden" name="parents" value="'+parents_str+'">';
-                                        html+='<input class="ajax_loaded" type="radio" name="src_folder_media" value="'+subpath+'"></div>';
-                                        html+='<div class="td option" title="<?php echo($strings['th_sub']); ?>" style="left:'+20*depth+'px;"><input class="ajax_loaded" type="checkbox" name="src_folder_sub[]" value="'+subpath+'"></div>';
-                                        html+='<div class="td option" title="<?php echo($strings['th_aud']); ?>" style="left:'+20*depth+'px;" ><input class="ajax_loaded" type="checkbox" name="src_folder_audio[]" value="'+subpath+'"></div>';
+                                        html+='<input class="ajax_loaded" type="radio" name="src_folder_media" value="'+e_subpath+'"></div>';
+                                        html+='<div class="td option" title="<?php echo($strings['th_sub']); ?>" style="left:'+20*depth+'px;"><input class="ajax_loaded" type="checkbox" name="src_folder_sub[]" value="'+e_subpath+'"></div>';
+                                        html+='<div class="td option" title="<?php echo($strings['th_aud']); ?>" style="left:'+20*depth+'px;" ><input class="ajax_loaded" type="checkbox" name="src_folder_audio[]" value="'+e_subpath+'"></div>';
                                         html+='<div class="icon td" style="left:'+20*depth+'px;"><img class="child" src="img/icon_folder.png"></div>'
-                                        html+='<div class="td folder-link" style="left:'+20*depth+'px;" name="'+subpath+'" onclick="doExpand(\''+subpath+'\','+depth+')">'+entry+'</div>';
+                                        html+='<div class="td folder-link" style="left:'+20*depth+'px;" name="'+e_subpath+'" onclick="doExpand(\''+e_subpath+'\','+depth+')">'+entry+'</div>';
                                         html+='</div>';
                                    }); 
                                    //Automated scrolling when opening folder
@@ -315,7 +298,7 @@
                             var sub_name=$(this).find('input.'+targt+'-path').attr('name');
                             var namestr=$(this).find('input.'+targt+'-name').prop('value');
                             var namestr_name=$(this).find('input.'+targt+'-name').attr('name');
-                            var short_path=shortPath(path);
+                            var short_path=shortPath(s_quotes(path));
                             html+='<div class="'+targt+'-data '+md_str+'"><div class="input-text">'+short_path+'</div>';
                             html+='<input type="hidden" class="'+targt+'-path" name="'+sub_name+'" value="'+path+'">';
                             html+='<input type="hidden" class="'+targt+'-name" name="'+namestr_name+'" value="'+namestr+'">';
@@ -353,7 +336,7 @@
                             if (!$('form.add_folder div.media-edit .filemanager').length) { //create filemanager layer
                                 html='<div class="filemanager"><?php echo $strings['select_file']; ?>';
                                 html+='<div class="folders">';
-                                var basefolder='<?php echo addcslashes($src_root_path,"'"); ?>';
+                                var basefolder=e_quotes('<?php echo addcslashes($src_root_path,"'"); ?>');
                                 html+='<div class="folder tr" name="'+basefolder+'" style="display:hidden;"><input type="hidden" name="parents" value=""></div>';
                                 html+='</div></div>';
                                 $(this).parent().before(html);
@@ -390,7 +373,7 @@
                                    } else { 
                                     var str='<?php echo($strings['th_pref_aud']); ?>';
                                    } 
-                                   var html='<div class="tr pref-'+targt+'"><div class="td">'+str+'</div><div class="td"><div><input type="radio" name="title_data[pref_folder_'+targt+']" value="'+namestr+'" checked>'+namestr+'<br></div></div></div>'
+                                   var html='<div class="tr pref-'+targt+'"><div class="td">'+str+'</div><div class="td"><div><input type="radio" name="title_data[pref_folder_'+targt+']" value="'+namestr+'" checked>'+s_quotes(namestr)+'<br></div></div></div>'
                                    $('.add_folder .title .tr.season').after(html);
                                } 
                                if (!$('input[name=\'title_data[pref_folder_'+targt+']\'][value=\''+namestr+'\']').length) {
@@ -399,7 +382,7 @@
                                    } else {
                                        var checked="";
                                    }
-                                   var html=$('.add_folder .title .pref-'+targt+' div.td:last').html()+'<div><input type="radio" name="title_data[pref_folder_'+targt+']" value="'+namestr+'"'+checked+'>'+namestr+'<br></div>';
+                                   var html=$('.add_folder .title .pref-'+targt+' div.td:last').html()+'<div><input type="radio" name="title_data[pref_folder_'+targt+']" value="'+namestr+'"'+checked+'>'+s_quotes(namestr)+'<br></div>';
                                    $('.add_folder .title .pref-'+targt+' div.td:last').html(html);
                                } 
                            });
@@ -416,9 +399,10 @@
                            var filename=$(this).html();
                            var path=$(this).parents('.file.tr').attr('name');
                            var src=path+"/"+filename;
+                               src=e_quotes(src);
                            var md_str=md5(src);
                            if(!$("form.add_folder div.media-edit ."+targt+"-data."+md_str).length) { //checking if duplicate
-                               var short_path=shortPath(src);
+                               var short_path=shortPath(s_quotes(src));
                                var html="";
                                //getting previous ID and episode ID
                                if ($("form.add_folder div.media-edit ."+targt+"-data").length) {
@@ -429,13 +413,14 @@
                                   var sub_id=0;
                                }
                                //Getting dir name to be able to set priority, as in functions.php>addMediaRecursive()
-                               if (path === '<?php echo (isset($src_folder_media) ? $src_folder_media : ""); ?>') {
+                               if (path === '<?php echo (isset($src_folder_media) ? e_quotes($src_folder_media) : ""); ?>') {
                                    path=path.replace(/^.*\//,"");
                                } else {
-                                   path=path.replace(/<?php echo addcslashes((isset($src_folder_media) ? $src_folder_media : ""),'^$.*+?=!:|\/()[]{}-'); ?>\//,"");
+                                   path=path.replace(/<?php echo addcslashes((isset($src_folder_media) ? e_quotes($src_folder_media) : ""),'^$.*+?=!:|\/()[]{}-'); ?>\//,"");
                                }
                                path=path.replace(/<?php echo addcslashes($src_root_path,'^$.*+?=!:|\/()[]{}-'); ?>\//,"");
                                var namestr=path;
+                               
                                var arr=filename.split(".");
                                if (arr.length>2) { //if filename complex, like title.[something-else].dumb.ass
                                    var i=1;
@@ -448,6 +433,7 @@
                                     }
                                    }
                                }
+                               namestr=e_quotes(namestr);
                                //
                                html+='<div class="'+targt+'-data '+md_str+'"><div class="input-text">'+short_path+'</div>';
                                html+='<input type="hidden" class="'+targt+'-path" name="title_data[episodes]['+ep_id+']['+targt+']['+sub_id+'][path]" value="'+src+'">';
@@ -513,6 +499,7 @@
                        <?php if(!empty($root_folder)) { 
                             foreach ($root_folder['subfolders'] as $subfolder) { 
                              $subfolder_path=$root_folder['path']."/".$subfolder;
+                             $subfolder_path=e_quotes($subfolder_path);
                             ?> 
                             <div class="folder tr" name="<?php echo $subfolder_path; ?>">
                                 <div class="option td" title="<?php echo($strings['th_vid']); ?>"><input type="hidden" name="parents" value=""><input type="radio" name="src_folder_media" value="<?php echo $subfolder_path; ?>"></div>
@@ -547,7 +534,7 @@
                     <div class="title">
                         <div class="tr">
                             <div class="td"><?php echo($strings['suggested_name']); ?><br><div class="small"><?php echo($strings['tvdb']); ?></div></div>
-                            <div class="td"><input type="text" name="title_data[name]" value="<?php echo $title_data['name']; ?>" maxlength="100"></div>
+                            <div class="td"><input type="text" name="title_data[name]" value="<?php echo str_replace('"','&quot;',$title_data['name']); ?>" maxlength="100"></div>
                         </div>
                         <div class="tr season">
                             <div class="td"><?php echo($strings['th_season']); ?></div>
@@ -558,7 +545,7 @@
                             <div class="td"><?php echo($strings['th_pref_sub']); ?></div>
                             <div class="td">
                                 <?php foreach($title_data['sub_folders'] as $key=>$entry) { ?>
-                                <div><input type="radio" name="title_data[pref_folder_sub]" value="<?php echo $entry; ?>" <?php echo($key == 0 ? "checked" : "" ); ?>><?php echo $entry; ?><br></div>
+                                <div><input type="radio" name="title_data[pref_folder_sub]" value="<?php echo e_quotes($entry); ?>" <?php echo($key == 0 ? "checked" : "" ); ?>><?php echo $entry; ?><br></div>
                                 <?php } ?>
                             </div>
                         </div>
@@ -568,7 +555,7 @@
                             <div class="td"><?php echo($strings['th_pref_aud']); ?></div>
                             <div class="td">
                                 <?php foreach($title_data['aud_folders'] as $key=>$entry) { ?>
-                                <div><input type="radio" name="title_data[pref_folder_aud]" value="<?php echo $entry; ?>" <?php echo($key == 0 ? "checked" : "" ); ?>><?php echo $entry; ?><br></div>
+                                <div><input type="radio" name="title_data[pref_folder_aud]" value="<?php echo e_quotes($entry); ?>" <?php echo($key == 0 ? "checked" : "" ); ?>><?php echo $entry; ?><br></div>
                                 <?php } ?>
                             </div>
                         </div>
@@ -592,15 +579,15 @@
                         <div class="tr episode">
                             <div class="option td"><input type="checkbox" class="episodes" name="title_data[use_episodes][]" value="<?php echo $id?>" checked></div>
                             <div class="td ep-id" title="<?php echo $strings['change']; ?>"><?php echo $episode['id']; ?><input type="hidden" name="title_data[episodes][<?php echo $id?>][id]" value="<?php echo $episode['id']; ?>"></div> 
-                           <div class="td ep-title"><?php echo $episode['name']; ?><input type="hidden" name="title_data[episodes][<?php echo $id?>][path]" value="<?php echo $episode['path']; ?>"></div> 
+                           <div class="td ep-title"><?php echo $episode['name']; ?><input type="hidden" name="title_data[episodes][<?php echo $id?>][path]" value="<?php echo e_quotes($episode['path']); ?>"></div> 
                            <div class="td sub">
                                <div>
                                    <?php if(!empty($episode['sub'])) { ?>
                                    <?php echo($strings['entry_yes']); ?> (<?php echo count($episode['sub']); ?>)
                                     <?php foreach($episode['sub'] as $s_id=>$sub) { ?>
                                     <div class="sub-data">    
-                                    <input type="hidden" class="sub-path" name="title_data[episodes][<?php echo $id; ?>][sub][<?php echo $s_id; ?>][path]" value="<?php echo $sub['path']; ?>">
-                                    <input type="hidden" class="sub-name" name="title_data[episodes][<?php echo $id; ?>][sub][<?php echo $s_id; ?>][name]" value="<?php echo $sub['name']; ?>">
+                                    <input type="hidden" class="sub-path" name="title_data[episodes][<?php echo $id; ?>][sub][<?php echo $s_id; ?>][path]" value="<?php echo e_quotes($sub['path']); ?>">
+                                    <input type="hidden" class="sub-name" name="title_data[episodes][<?php echo $id; ?>][sub][<?php echo $s_id; ?>][name]" value="<?php echo e_quotes($sub['name']); ?>">
                                     </div>
                                     <?php } ?> 
                                    <?php } else { ?>
@@ -617,8 +604,8 @@
                                     <?php echo($strings['entry_yes']); ?> (<?php echo count($episode['aud']); ?>)
                                     <?php foreach($episode['aud'] as $a_id=>$aud) { ?>
                                     <div class="aud-data"> 
-                                    <input type="hidden" class="aud-path" name="title_data[episodes][<?php echo $id; ?>][aud][<?php echo $a_id; ?>][path]" value="<?php echo $aud['path']; ?>">
-                                    <input type="hidden" class="aud-name" name="title_data[episodes][<?php echo $id; ?>][aud][<?php echo $a_id; ?>][name]" value="<?php echo $aud['name']; ?>">
+                                    <input type="hidden" class="aud-path" name="title_data[episodes][<?php echo $id; ?>][aud][<?php echo $a_id; ?>][path]" value="<?php echo e_quotes($aud['path']); ?>">
+                                    <input type="hidden" class="aud-name" name="title_data[episodes][<?php echo $id; ?>][aud][<?php echo $a_id; ?>][name]" value="<?php echo e_quotes($aud['name']); ?>">
                                     </div>
                                     <?php } ?> 
                                    <?php } else { ?>
@@ -661,7 +648,14 @@
                             <?php if(!empty($title['seasons'])) { ?>
                             <div class="small">                         
                                 <?php foreach ($title['seasons'] as $id=>$value) { ?>
-                                    <div><?php echo sprintf($strings['title_seasons'],$id,$value); ?> </div>
+                                    <div><?php 
+                                        if ($id==0) {
+                                            echo sprintf($strings['title_seasons'],$strings['special'],$value); 
+                                         } else {
+                                            echo sprintf($strings['title_seasons'],$id.$strings['msg_season'],$value);
+                                         }
+                                        ?> 
+                                    </div>
                                 <?php } ?> 
                             </div>   
                             <?php } ?>

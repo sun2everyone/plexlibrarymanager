@@ -58,7 +58,7 @@ $strings['edit_field']="(Click on the field to edit)";
 $strings['entry_yes']="Yes";
 $strings['entry_no']="No";
 $strings['err_try_another']="Error! Try different folder!";
-$strings['title_seasons']="Season %s; Episodes: %s";
+$strings['title_seasons']="%s; Episodes: %s";
 $strings['lib_empty']="Library is empty yet!";
 $strings['select_file']="Select file:";
 

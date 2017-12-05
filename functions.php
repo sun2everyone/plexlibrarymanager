@@ -145,7 +145,7 @@ function validateTitleData($title_data,$library) {
         $title_data['name']=trim($title_data['name']);
         if (strlen($title_data['name']) < 1 || strlen($title_data['name']) > 100) {
             $json['error'] = $strings['err_title_name_length'];
-        } elseif (preg_match('/[\/<>&\'"]+/',$title_data['name'])) {
+        } elseif (preg_match('/[\/<>\&]+/',$title_data['name'])) {
             $json['error'] = $strings['err_title_name_symbol'];
         } elseif (!isset($title_data['season'])) {
             $json['error'] = $strings['err_select_season'];
@@ -170,5 +170,12 @@ function episodes_usort($a,$b) { //Sorting episodes array by guessed id before p
         return 0;
     }
     return ($a['id'] < $b['id']) ? -1 : 1;
+}
+
+function e_quotes($str) { //escape quotes for html
+    return str_replace("'","&sq;",str_replace('"',"&dq;",$str));
+}
+function s_quotes($str) { //strip escaped quotes for html
+    return str_replace("&sq;","'",str_replace("&dq;",'"',$str));
 }
 ?>
