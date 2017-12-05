@@ -118,19 +118,19 @@ if (isset($get['action']) && ($get['action'] == "validate_title_submit")) {
              $title->createSeason($title_data['season']);
              foreach ($title_data['episodes'] as $key=>$episode_data) {
                  if (in_array($key,$title_data['use_episodes'])) {
-                     $episode=new Episode($episode_data['path']);
+                     $episode=new Episode(s_quotes($episode_data['path']));
                      $episode->setName($episode_data['id']);
                      if(isset($episode_data['sub']) && !empty($episode_data['sub'])) {
                          foreach ($episode_data['sub'] as $sub) {
-                             $episode->addSub($sub['path'], $sub['name']);
+                             $episode->addSub(s_quotes($sub['path']), s_quotes($sub['name']));
                          }
-                         $episode->setPriorSub($title_data['pref_folder_sub']);
+                         $episode->setPriorSub(s_quotes($title_data['pref_folder_sub']));
                      }  
                      if(isset($episode_data['aud']) && !empty($episode_data['aud'])) {
                          foreach ($episode_data['aud'] as $aud) {
-                             $episode->addAudio($aud['path'], $aud['name']);
+                             $episode->addAudio(s_quotes($aud['path']), s_quotes($aud['name']));
                          }
-                         $episode->setPriorAudio($title_data['pref_folder_aud']);
+                         $episode->setPriorAudio(s_quotes($title_data['pref_folder_aud']));
                      }
                      $title->addEpisode($title_data['season'], $episode, $episode_data['id']);
                  }   
@@ -192,8 +192,8 @@ if ($data['mode'] == "edit") { //Title/season editing
     }
 } elseif ($data['mode'] == "parse") { //Parsing source media folder direcroty
   if (isset($post['src_folder_media']) && !empty($post['src_folder_media'])) {
-      $data['src_folder_media']=$post['src_folder_media'];  
-      $title_data=parseAnime($post['src_folder_media'],isset($post['src_folder_sub']) ? $post['src_folder_sub'] : "",isset($post['src_folder_audio']) ? $post['src_folder_audio'] : "");
+      $data['src_folder_media']=  s_quotes($post['src_folder_media']);  
+      $title_data=parseAnime(s_quotes($post['src_folder_media']),isset($post['src_folder_sub']) ? s_quotes($post['src_folder_sub']) : "",isset($post['src_folder_audio']) ? s_quotes($post['src_folder_audio']) : "");
       if ($title_data) {
           $title=array();
           //Output parsing data into form
