@@ -207,7 +207,7 @@ if ($data['mode'] == "edit") { //Title/season editing
           $max_id=0;
           foreach ($episodes as $episode) { //Splitting episode data by these two arrays for later sorting
                   if (isset($post['guess_ep_numbers'])) {
-                     $id=guessEpisodeNumber($episode->getName()); 
+                     $id=guessEpisodeNumber($episode->getName(),$title['name']); 
                   } else {
                       $id=0;
                   }
