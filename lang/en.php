@@ -4,11 +4,13 @@ $strings['error']="Error: ";
 $strings['warning']="Warning: ";
 $strings['unconfigured']="Before use you should adjust settings in config.php!";
 $strings['no_folder_selected']="You have to select folder with video!";
-$strings['title_add_success']="Title %s (season %s) successfully saved to library.";
+$strings['title_add_success']="Title %s (%s) successfully saved to library.";
 $strings['no_edit_function']="Edit functionality unwritten yet. You can delete title/season ar simpy re-add it :)";
 $strings['del_success']="Deleted successfully.";
-$strings['title_exists']="Library already has title with this name! If you continue this folder will be added as %s season of %s.";
-$strings['season_exists']="%s season of %s is already in the library. If you continue it will be overwritten!";
+$strings['msg_season']=" season";
+$strings['msg_specials']="special";
+$strings['title_exists']="Library already has title with this name! If you continue this folder will be added as %s of %s.";
+$strings['season_exists']="%s of %s is already in the library. If you continue it will be overwritten!";
 
 //Errors
 $strings['err_folder_contents']="Error trying to get folder contents!";
@@ -44,7 +46,8 @@ $strings['th_vid']="Video";
 $strings['th_title']="Source name";
 $strings['th_sub']="Subtitles";
 $strings['th_aud']="Audio";
-$strings['th_season']="Season number:";
+$strings['special']="Special";
+$strings['th_season']="Season number/Specials:";
 $strings['th_pref_sub']="Preferred subtitles folder:";
 $strings['th_pref_aud']="Preferred audio folder:";
 $strings['th_ep_list']="Episodes list:";

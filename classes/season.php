@@ -11,7 +11,7 @@ class Season {
     private $aud_folders = array();
     
     public function __construct($number = -1) {
-        if ($number > 0) {
+        if ($number >= 0) {
             $this->number=intval($number);
         } else {
              $this->number=1;

@@ -4,11 +4,13 @@ $strings['error']="Ошибка: ";
 $strings['warning']="Внимание: ";
 $strings['unconfigured']="Перед использованием необходимо настроить config.php!";
 $strings['no_folder_selected']="Не выбрано ни одной папки с видео!";
-$strings['title_add_success']="Тайтл %s (сезон %s) успешно сохранен в библиотеку.";
+$strings['title_add_success']="Тайтл %s (%s) успешно сохранен в библиотеку.";
 $strings['no_edit_function']="Функция редактирования еще не написана. Можно удалить тайтл/сезон или просто добавить его заново :)";
 $strings['del_success']="Удаление успешно.";
-$strings['title_exists']="Тайтл с таким названием уже есть в библиотеке! При продолжении папка будет добавлена как %s сезон %s.";
-$strings['season_exists']="%s сезон %s уже есть в библиотеке. При продолжении он будет перезаписан!";
+$strings['msg_season']=" сезон";
+$strings['msg_specials']="спешл";
+$strings['title_exists']="Тайтл с таким названием уже есть в библиотеке! При продолжении папка будет добавлена как %s %s.";
+$strings['season_exists']="%s %s уже есть в библиотеке. При продолжении он будет перезаписан!";
 
 //Errors
 $strings['err_folder_contents']="Невозможно получить содержимое папки!";
@@ -44,7 +46,8 @@ $strings['th_vid']="Видео";
 $strings['th_title']="Исходное название";
 $strings['th_sub']="Сабы";
 $strings['th_aud']="Озвучка";
-$strings['th_season']="Номер сезона:";
+$strings['special']="Спешл";
+$strings['th_season']="Номер сезона/спешлы:";
 $strings['th_pref_sub']="Предпочитать субтитры из папки:";
 $strings['th_pref_aud']="Предпочитать аудио из папки:";
 $strings['th_ep_list']="Список эпизодов:";
