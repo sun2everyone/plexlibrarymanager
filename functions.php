@@ -152,9 +152,14 @@ function validateTitleData($title_data,$library) {
         } elseif (!isset($title_data['use_episodes']) || empty($title_data['use_episodes'])) {
             $json['error'] = $strings['err_select_episode'];
         } elseif ($library->hasTitle($title_data['name'])) {
-                $json['warning'] = sprintf($strings['title_exists'],$title_data['season'],$title_data['name']);
+                if ($title_data['season'] == 0) {
+                    $msg=$strings['msg_specials'];
+                } else {
+                    $msg=$title_data['season'].$strings['msg_season'];
+                }
+                $json['warning'] = sprintf($strings['title_exists'],$msg,$title_data['name']);
                 if ($library->titleHasSeason($title_data['name'], $title_data['season'])) {
-                  $json['warning'] = sprintf($strings['season_exists'],$title_data['season'],$title_data['name']);
+                  $json['warning'] = sprintf($strings['season_exists'],$msg,$title_data['name']);
                 }
         }
         return $json;

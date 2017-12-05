@@ -80,7 +80,7 @@ class Library {
         foreach ($title_subfolders as $folder) {
             if (strpos($folder,'eason')) {
                $num=intval(str_replace("Season ","",$folder));
-               if ($num>0) {
+               if ($num>=0) {
                    $title->createSeason($num);
                    //Loading episodes
                    $folder=$this->path."/".$title_name."/".$folder;

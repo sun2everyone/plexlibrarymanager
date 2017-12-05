@@ -10,14 +10,14 @@ class Title {
     private $name;
     private $seasons = array();
     
-    public function createSeason($number = 0) {
-        $number = intval($number);
-        if ($number > 0) {
+    public function createSeason($number = 1) {
+        $number = intval($number); //0 - special
+        //if ($number > 0) {
          $this->seasons[$number]= new Season($number);
-        } else {
-            $number = count($this->seasons)+1; 
-            $this->seasons[$number]= new Season($number);
-        }
+        //} else {
+        //    $number = count($this->seasons)+1; 
+        //    $this->seasons[$number]= new Season($number);
+        //}
     }
     public function seasonsCount() {
         return count($this->seasons);

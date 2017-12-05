@@ -4,7 +4,7 @@ It uses symlinks, so actually you don't have to rename and move your media files
 When adding anime to the library, PlexLibraryManager allows you to adjust episode and season numbers, select priority external media (subtitles and audio tracks) and also to add/delete external media to each episode manually.
 
 Current version designed specially for anime libraries. Multilanguage support (english and russian included).
-Specials not yet supported.
+Specials supported.
 
 ### Disclaimer:
 
@@ -51,7 +51,7 @@ Please report bugs to https://github.com/sun2everyone/plexlibrarymanager/issues
 Веб-менеджер библиотеки для Plex Media Server, с помощью которого можно организовать библиотеку для плекса, которая будет отвечать принципам наименования <a href="https://support.plex.tv/hc/en-us/sections/200059498-Naming-and-Organizing-TV-Shows">Plex naming convention</a>. Использует символические ссылки, благодаря чему не приходится переименовывать файлы вручную или копировать их, что очень удобно если они были загружены с торрентов и хочется их раздавать. При добавлении нового тайтла в библиотеку можно отредактировать номера эпизодов, задать приоритет внешним субтитрам и озвучке а так же вручуную добавить или удалить их для каждого эпизода.
 
 Эта версия специально разработана для аниме-библиотеки. Поддержка русского и английского языков интерфейса.
-Спешлы пока не поддерживаются.
+Спешлы поддерживаются.
 
 ### Дисклеймер:
 

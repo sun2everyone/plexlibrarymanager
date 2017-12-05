@@ -139,7 +139,12 @@ if (isset($get['action']) && ($get['action'] == "validate_title_submit")) {
             if ($library->addTitle($title)) {
                 //And writinh
                 if($library->Save($title_name)) {
-                    $json['status']=sprintf($strings['title_add_success'],$title_name,$title_data['season']);
+                    if ($title_data['season'] == 0) {
+                        $msg=$strings['msg_specials'];
+                    } else {
+                        $msg=$title_data['season'].$strings['msg_season'];
+                    }
+                    $json['status']=sprintf($strings['title_add_success'],$title_name,$msg);
                     unset($json['warning']); 
                 } else {
                     $json['error']=$strings['err_lib_save'];
