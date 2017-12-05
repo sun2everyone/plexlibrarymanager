@@ -108,7 +108,10 @@ class Folder {
     private function isAudio($ext) {
         $extensions = array(
             "ac3",
-            "mp3"
+            "mp3",
+            "mka",
+            "dts",
+            "flac"
         );
         if (in_array($ext, $extensions)) return true; else return false;
     }
