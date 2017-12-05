@@ -648,7 +648,14 @@
                             <?php if(!empty($title['seasons'])) { ?>
                             <div class="small">                         
                                 <?php foreach ($title['seasons'] as $id=>$value) { ?>
-                                    <div><?php echo sprintf($strings['title_seasons'],$id,$value); ?> </div>
+                                    <div><?php 
+                                        if ($id==0) {
+                                            echo sprintf($strings['title_seasons'],$strings['special'],$value); 
+                                         } else {
+                                            echo sprintf($strings['title_seasons'],$id.$strings['msg_season'],$value);
+                                         }
+                                        ?> 
+                                    </div>
                                 <?php } ?> 
                             </div>   
                             <?php } ?>

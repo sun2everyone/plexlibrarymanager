@@ -58,7 +58,7 @@ $strings['edit_field']="(Нажмите на нужное поле для ред
 $strings['entry_yes']="Есть";
 $strings['entry_no']="Нет";
 $strings['err_try_another']="Ошибка! Попробуйте выбрать другую папку!";
-$strings['title_seasons']="Сезон %s; Число эпизодов: %s";
+$strings['title_seasons']="%s; Число эпизодов: %s";
 $strings['lib_empty']="Библиотека пока пуста!";
 $strings['select_file']="Выберите файл:";
 
