@@ -99,26 +99,37 @@ class Folder {
     private function isVideo($ext) {
         $extensions = array(
             "avi",
+            "AVI",
             "mkv",
+            "MKV",
             "mp4",
-            "mpeg"
+            "MP4",
+            "mpeg",
+            "MPEG"
         );
         if (in_array($ext, $extensions)) return true; else return false;
     }
     private function isAudio($ext) {
         $extensions = array(
             "ac3",
+            "AC3",
             "mp3",
+            "MP3",
             "mka",
+            "MKA",
             "dts",
-            "flac"
+            "DTS",
+            "flac",
+            "FLAC"
         );
         if (in_array($ext, $extensions)) return true; else return false;
     }
     private function isSubtitle($ext) {
         $extensions = array(
             "ass",
-            "srt"
+            "ASS",
+            "srt",
+            "SRT"
         );
         if (in_array($ext, $extensions)) return true; else return false;
     }
