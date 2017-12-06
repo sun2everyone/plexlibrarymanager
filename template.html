@@ -212,6 +212,32 @@
                 });
             }
             
+             function episodes_renum() { //Episodes mass numeration
+                $('.error').remove();
+                if (!$('.episodes .episode .option input:checked').length) {
+                    $('form[name=\'add_folder\']').before('<div class="error" onclick="$(this).remove();"><?php echo $strings['err_select_episode']; ?></div>');
+                } else {
+                 var input=prompt("<?php echo $strings['starting_number']; ?>",1);
+                 var start_num=0;
+                 if (input !== null) {
+                     var start_num = parseInt(input.replace(/[^0-9]/g,''),10);
+                     if ((start_num>0) && (start_num<800) && (start_num !== "") && (start_num !== "") ) {
+                         var val=start_num;
+                         $('.episodes .episode .option input:checked').each(function(index,element) {
+                            while ($("div.episodes .episode .option input").not(":checked").parents('.episode').find("div.ep-id input[value='"+val+"']:hidden").length && (val !== parseInt($(this).parents('.episode').find('.ep-id input:hidden').prop('value')))) { //skipping duplicate id's within unchecked episodes
+                                val=val+1;
+                            }
+                            var hidden_name=$(this).parents('.episode').find('.ep-id input:hidden').attr('name');
+                            $(this).parents('.episode').find('.ep-id').html(val+'<input type="hidden" name="'+hidden_name+'" value="'+val+'">');
+                            val=val+1;
+                         });
+                     } else {
+                         $('form[name=\'add_folder\']').before('<div class="error" onclick="$(this).remove();"><?php echo $strings['err_ep_id_renum']; ?></div>');
+                     }
+                }
+               }
+             }
+            
             function shortPath(path) {
                 //Short-path to display in div
                 var short_path=path.replace(/<?php echo addcslashes($src_root_path,'^$.*+?=!:|\/()[]{}-'); ?>/,"");
@@ -570,7 +596,7 @@
                     <div class="title episodes">
                         <div class="tr theader">
                            <div class="option td"><input type="checkbox" name="select_all_episodes" value="" checked></div>
-                           <div class="td ep-id-header"><div>№</div><div><img title="<?php echo $strings['sort']; ?>" src="img/icon_asc_num.png" onClick="episodes_sort();"></div></div> 
+                           <div class="td ep-id-header"><div>№</div><div><img title="<?php echo $strings['sort']; ?>" src="img/icon_asc_num.png" onClick="episodes_sort();"><img title="<?php echo $strings['renumerate']; ?>" src="img/icon_data.png" onClick="episodes_renum();"></div></div> 
                            <div class="td"><?php echo($strings['th_title']); ?></div> 
                            <div class="td"><?php echo($strings['th_sub']); ?></div> 
                            <div class="td"><?php echo($strings['th_aud']); ?></div> 

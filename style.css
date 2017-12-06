@@ -83,16 +83,18 @@ div.episodes .theader img {
     cursor: pointer;
     padding: 5px;
     top: 2px;
+    left: -9px;
 }
 div.episodes .theader img:hover {
    border-radius: 2px;
    background-color:rgba(243, 205, 20, 0.35);
 }
 div.episodes .ep-id-header > div:first-child {
-    width: 50%;
     float:left;
     padding-top: 5px;
     padding-bottom: 5px;
+    position: relative;
+    left: -13px;
 }
 div.ep-id {
     text-align: center;
