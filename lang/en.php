@@ -28,6 +28,7 @@ $strings['err_title_name_symbol']="Bad title name! No special symbols!";
 $strings['err_select_season']="You have to select season!";
 $strings['err_select_episode']="You have to select at least one episode!";
 $strings['err_ep_id']="Episode number must be inique and above zero!";
+$strings['err_ep_id_renum']="Incorrect episode number!";
 $strings['err_file_already_added']="File already added.";
 
 //Template
@@ -61,6 +62,7 @@ $strings['err_try_another']="Error! Try different folder!";
 $strings['title_seasons']="%s; Episodes: %s";
 $strings['lib_empty']="Library is empty yet!";
 $strings['select_file']="Select file:";
+$strings['starting_number']="Enter starting number:";
 
 //Links, hints and buttons
 $strings['main_page']="Main page";
@@ -75,3 +77,4 @@ $strings['del']="Delete";
 $strings['add']="Add";
 $strings['submit']="Submit";
 $strings['sort']="Sort";
+$strings['renumerate']="Automatically numerate selected";
