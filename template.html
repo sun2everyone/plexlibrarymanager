@@ -65,7 +65,11 @@
                                      var filename=json['folder']['files'][key]['name'];
                                      var filetype=json['folder']['files'][key]['type'];
                                          html+='<div class="file tr '+parents_str+'" name="'+path+'">';
-                                         html+='<div class="option td"></div>';
+                                         html+='<div class="option td">';
+                                         if (filetype==='vid') {
+                                            html+='<input type="radio" name="src_folder_media" value="'+path+'/'+filename+'">';
+                                         }   
+                                         html+='</div>';
                                          html+='<div class="option td"></div>';
                                          html+='<div class="option td"></div>';
                                          html+='<div class="icon td"><img class="child" src="img/icon_'+filetype+'.png" style="left:'+20*depth+'px;"></div>'
