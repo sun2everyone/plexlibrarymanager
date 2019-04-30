@@ -4,13 +4,13 @@ $strings['error']="Error: ";
 $strings['warning']="Warning: ";
 $strings['unconfigured']="Before use you should adjust settings in config.php!";
 $strings['no_folder_selected']="You have to select folder with video!";
-$strings['title_add_success']="Title %s (%s) successfully saved to library.";
+$strings['title_add_success']="Title %s (%s) successfully saved to library %s.";
 $strings['no_edit_function']="Edit functionality unwritten yet. You can delete title/season ar simpy re-add it :)";
 $strings['del_success']="Deleted successfully.";
 $strings['msg_season']=" season";
 $strings['msg_specials']="special";
-$strings['title_exists']="Library already has title with this name! If you continue this folder will be added as %s of %s.";
-$strings['season_exists']="%s of %s is already in the library. If you continue it will be overwritten!";
+$strings['title_exists']="Library %s already has title with this name! If you continue this folder will be added as %s of %s.";
+$strings['season_exists']="%s of %s is already in the library %s. If you continue it will be overwritten!";
 
 //Errors
 $strings['err_folder_contents']="Error trying to get folder contents!";
@@ -36,8 +36,9 @@ $strings['confirmation']="Are you sure? This action can't be undone!";
 $strings['disclaimer']='*Symlinks used to create library. This software is distributed "as is", <br>and author is not responsible for any problems you might get using it, <font color="red">including data loss or corruption!</font>*<br >';
 $strings['path_to_root_media']="Path to root folder of source media files: ";
 $strings['path_to_root_library']="Path to your Plex anime library: ";
-$strings['header_add_title']="Adding title to library:";
-$strings['header_view_lib']="Library contents:";
+$strings['switch_library']="Switch library:";
+$strings['header_add_title']="Adding title to library %s:";
+$strings['header_view_lib']="Library %s contents:";
 $strings['header_select_folders']="Step 1. Select which folders for video, subtitles and audio to use:";
 $strings['settings']="Settings:";
 $strings['guess_ep_numbers']="Guess episode number using filename.";

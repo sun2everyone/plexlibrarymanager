@@ -8,13 +8,19 @@
 class Library {
     //put your code here
     private $path;
+    public $name;
     private $title_list = array();
     private $titles = array();
     
-    public function __construct($path=PLEX_LIB) {
+    public function __construct($path="",$name="") {
         if (!is_dir($path) || !is_readable($path) || !is_writable($path)) {
-            exit("Library at $path unavailable! Incorrect path!");
+            exit("Library at \"$path\" unavailable! Incorrect path!");
         }
+        if (!empty($name)) {
+            $this->name=$name;
+        } else {
+            $this->name=$path;
+        }    
         $this->path=$path;
         $this->loadLibrary();
     }

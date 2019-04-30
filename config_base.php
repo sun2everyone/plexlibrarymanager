@@ -19,14 +19,20 @@ const HOSTNAME = "https://yourdomain.com/plexlibrarymanager/";
 //Рекомендуется сделать ее симлинком на реальную папку
 const SRC_FOLDER = "/var/www/plex/media";               
 
-//Absolute path (related to webserver root), at witch your new plex library will be
+//Absolute path (related to webserver root), at witch your new plex libraries will be
 //CAUTION: It's strongly unrecommended to use existing library for this, as you will loose your library data!
-//Абсолютный путь до папки с Аниме-библиотекой plex относительно корня вебсервера.
-//ВНИМАНИЕ: Крайне не рекомендуется использовать действующую библиотеку, т.к. данная программа вероятно не сможет ее правильно обработать и часть данных библиотеки будет потеряна.
-const PLEX_LIB = "/var/www/plex/library/Anime";   
-
-//HTTP authentication. You may enable this if you don't have another authentication enabled and when your webserver is available not only from local network
-$require_authentication=0; 
+//Абсолютный путь до папок с библиотеками plex относительно корня вебсервера.
+//ВНИМАНИЕ: Крайне не рекомендуется использовать действующую библиотеку, т.к. данная программа вероятно не сможет ее правильно обработать и часть данных библиотеки будет потеряна. 
+$plex_libs= array(
+    array(
+        'name' => "Anime",
+        'path' => "/var/www/plex/library/Anime",
+        ),
+    //array(
+    //    'name' => "Films",
+    //    'path' => "/var/www/plex/library/Films",
+    //    ),
+    );
 
 //Interface language, "default -"en" for english, "ru" - русский
 $lang="en"; 
@@ -39,4 +45,6 @@ $media_lang="en";
 //Maximum depth of relative symlinks (do not adujust without knowing, what you do!)
 //Максимальная глубина относительных симлинков (без особой нужды не менять).
 const MAXDEPTH = 10; 
+//Config file version (for compatibility)
+const CONF_V = 2;
        

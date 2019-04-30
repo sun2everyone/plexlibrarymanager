@@ -250,6 +250,10 @@
             
             //Bindings
             $(function(){
+                    //Library_selection
+                    $('select[name=\'lib_select\']').on("change",function() {
+                        document.location.href='<?php echo $hostname; ?>?lib_id='+this.value;
+                    });
                     //Nice highlighted checkboxes with background clicking
                     $('div.folders, div.episodes').on("click", "div.option.td", function(){
                         $(this).children('input:checkbox, input:radio').prop("checked",!$(this).children('input:checkbox').prop('checked'));
@@ -488,7 +492,16 @@
             <div class="small">
                 <?php echo($strings['disclaimer']); ?>
                 <?php echo($strings['path_to_root_media']); ?><?php echo $src_root_path; ?><br >
-                <?php echo($strings['path_to_root_library']); ?><?php echo $plex_root_path; ?>
+                <?php echo($strings['path_to_root_library']); ?><?php echo $plex_root['path']; ?>
+            </div>
+            <div>
+                <?php echo($strings['switch_library']); ?>
+                <select name="lib_select">
+                    <?php foreach($plex_libs as $key=>$lib) { ?>
+                    <option <?php if ($key == $plex_root['id']) echo "selected"; ?> value="<?php echo $key; ?>">
+                        <?php echo $lib['name']; ?>
+                    </option><?php } ?>
+                </select>
             </div>
             <div class="links">
                 <div class="link" onClick="document.location.href='<?php echo $hostname; ?>'"><?php echo($strings['main_page']); ?></div>
@@ -506,7 +519,7 @@
             <?php } ?>
             <div>
                 <?php if ($mode == "add") { ?>
-                <h2><?php echo($strings['header_add_title']); ?></h2>
+                <h2><?php printf($strings['header_add_title'],$plex_root['name']); ?></h2>
                 <?php echo($strings['header_select_folders']); ?><br >
                 <form name="parse_folder" method="post" action="index.php?mode=parse">
                     <div class="settings">
@@ -555,7 +568,7 @@
                     <div class="link" onClick="document.location.href='<?php echo $hostname; ?>?mode=view'"><?php echo($strings['view_library']); ?></div>
                 </div>    
                 <?php } elseif ($mode == "parse") { ?>
-                <h2><?php echo($strings['header_add_title']); ?></h2>
+                <h2><?php printf($strings['header_add_title'],$plex_root['name']); ?></h2>
                 <?php echo($strings['header_check_parsing']); ?>
                 <br>
                 <div class="small"><?php echo($strings['video_folder_selected']); ?><?php echo $src_folder_media; ?></div>
@@ -660,7 +673,7 @@
                        <div class="link" onClick="javascript:history.back(); return false;"><?php echo($strings['ch_folder_sel']); ?></div>
                     </div>   
                 <?php } elseif ($mode == "view") { ?>
-                <h2><?php echo($strings['header_view_lib']); ?></h2>
+                <h2><?php printf($strings['header_view_lib'],$plex_root['name']); ?></h2>
                 <div class="library">
                     <?php if(!empty($titles)) { 
                     $i=0;

@@ -15,13 +15,34 @@ function dump($msg) {
 
 if (is_file('config.php')) {
     require 'config.php';
-    $configured=1;
+    if (CONF_V == 2) {
+        $configured=1;
+    } else {
+        require 'config_base.php';
+        $configured=0;
+    }
 } else {
     require 'config_base.php';
     $configured=0;
 }
+$post = filter_input_array(INPUT_POST);
+$get = filter_input_array(INPUT_GET);
+if ($configured) {
+    if (isset($get['lib_id']) && $get['lib_id'] >= 0) {
+        if (isset($plex_libs[$get['lib_id']])) {
+            $lib_id=$get['lib_id'];
+        } else {
+            $lib_id=0;
+        }    
+    } elseif (isset($_COOKIE['lib_id']) && $_COOKIE['lib_id'] >= 0 && isset($plex_libs[$_COOKIE['lib_id']])) {
+        $lib_id=$_COOKIE['lib_id'];
+    } else {
+        $lib_id=0;
+    }
+    setcookie('lib_id', $lib_id);
+}
+
 require "lang/$lang.php";
-require 'auth.php';
 require 'log.php';
 require 'template.php';
 require 'classes/folder.php';
@@ -30,14 +51,6 @@ require 'classes/season.php';
 require 'classes/title.php';
 require 'classes/library.php';
 require 'functions.php';
-
-
-if($require_authentication) {
-authenticate();
-$auth_user = $_SERVER['PHP_AUTH_USER'];
-}
-$post = filter_input_array(INPUT_POST);
-$get = filter_input_array(INPUT_GET);
 
 //Check configuration
 if (!$configured) {
@@ -53,7 +66,8 @@ $log = new Log();
 $tpl = new Template();
 $data = array();
 $root_media = new Folder(SRC_FOLDER);
-$library = new Library(PLEX_LIB);
+$plex_lib= $plex_libs[$lib_id];
+$library = new Library($plex_lib['path'],$plex_lib['name']);
 $library->loadLibrary();
 $ajax=0;
 
@@ -62,7 +76,10 @@ isset($auth_user) ? $data['auth_user'] = $auth_user : $data['auth_user']="Anonym
 $data['strings']=$strings;
 $data['hostname'] = HOSTNAME;
 $data['src_root_path'] = SRC_FOLDER;
-$data['plex_root_path'] = PLEX_LIB;
+$data['plex_root']['path'] = $plex_lib['path'];
+$data['plex_root']['name'] =  $plex_lib['name'];
+$data['plex_root']['id'] = $lib_id;
+$data['plex_libs'] = $plex_libs;
 $data['root_folder'] = $root_media->getFolder();
 
 //AJAX functions////////////////////////////////////////////////////////////////
@@ -144,7 +161,7 @@ if (isset($get['action']) && ($get['action'] == "validate_title_submit")) {
                     } else {
                         $msg=$title_data['season'].$strings['msg_season'];
                     }
-                    $json['status']=sprintf($strings['title_add_success'],$title_name,$msg);
+                    $json['status']=sprintf($strings['title_add_success'],$title_name,$msg,$plex_lib['name']);
                     unset($json['warning']); 
                 } else {
                     $json['error']=$strings['err_lib_save'];

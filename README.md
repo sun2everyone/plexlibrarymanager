@@ -44,7 +44,7 @@ Sample:
   usermod -aG www-data plex
 ```
 ---------------------------------------------------------------------------------
-Support of other library and media types may be added in future.
+Support of other media types may be added in future.
 Please report bugs to https://github.com/sun2everyone/plexlibrarymanager/issues
 
 # PlexLibraryManager
@@ -91,6 +91,6 @@ Please report bugs to https://github.com/sun2everyone/plexlibrarymanager/issues
   usermod -aG www-data plex
 ```
 ---------------------------------------------------------------------------------
-Поддержка других типов библиотек и медиа-файлов может быть добавлена в будущем.
+Поддержка других типов медиа-файлов может быть добавлена в будущем.
 Пожалуйста, сообщайте о багах сюда https://github.com/sun2everyone/plexlibrarymanager/issues
 
