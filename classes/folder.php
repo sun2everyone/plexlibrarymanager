@@ -12,39 +12,60 @@ class Folder {
     private $files = Array();
     
     public function __construct($path) {
-        if (!is_dir($path) || !is_readable($path)) {
-            exit("Directory $path unavailable! Incrorrect path!");
-        }
-        try {
-          $dir = opendir($path);
-          $this->path=$path;
-          $path_info=pathinfo($path);
-          $this->name=$path_info['basename'];
-          while ($file = readdir ($dir)) 
-            {
-              if (($file != ".") && ($file != "..")) {
-                if(is_dir($path."/".$file)) {
-                    $this->subfolders[]=$file;
-                } elseif (is_file($path."/".$file)) {
-                    $path_info=pathinfo($path."/".$file);
-                    $this->files[$file]['dir']=$path_info['dirname'];
-                    if (isset($path_info['extension'])) {
-                        $this->files[$file]['ext']=$path_info['extension'];
-                    } else {
-                         $this->files[$file]['ext']="";
-                    }
-                    $this->files[$file]['type']=$this->fileGetType($this->files[$file]['ext']);
-                    $this->files[$file]['name']=$path_info['basename'];
-                    $this->files[$file]['title']=$path_info['filename'];
+        if (is_file($path)) { //For single-file titles, no subflders used
+            try {
+                $path_info=pathinfo($path);
+                //$this->path=$path; //filename in path not excluded
+                $this->path=$path_info['dirname'];
+                $this->name=$path_info['filename'];
+                $file=$path_info['basename'];
+                $this->files[$file]['dir']=$path_info['dirname'];
+                if (isset($path_info['extension'])) {
+                    $this->files[$file]['ext']=$path_info['extension'];
+                } else {
+                     $this->files[$file]['ext']="";
                 }
-              }  
-              array_multisort($this->files);
-              array_multisort($this->subfolders);
+                $this->files[$file]['type']=$this->fileGetType($this->files[$file]['ext']);
+                $this->files[$file]['name']=$path_info['basename'];
+                $this->files[$file]['title']=$path_info['filename'];
+            } catch (Exception $e) {
+                echo "Can not read single-file media $path! Exception caught.";
             }
-            closedir($dir);  
-        } catch (Exception $e) {
-            echo "Can not read directory $path! Exception caught.";
-        }    
+        } else {
+            if (!is_dir($path) || !is_readable($path)) {
+                exit("Directory $path unavailable! Incrorrect path!");
+            }
+            try {
+              $dir = opendir($path);
+              $this->path=$path;
+              $path_info=pathinfo($path);
+              $this->name=$path_info['basename'];
+              while ($file = readdir ($dir)) 
+                {
+                  if (($file != ".") && ($file != "..")) {
+                    if(is_dir($path."/".$file)) {
+                        $this->subfolders[]=$file;
+                    } elseif (is_file($path."/".$file)) {
+                        $path_info=pathinfo($path."/".$file);
+                        $this->files[$file]['dir']=$path_info['dirname'];
+                        if (isset($path_info['extension'])) {
+                            $this->files[$file]['ext']=$path_info['extension'];
+                        } else {
+                             $this->files[$file]['ext']="";
+                        }
+                        $this->files[$file]['type']=$this->fileGetType($this->files[$file]['ext']);
+                        $this->files[$file]['name']=$path_info['basename'];
+                        $this->files[$file]['title']=$path_info['filename'];
+                    }
+                  }  
+                  array_multisort($this->files);
+                  array_multisort($this->subfolders);
+                }
+                closedir($dir);  
+            } catch (Exception $e) {
+                echo "Can not read directory $path! Exception caught.";
+            }
+        }
 	}
     public function getName() {
         return $this->name;

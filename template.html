@@ -536,7 +536,11 @@
                             </div>  
                             <?php } foreach ($root_folder['files'] as $file) { ?>
                             <div class="file tr">
-                              <div class="option td"></div>
+                              <div class="option td">
+                                  <?php if ($file['type']=='vid') {  ?>
+                                  <input type="radio" name="src_folder_media" value="<?php echo $root_folder['path'].'/'.$file['name']; ?>">
+                                  <?php }?>
+                              </div>
                               <div class="td option"></div>
                               <div class="td option"></div>
                               <div class="icon td"><img src="img/icon_<?php echo $file['type']; ?>.png"></div>
