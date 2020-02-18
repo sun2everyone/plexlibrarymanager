@@ -47,4 +47,6 @@ $media_lang="en";
 const MAXDEPTH = 10; 
 //Config file version (for compatibility)
 const CONF_V = 2;
+//Setting UTF-8 locale is needed to avoid problems with UTF-8 filenames (incorrect pathinfo() behaviour). If this locale doesn't  present in your system, generate it using "dpkg-reconfigure locales"
+setlocale(LC_ALL,'en_US.UTF-8');
        
