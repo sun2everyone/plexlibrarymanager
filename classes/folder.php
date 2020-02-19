@@ -126,7 +126,9 @@ class Folder {
             "mp4",
             "MP4",
             "mpeg",
-            "MPEG"
+            "MPEG",
+            "TS",
+            "ts"
         );
         if (in_array($ext, $extensions)) return true; else return false;
     }
