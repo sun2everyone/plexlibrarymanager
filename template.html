@@ -67,7 +67,7 @@
                                          html+='<div class="file tr '+parents_str+'" name="'+path+'">';
                                          html+='<div class="option td">';
                                          if (filetype==='vid') {
-                                            html+='<input type="radio" name="src_folder_media" value="'+path+'/'+filename+'">';
+                                            html+='<input class="ajax_loaded" type="radio" name="src_folder_media" value="'+path+'/'+filename+'"  style="left:'+20*depth+'px;">';
                                          }   
                                          html+='</div>';
                                          html+='<div class="option td"></div>';
@@ -85,7 +85,7 @@
                                         var e_subpath=e_quotes(subpath);
                                         html+='<div class="folder tr'+parents_str+'" name="'+e_subpath+'">';
                                         html+='<div class="option td" title="<?php echo($strings['th_vid']); ?>" style="left:'+20*depth+'px;"><input type="hidden" name="parents" value="'+parents_str+'">';
-                                        html+='<input class="ajax_loaded" type="radio" name="src_folder_media" value="'+e_subpath+'"></div>';
+                                        html+='<input class="ajax_loaded" <?php if ($plex_root['type'] == "movies") { ?>disabled<?php } ?> type="radio" name="src_folder_media" value="'+e_subpath+'"></div>';
                                         html+='<div class="td option" title="<?php echo($strings['th_sub']); ?>" style="left:'+20*depth+'px;"><input class="ajax_loaded" type="checkbox" name="src_folder_sub[]" value="'+e_subpath+'"></div>';
                                         html+='<div class="td option" title="<?php echo($strings['th_aud']); ?>" style="left:'+20*depth+'px;" ><input class="ajax_loaded" type="checkbox" name="src_folder_audio[]" value="'+e_subpath+'"></div>';
                                         html+='<div class="icon td" style="left:'+20*depth+'px;"><img class="child" src="img/icon_folder.png"></div>'
@@ -503,7 +503,7 @@
                 <select name="lib_select">
                     <?php foreach($plex_libs as $key=>$lib) { ?>
                     <option <?php if ($key == $plex_root['id']) echo "selected"; ?> value="<?php echo $key; ?>">
-                        <?php echo $lib['name']; ?>
+                        <?php echo $lib['name']." (".$lib['type'].")"; ?>
                     </option><?php } ?>
                 </select>
             </div>
@@ -526,11 +526,13 @@
                 <h2><?php printf($strings['header_add_title'],$plex_root['name']); ?></h2>
                 <?php echo($strings['header_select_folders']); ?><br >
                 <form name="parse_folder" method="post" action="index.php?mode=parse">
+                    <?php if ($plex_root['type'] == "shows") { ?>
                     <div class="settings">
                       <h3><?php echo $strings['settings']; ?></h3>  
                       <input type="checkbox" name="guess_ep_numbers" value="1" checked><?php echo $strings['guess_ep_numbers']; ?></br>
                       <div class="small"><?php echo $strings['guess_ep_numbers_hint']; ?></div>
                     </div>   
+                    <?php } ?>
                 <div class="folders">
                     <div class="theader tr">
                      <div class="td"><?php echo($strings['th_vid']); ?></div>
@@ -545,7 +547,7 @@
                              $subfolder_path=e_quotes($subfolder_path);
                             ?> 
                             <div class="folder tr" name="<?php echo $subfolder_path; ?>">
-                                <div class="option td" title="<?php echo($strings['th_vid']); ?>"><input type="hidden" name="parents" value=""><input type="radio" name="src_folder_media" value="<?php echo $subfolder_path; ?>"></div>
+                                <div class="option td" title="<?php echo($strings['th_vid']); ?>"><input type="hidden" name="parents" value=""><input type="radio" name="src_folder_media" value="<?php echo $subfolder_path; ?>" <?php if ($plex_root['type'] == "movies") { ?>disabled<?php } ?>></div>
                               <div class="td option" title="<?php echo($strings['th_sub']); ?>"><input type="checkbox" name="src_folder_sub[]" value="<?php echo $subfolder_path; ?>"></div>
                               <div class="td option" title="<?php echo($strings['th_aud']); ?>"><input type="checkbox" name="src_folder_audio[]" value="<?php echo $subfolder_path; ?>"></div>
                               <div class="icon td"><img src="img/icon_folder.png"></div>
@@ -584,8 +586,12 @@
                             <div class="td"><input type="text" name="title_data[name]" value="<?php echo str_replace('"','&quot;',$title_data['name']); ?>" maxlength="100"></div>
                         </div>
                         <div class="tr season">
+                            <?php if ($plex_root['type'] == "shows") { ?>
                             <div class="td"><?php echo($strings['th_season']); ?></div>
                             <div class="td"><select name="title_data[season]"><?php for($i=1; $i<=10; $i++) { ?><option <?php if ($i == $title_data['season_num']) echo "selected"; ?>><?php echo $i; ?></option><?php } ?><option value="0"><?php echo $strings['special'];?></option></select></div>
+                            <?php } elseif ($plex_root['type'] == "movies") { ?>
+                            <input type="hidden" name="title_data[season]" value="1">
+                            <?php } ?>
                         </div>
                         <?php if(!empty($title_data['sub_folders'])) { ?>
                         <div class="tr pref-sub">
@@ -692,7 +698,7 @@
                         </div>
                         <div class="td title"><?php echo $i.". ".$title['name']; ?></div>
                         <div class="td seasons">
-                            <?php if(!empty($title['seasons'])) { ?>
+                            <?php if(!empty($title['seasons']) && $plex_root['type'] == "shows") { ?>
                             <div class="small">                         
                                 <?php foreach ($title['seasons'] as $id=>$value) { ?>
                                     <div><?php 
@@ -708,7 +714,7 @@
                             <?php } ?>
                         </div>
                         <div class="td manage">
-                            <?php if(!empty($title['seasons'])) { ?>
+                            <?php if(!empty($title['seasons']) && $plex_root['type'] == "shows") { ?>
                             <div class="small">
                                 <?php foreach ($title['seasons'] as $id=>$value) { ?>
                                 <div>

@@ -71,34 +71,47 @@ class Folder {
         return $this->name;
     }
         
-    public function getFiles() {
+    public function getFiles($name="") {
        if (!empty($this->files)) {
-           return $this->files;
+           $files=[];
+           foreach ($this->files as $file) {
+               if (($name == "") || ($file['title'] == $name)) {
+                   $files[]=$file;
+               }
+           }
+           return $files;
        } else return false;
     } 
-    public function getVideos() {
+    
+    public function getVideos($title = "") {
         $files=array();
         foreach ($this->files as $file) {
             if ($this->isVideo($file['ext'])) {
-                $files[]=$file;
+                if (($title == "") || ($title <> "" && $file['title'] == $title)) {
+                    $files[]=$file;
+                }
             }
         }
         return $files;
     }
-    public function getSubs() {
+    public function getSubs($title = "") {
         $files=array();
         foreach ($this->files as $file) {
             if ($this->isSubtitle($file['ext'])) {
-                $files[]=$file;
+                if (($title == "") || ($title <> "" && $file['title'] == $title)) {
+                    $files[]=$file;
+                }
             }
         }
         return $files;
     }
-    public function getAudios() {
+    public function getAudios($title = "") {
         $files=array();
         foreach ($this->files as $file) {
             if ($this->isAudio($file['ext'])) {
-                $files[]=$file;
+                if (($title == "") || ($title <> "" && $file['title'] == $title)) {
+                    $files[]=$file;
+                }    
             }
         }
         return $files;
@@ -128,7 +141,9 @@ class Folder {
             "mpeg",
             "MPEG",
             "TS",
-            "ts"
+            "ts",
+            "wmv",
+            "WMV"
         );
         if (in_array($ext, $extensions)) return true; else return false;
     }

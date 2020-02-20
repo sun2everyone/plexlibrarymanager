@@ -27,11 +27,13 @@ $plex_libs= array(
     array(
         'name' => "Anime",
         'path' => "/var/www/plex/library/Anime",
+        'type' => "shows", //default, for multi-episode media like anime, shows etc. //для аниме, сериалов и т.п.
         ),
-    //array(
-    //    'name' => "Films",
-    //    'path' => "/var/www/plex/library/Films",
-    //    ),
+    array(
+        'name' => "Films",
+        'path' => "/var/www/plex/library/Films",
+        'type' => "movies", //for single-file media, like films //для фильмов
+        ),
     );
 
 //Interface language, "default -"en" for english, "ru" - русский

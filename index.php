@@ -67,7 +67,7 @@ $tpl = new Template();
 $data = array();
 $root_media = new Folder(SRC_FOLDER);
 $plex_lib= $plex_libs[$lib_id];
-$library = new Library($plex_lib['path'],$plex_lib['name']);
+$library = new Library($plex_lib['path'],$plex_lib['name'],$plex_lib['type']);
 $library->loadLibrary();
 $ajax=0;
 
@@ -78,6 +78,7 @@ $data['hostname'] = HOSTNAME;
 $data['src_root_path'] = SRC_FOLDER;
 $data['plex_root']['path'] = $plex_lib['path'];
 $data['plex_root']['name'] =  $plex_lib['name'];
+$data['plex_root']['type'] =  ($plex_lib['type'] == "shows" || $plex_lib['type'] == "movies" ? $plex_lib['type'] : "shows");
 $data['plex_root']['id'] = $lib_id;
 $data['plex_libs'] = $plex_libs;
 $data['root_folder'] = $root_media->getFolder();
@@ -153,22 +154,22 @@ if (isset($get['action']) && ($get['action'] == "validate_title_submit")) {
                  }   
              }
             //Adding title to library
-            if ($library->addTitle($title)) {
-                //And writinh
-                if($library->Save($title_name)) {
-                    if ($title_data['season'] == 0) {
-                        $msg=$strings['msg_specials'];
+                if ($library->addTitle($title)) {
+                    //And writinh
+                    if($library->Save($title_name)) {
+                        if ($title_data['season'] == 0) {
+                            $msg=$strings['msg_specials'];
+                        } else {
+                            $msg=$title_data['season'].$strings['msg_season'];
+                        }
+                        $json['status']=sprintf($strings['title_add_success'],$title_name,$msg,$plex_lib['name']);
+                        unset($json['warning']); 
                     } else {
-                        $msg=$title_data['season'].$strings['msg_season'];
+                        $json['error']=$strings['err_lib_save'];
                     }
-                    $json['status']=sprintf($strings['title_add_success'],$title_name,$msg,$plex_lib['name']);
-                    unset($json['warning']); 
                 } else {
-                    $json['error']=$strings['err_lib_save'];
-                }
-            } else {
-                $json['error']=$strings['err_title_add'];
-            }
+                    $json['error']=$strings['err_title_add'];
+                } 
             
         }
     } else {
