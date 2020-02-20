@@ -33,6 +33,9 @@ class Library {
     public function getTitleList() {
         return $this->title_list;
     }
+    public function getType() {
+        return $this->type;
+    }
     
     public function hasTitle($name="") {
         if (in_array($name,$this->title_list)) {

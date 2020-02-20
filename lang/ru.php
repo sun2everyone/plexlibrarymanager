@@ -5,12 +5,14 @@ $strings['warning']="Внимание: ";
 $strings['unconfigured']="Перед использованием необходимо настроить config.php!";
 $strings['no_folder_selected']="Не выбрано ни одной папки с видео!";
 $strings['title_add_success']="Тайтл %s (%s) успешно сохранен в библиотеку %s.";
+$strings['movie_add_success']="%s успешно сохранен в библиотеку %s.";
 $strings['no_edit_function']="Функция редактирования еще не написана. Можно удалить тайтл/сезон или просто добавить его заново :)";
 $strings['del_success']="Удаление успешно.";
 $strings['msg_season']=" сезон";
 $strings['msg_specials']="спешл";
 $strings['title_exists']="Тайтл с таким названием уже есть в библиотеке %s! При продолжении папка будет добавлена как %s %s.";
 $strings['season_exists']="%s %s уже есть в библиотеке %s. При продолжении он будет перезаписан!";
+$strings['movie_exists']="%s уже есть в библиотеке %s. При продолжении он будет перезаписан!";
 
 //Errors
 $strings['err_folder_contents']="Невозможно получить содержимое папки!";

@@ -162,7 +162,12 @@ if (isset($get['action']) && ($get['action'] == "validate_title_submit")) {
                         } else {
                             $msg=$title_data['season'].$strings['msg_season'];
                         }
-                        $json['status']=sprintf($strings['title_add_success'],$title_name,$msg,$plex_lib['name']);
+                        if ($library->getType() == "shows") {
+                            $json['status']=sprintf($strings['title_add_success'],$title_name,$msg,$plex_lib['name']);
+                        }
+                        if ($library->getType() == "movies") {
+                            $json['status']=sprintf($strings['movie_add_success'],$title_name,$plex_lib['name']); 
+                        }
                         unset($json['warning']); 
                     } else {
                         $json['error']=$strings['err_lib_save'];

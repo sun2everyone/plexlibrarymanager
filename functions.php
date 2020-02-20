@@ -166,9 +166,14 @@ function validateTitleData($title_data,$library) {
                 } else {
                     $msg=$title_data['season'].$strings['msg_season'];
                 }
-                $json['warning'] = sprintf($strings['title_exists'],$library->name,$msg,$title_data['name']);
-                if ($library->titleHasSeason($title_data['name'], $title_data['season'])) {
-                  $json['warning'] = sprintf($strings['season_exists'],$msg,$title_data['name'],$library->name);
+                if ($library->getType() == "shows") {
+                    $json['warning'] = sprintf($strings['title_exists'],$library->name,$msg,$title_data['name']);
+                    if ($library->titleHasSeason($title_data['name'], $title_data['season'])) {
+                      $json['warning'] = sprintf($strings['season_exists'],$msg,$title_data['name'],$library->name);
+                    }
+                }
+                if ($library->getType() == "movies") {
+                    $json['warning'] = sprintf($strings['movie_exists'],$title_data['name'],$library->name);
                 }
         }
         return $json;

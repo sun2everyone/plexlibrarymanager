@@ -5,12 +5,14 @@ $strings['warning']="Warning: ";
 $strings['unconfigured']="Before use you should adjust settings in config.php!";
 $strings['no_folder_selected']="You have to select folder with video!";
 $strings['title_add_success']="Title %s (%s) successfully saved to library %s.";
+$strings['movie_add_success']="%s successfully saved to library %s.";
 $strings['no_edit_function']="Edit functionality unwritten yet. You can delete title/season ar simpy re-add it :)";
 $strings['del_success']="Deleted successfully.";
 $strings['msg_season']=" season";
 $strings['msg_specials']="special";
 $strings['title_exists']="Library %s already has title with this name! If you continue this folder will be added as %s of %s.";
 $strings['season_exists']="%s of %s is already in the library %s. If you continue it will be overwritten!";
+$strings['movie_exists']="%s is already in the library %s. If you continue it will be overwritten!";
 
 //Errors
 $strings['err_folder_contents']="Error trying to get folder contents!";
