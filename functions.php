@@ -60,9 +60,17 @@ function addMediaRecursive($sub_folders,$media_folder,$title,$season,$media_type
 function parseName($name) {
     $name=$name;
     //Place for regular expressions
+    //Film tags processing
+    $name=preg_replace('/\.\(?([0-9]{4})\)?\./',".(\\1).",$name); //parse year
+    $name=preg_replace('/(\S)\.(\S)/',"\\1 \\2",$name); //parse dotted.style.naming
+    $name=preg_replace('/(72|108)0p/',"",$name);
+    $name=preg_replace('/(\S*264|\d?x?rus|\d?x?eng|\d?x?ukr|\d?x?mvo|Extended|blu.?ray|WEB-DL|\S*AC3|Open matte|HDTV)/Ui',"",$name);
+    
+    //Anime tag processing
     $name=preg_replace('/\[[^\]]*\]/',"",$name); //removing all in []
     $name=preg_replace('/(TV|season ?)[0-9]{1,2}/Ui',"",$name); //removing season numeration
-    $name=preg_replace('/\([0-9]{4}\)/',"",$name); //removing year
+    //$name=preg_replace('/\([0-9]{4}\)/',"",$name); //removing year *disabled for films*
+    
     //
     $name=trim($name);
 
@@ -105,6 +113,7 @@ Steins;Gate EP01 [BDRip 1080p x264-Hi10P FLAC]
 [OZC] Ghost in the Shell Ep 08 "Section 19" [Blu-Ray 720p]
 [Leopard-Raws] Bakuman 2 - 01 RAW (NHKE 1280x720 x264 AAC)
 [Leopard-Raws] Bakuman 3.0 - 01 RAW (NHKE 1280x720 x264 AAC)
+My.Neighbour.Totoro.720p.mkv
  */
 
 //Main title parsing function
