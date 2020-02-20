@@ -64,7 +64,7 @@ function parseName($name) {
     $name=preg_replace('/\.\(?([0-9]{4})\)?\./',".(\\1).",$name); //parse year
     $name=preg_replace('/(\S)\.(\S)/',"\\1 \\2",$name); //parse dotted.style.naming
     $name=preg_replace('/(72|108)0p/',"",$name);
-    $name=preg_replace('/(\S*264|\d?x?rus|\d?x?eng|\d?x?ukr|\d?x?mvo|Extended|blu.?ray|WEB-DL|\S*AC3|Open matte|HDTV|BD.?Rip|dvd.?rip|hdtv.?rip)/Ui',"",$name);
+    $name=preg_replace('/(\S*264|\d?x?rus|\d?x?eng|\d?x?ukr|\d?x?mvo|Extended|blu.?ray|DTS|WEB-DL|\S*AC3|Open matte|HDTV|BD.?Rip|dvd.?rip|hdtv.?rip)/Ui',"",$name);
     
     //Anime tag processing
     $name=preg_replace('/\[[^\]]*\]/',"",$name); //removing all in []
