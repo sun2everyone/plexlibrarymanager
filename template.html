@@ -65,14 +65,14 @@
                                      var filename=json['folder']['files'][key]['name'];
                                      var filetype=json['folder']['files'][key]['type'];
                                          html+='<div class="file tr '+parents_str+'" name="'+path+'">';
-                                         html+='<div class="option td">';
+                                         html+='<div class="option td" style="left:'+20*depth+'px;">';
                                          if (filetype==='vid') {
-                                            html+='<input class="ajax_loaded" type="radio" name="src_folder_media" value="'+path+'/'+filename+'"  style="left:'+20*depth+'px;">';
+                                            html+='<input class="ajax_loaded" type="radio" name="src_folder_media" value="'+path+'/'+filename+'" >';
                                          }   
                                          html+='</div>';
-                                         html+='<div class="option td"></div>';
-                                         html+='<div class="option td"></div>';
-                                         html+='<div class="icon td"><img class="child" src="img/icon_'+filetype+'.png" style="left:'+20*depth+'px;"></div>'
+                                         html+='<div class="option td" style="left:'+20*depth+'px;"></div>';
+                                         html+='<div class="option td" style="left:'+20*depth+'px;"></div>';
+                                         html+='<div class="icon td" style="left:'+20*depth+'px;"><img class="child" src="img/icon_'+filetype+'.png"></div>'
                                          html+='<div class="td filename '+filetype+'" style="left:'+20*depth+'px;">'+filename+'</div>';
                                          html+='</div>';
                                     });
