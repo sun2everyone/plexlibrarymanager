@@ -60,6 +60,9 @@ div.folders, div.title, div.library {
     white-space: nowrap;
     border-collapse: collapse;
 }
+div.title input[type='text'] {
+    margin-left: 10px;
+}
 div.theader div.td {
    padding-left: 5px;
    padding-right: 5px;
@@ -243,7 +246,7 @@ div.folders img.wait {
     left: 5px;
     margin-top: 7px;
 }
-div.folder input.ajax_loaded {
+div.folder input.ajax_loaded, div.file input.ajax_loaded {
     position: relative;
 }
 div.links {

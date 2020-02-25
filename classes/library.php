@@ -8,18 +8,33 @@
 class Library {
     //put your code here
     private $path;
+    private $type;
+    public $name;
     private $title_list = array();
     private $titles = array();
     
-    public function __construct($path=PLEX_LIB) {
+    public function __construct($path="",$name="",$type="shows") {
         if (!is_dir($path) || !is_readable($path) || !is_writable($path)) {
-            exit("Library at $path unavailable! Incorrect path!");
+            exit("Library at \"$path\" unavailable! Incorrect path!");
         }
+        if (!empty($name)) {
+            $this->name=$name;
+        } else {
+            $this->name=$path;
+        }    
         $this->path=$path;
+        if ($type == "movies") {
+            $this->type=$type;
+        } else { //default  - series
+            $this->type="shows";
+        }
         $this->loadLibrary();
     }
     public function getTitleList() {
         return $this->title_list;
+    }
+    public function getType() {
+        return $this->type;
     }
     
     public function hasTitle($name="") {
@@ -56,7 +71,15 @@ class Library {
     public function loadLibrary() {
         $result=true;
         $lib_folder = new Folder($this->path);
-        $this->title_list = $lib_folder->getSubfolders();
+        if ($this->type == "shows") {
+            $this->title_list = $lib_folder->getSubfolders();
+        } elseif ($this->type == "movies") {
+            $vids = $lib_folder->getVideos();
+            $this->title_list=[];
+            foreach ($vids as $vid) {
+                $this->title_list[] = $vid['title'];
+            }
+        }
         foreach ($this->title_list as $name) {
             $result=$result and $this->loadTitle($name);
         }
@@ -74,81 +97,137 @@ class Library {
         //
         $title = new Title();
         $title->setName($title_name);
-        $title_folder = new Folder($this->path."/".$title_name);
-        //Looking for seasons
-        $title_subfolders = $title_folder->getSubfolders();
-        foreach ($title_subfolders as $folder) {
-            if (strpos($folder,'eason')) {
-               $num=intval(str_replace("Season ","",$folder));
-               if ($num>=0) {
-                   $title->createSeason($num);
-                   //Loading episodes
-                   $folder=$this->path."/".$title_name."/".$folder;
-                   $media_folder = new Folder($folder);
-                   $vids=$media_folder->getVideos();
-                   $subs=$media_folder->getSubs();
-                   $auds=$media_folder->getAudios();
-                   if (!empty($vids)) {
-                       $cwd=getcwd();
-                       chdir($folder);
-                       foreach ($vids as $vid) {
-                          $link=readlink($vid['name']);
-                          if(!empty($link)) {
-                              $episode = new Episode($link);
-                              //Loading subtitle symlinks
-                              if(!empty($subs)) {
-                                  foreach ($subs as $file) {
-                                      $link=readlink($file['name']);
-                                      if(!empty($link)) {
-                                          $link_info=pathinfo($link);
-                                          $ttl=explode(".",$file['title']);
-                                          if ($ttl[0] == $vid['title']) {
-                                              $episode->addSub($link, $link_info['dirname']);
+        if ($this->type == "shows") {
+            $title_folder = new Folder($this->path."/".$title_name);
+            //Looking for seasons
+            $title_subfolders = $title_folder->getSubfolders();
+            foreach ($title_subfolders as $folder) {
+                if (strpos($folder,'eason')) {
+                   $num=intval(str_replace("Season ","",$folder));
+                   if ($num>=0) {
+                       $title->createSeason($num);
+                       //Loading episodes
+                       $folder=$this->path."/".$title_name."/".$folder;
+                       $media_folder = new Folder($folder);
+                       $vids=$media_folder->getVideos();
+                       $subs=$media_folder->getSubs();
+                       $auds=$media_folder->getAudios();
+                       if (!empty($vids)) {
+                           $cwd=getcwd();
+                           chdir($folder);
+                           foreach ($vids as $vid) {
+                              $link=readlink($vid['name']);
+                              if(!empty($link)) {
+                                  $episode = new Episode($link);
+                                  //Loading subtitle symlinks
+                                  if(!empty($subs)) {
+                                      foreach ($subs as $file) {
+                                          $link=readlink($file['name']);
+                                          if(!empty($link)) {
+                                              $link_info=pathinfo($link);
+                                              $ttl=explode(".",$file['title']);
+                                              if ($ttl[0] == $vid['title']) {
+                                                  $episode->addSub($link, $link_info['dirname']);
+                                              }
+                                              if ($ttl[1] == $media_lang) {
+                                                  $episode->setPriorSub($link_info['dirname'],0);
+                                              }
+                                              /*
+                                              if ($ttl[1] === "rus") {
+                                                  $episode->setPriorSub($link_info['dirname'],1); //Only one prior sub left
+                                              } */ 
                                           }
-                                          if ($ttl[1] == $media_lang) {
-                                              $episode->setPriorSub($link_info['dirname'],0);
-                                          }
-                                          /*
-                                          if ($ttl[1] === "rus") {
-                                              $episode->setPriorSub($link_info['dirname'],1); //Only one prior sub left
-                                          } */ 
                                       }
                                   }
-                              }
-                              //Loading audio symlinks
-                               if(!empty($auds)) {
-                                  foreach ($auds as $file) {
-                                      $link=readlink($file['name']);
-                                      if(!empty($link)) {
-                                          $link_info=pathinfo($link);
-                                          $ttl=explode(".",$file['title']);
-                                          if ($ttl[0] == $vid['title']) {
-                                              $episode->addAudio($link, $link_info['dirname']);
+                                  //Loading audio symlinks
+                                   if(!empty($auds)) {
+                                      foreach ($auds as $file) {
+                                          $link=readlink($file['name']);
+                                          if(!empty($link)) {
+                                              $link_info=pathinfo($link);
+                                              $ttl=explode(".",$file['title']);
+                                              if ($ttl[0] == $vid['title']) {
+                                                  $episode->addAudio($link, $link_info['dirname']);
+                                              }
+                                              if ($ttl[1] == $media_lang) {
+                                                  $episode->setPriorAudio($link_info['dirname'],0);
+                                              } /*
+                                              if ($ttl[1] === "rus") {
+                                                  $episode->setPriorAudio($link_info['dirname'],1);
+                                              } */
                                           }
-                                          if ($ttl[1] == $media_lang) {
-                                              $episode->setPriorAudio($link_info['dirname'],0);
-                                          } /*
-                                          if ($ttl[1] === "rus") {
-                                              $episode->setPriorAudio($link_info['dirname'],1);
-                                          } */
                                       }
                                   }
-                              }
-                              //Добавляем эпизод
-                              $id=0;
-                              $id=intval(preg_replace('/^.* - s..e/','',$vid['title']));
-                              $title->addEpisode($num,$episode,$id);
-                              //
-                          }    
+                                  //Добавляем эпизод
+                                  $id=0;
+                                  $id=intval(preg_replace('/^.* - s..e/','',$vid['title']));
+                                  $title->addEpisode($num,$episode,$id);
+                                  //
+                              }    
+                           }
+                        chdir($cwd);   
                        }
-                    chdir($cwd);   
+                       //
                    }
-                   //
-               }
+                }
+
             }
+        } elseif ($this->type == "movies") {
+            $media_folder = new Folder($this->path);
+            $title->createSeason(1);
+            $vids=$media_folder->getVideos($title_name);
+            $subs=$media_folder->getSubs($title_name);
+            $auds=$media_folder->getAudios($title_name);
+            if (!empty($vids)) {
+               $cwd=getcwd();
+               chdir($this->path);
+               $vid = $vids[0];
+               $link=readlink($this->path.'/'.$vid['name']);
+               if(!empty($link)) {
+                  $episode = new Episode($link);
+                  //Loading subtitle symlinks
+                  if(!empty($subs)) {
+                      foreach ($subs as $file) {
+                          $link=readlink($file['name']);
+                          if(!empty($link)) {
+                              $link_info=pathinfo($link);
+                              $ttl=explode(".",$file['title']);
+                              if ($ttl[0] == $vid['title']) {
+                                  $episode->addSub($link, $link_info['dirname']);
+                              }
+                              if ($ttl[1] == $media_lang) {
+                                  $episode->setPriorSub($link_info['dirname'],0);
+                              }
+                          }
+                      }
+                  }
+                  //Loading audio symlinks
+                   if(!empty($auds)) {
+                      foreach ($auds as $file) {
+                          $link=readlink($file['name']);
+                          if(!empty($link)) {
+                              $link_info=pathinfo($link);
+                              $ttl=explode(".",$file['title']);
+                              if ($ttl[0] == $vid['title']) {
+                                  $episode->addAudio($link, $link_info['dirname']);
+                              }
+                              if ($ttl[1] == $media_lang) {
+                                  $episode->setPriorAudio($link_info['dirname'],0);
+                              } 
+                          }
+                      }
+                  }
+                  //Добавляем эпизод
+                  $id=0;
+                  $id=intval(preg_replace('/^.* - s..e/','',$vid['title']));
+                  $title->addEpisode(1,$episode,$id);
+                  //
+              }
+               chdir($cwd);
+            }               
             
-        }
-            $this->titles[]=$title;    
+        }   
+        $this->titles[]=$title;    
         }
         return true;
     }
@@ -216,54 +295,94 @@ class Library {
         $title=$this->titles[$id];
         //Writing title data to disk
         $name=$title->getName();
-        $path=$this->path."/".$name;
-        if (!is_dir($path)) {
-            mkdir($path); //Creating title folder
-        } 
-        $seasons=$title->getSeasons();
-        foreach ($seasons as $season) {
-            $s_num=$this->numstr($season->getNumber(),2);
-            $s_path=$path."/Season ".$s_num;
-            if (is_dir($s_path)) {
-               $this->deldir($s_path); //Removing old season data
+        if ($this->type == "shows") {
+            $path=$this->path."/".$name;
+            if (!is_dir($path)) {
+                mkdir($path); //Creating title folder
+            } 
+            $seasons=$title->getSeasons();
+            foreach ($seasons as $season) {
+                $s_num=$this->numstr($season->getNumber(),2);
+                $s_path=$path."/Season ".$s_num;
+                if (is_dir($s_path)) {
+                   $this->deldir($s_path); //Removing old season data
+                }
+                mkdir($s_path); //Creating season folder
+                $episodes=$season->getEpisodes();
+                $enumeration=$season->episodesEnumeration(); //if to use 2-digit or 3-digit enumeration
+                $cwd=getcwd();
+                chdir($s_path); //Entering season folder
+                foreach ($episodes as $id=>$episode) {
+                    $basename=$name." - s".$s_num."e".$this->numstr($id,$enumeration);
+                    $e_path=$episode->getPath();
+                    $pathinfo=pathinfo($e_path);
+                    $re_path=$this->calcSymlinkPath($e_path, $s_path); //Getting symlink path
+                    symlink($re_path,$basename.'.'.$pathinfo['extension']);
+                    //Subs
+                    $subs=$episode->getSubs();
+                    foreach ($subs as $id=>$file) {
+                        $pathinfo=pathinfo($file['path']);
+                        $substr=$media_lang.$id;
+                        if ($id == 0) {
+                            $substr=$media_lang; //Only one "known_language" sub
+                        } /* elseif ($id == 1) {
+                            $substr="ru";
+                        } */
+                        $rs_path=$this->calcSymlinkPath($file['path'], $s_path);
+                        symlink($rs_path,$basename.".".$substr.".".$pathinfo['extension']); //Making sub symlink
+                    }
+                    //Audio
+                    $auds=$episode->getAud();
+                    foreach ($auds as $id=>$file) {
+                        $pathinfo=pathinfo($file['path']);
+                        $substr=$media_lang.$id;
+                        if ($id == 0) {
+                            $substr=$media_lang;
+                        } /* elseif ($id == 1) {
+                            $substr="rus";
+                        } */
+                        $rs_path=$this->calcSymlinkPath($file['path'], $s_path);
+                        symlink($rs_path,$basename.".".$substr.".".$pathinfo['extension']); //Making audio symlink
+                    }
+                }
+                chdir($cwd);
             }
-            mkdir($s_path); //Creating season folder
+        } elseif ($this->type == "movies") {
+            $path=$this->path;
+            $seasons=$title->getSeasons();
+            $season=array_pop($seasons);
             $episodes=$season->getEpisodes();
-            $enumeration=$season->episodesEnumeration(); //if to use 2-digit or 3-digit enumeration
             $cwd=getcwd();
-            chdir($s_path); //Entering season folder
-            foreach ($episodes as $id=>$episode) {
-                $basename=$name." - s".$s_num."e".$this->numstr($id,$enumeration);
-                $e_path=$episode->getPath();
-                $pathinfo=pathinfo($e_path);
-                $re_path=$this->calcSymlinkPath($e_path, $s_path); //Getting symlink path
-                symlink($re_path,$basename.'.'.$pathinfo['extension']);
-                //Subs
-                $subs=$episode->getSubs();
-                foreach ($subs as $id=>$file) {
-                    $pathinfo=pathinfo($file['path']);
-                    $substr=$media_lang.$id;
-                    if ($id == 0) {
-                        $substr=$media_lang; //Only one "known_language" sub
-                    } /* elseif ($id == 1) {
-                        $substr="ru";
-                    } */
-                    $rs_path=$this->calcSymlinkPath($file['path'], $s_path);
-                    symlink($rs_path,$basename.".".$substr.".".$pathinfo['extension']); //Making sub symlink
-                }
-                //Audio
-                $auds=$episode->getAud();
-                foreach ($auds as $id=>$file) {
-                    $pathinfo=pathinfo($file['path']);
-                    $substr=$media_lang.$id;
-                    if ($id == 0) {
-                        $substr=$media_lang;
-                    } /* elseif ($id == 1) {
-                        $substr="rus";
-                    } */
-                    $rs_path=$this->calcSymlinkPath($file['path'], $s_path);
-                    symlink($rs_path,$basename.".".$substr.".".$pathinfo['extension']); //Making audio symlink
-                }
+            chdir($path);
+            $episode=array_pop($episodes);
+            $e_path=$episode->getPath();
+            $pathinfo=pathinfo($e_path);
+            $re_path=$this->calcSymlinkPath($e_path, $path); //Getting symlink path
+            symlink($re_path,$name.'.'.$pathinfo['extension']);
+            $subs=$episode->getSubs();
+            foreach ($subs as $id=>$file) {
+                $pathinfo=pathinfo($file['path']);
+                $substr=$media_lang.$id;
+                if ($id == 0) {
+                    $substr=$media_lang; //Only one "known_language" sub
+                } /* elseif ($id == 1) {
+                    $substr="ru";
+                } */
+                $rs_path=$this->calcSymlinkPath($file['path'], $path);
+                symlink($rs_path,$name.".".$substr.".".$pathinfo['extension']); //Making sub symlink
+            }
+            //Audio
+            $auds=$episode->getAud();
+            foreach ($auds as $id=>$file) {
+                $pathinfo=pathinfo($file['path']);
+                $substr=$media_lang.$id;
+                if ($id == 0) {
+                    $substr=$media_lang;
+                } /* elseif ($id == 1) {
+                    $substr="rus";
+                } */
+                $rs_path=$this->calcSymlinkPath($file['path'], $path);
+                symlink($rs_path,$name.".".$substr.".".$pathinfo['extension']); //Making audio symlink
             }
             chdir($cwd);
         }
@@ -279,9 +398,19 @@ class Library {
             $this->loadTitle($title_name);
             return true;
         } elseif (empty($title_name)) {
-            //Clearing library folder
-            foreach ($this->title_list as $folder) {
-                $this->deldir($this->path."/".$folder);
+            if ($this->type == "shows") {
+                //Clearing library folder
+                foreach ($this->title_list as $folder) {
+                    $this->deldir($this->path."/".$folder);
+                }
+            } elseif ($this->type == "movies") {
+                $fld = new Folder($this->path);
+                $files=$fld->getFiles();
+                foreach ($files as $file) {
+                    if (file_exists($this->path."/".$file['name'])) {
+                        unlink($this->path."/".$file['name']);
+                    }    
+                }
             }
             foreach ($this->titles as $title) {
                 $name=$title->getName();
