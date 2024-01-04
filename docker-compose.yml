@@ -3,11 +3,41 @@ services:
   plexlibrarymanager:
     image: plexlibrarymanager:latest
     container_name: plexlibrarymanager
+    hostname: plexlibrarymanager
     environment:
-      LANG: ru_RU.UTF-8
+      LANG: ru_RU.UTF-8 # Language
     ports:
       - "80:80"
     volumes:
-      - "/var/www/media:/var/www/plex/media"
-      - "/var/www/library:/var/www/plex/library"
+      - "/var/www/media:/var/www/plex/media" # Host path to your dir with media files
+      - "/var/www/library:/var/www/plex/library" # Host path to your libraries root folder
       - "./config.php:/var/www/html/config.php"
+
+  plexmediaserver:
+    image: plexinc/pms-docker:latest
+    container_name: plexmediaserver
+    hostname: plexmediaserver
+    environment:
+      TZ: Europe/Moscow # Your plex media server timezone
+      ADVERTISE_IP: "http://192.168.2.239:32400" # Your plex media server advertised address and port
+      PLEX_UID: 33 # uid of www-data user (see in /etc/passwd)
+      PLEX_GID: 33 # gid of www-data group (see in /etc/group)
+      ALLOWED_NETWORKS: '192.168.2.0/24,10.8.2.0/24' # Networks/adresses for unauthorized access to the server
+    env_file:
+      - .env # File with PLEX_CLAIM secret
+    ports:
+      - 32400:32400/tcp
+      - 3005:3005/tcp
+      - 8324:8324/tcp
+      - 32469:32469/tcp
+      - 1900:1900/udp
+      - 32410:32410/udp
+      - 32412:32412/udp
+      - 32413:32413/udp
+      - 32414:32414/udp
+    volumes:
+      - '/var/www/plex_data:/config' # Host path to store plex media server files
+      - '/var/www/library:/data' # Host path to your libraries root folder
+      - '/var/www/media:/media' # Host path to your dir with media files
+      - './plexmediaserver_init.sh:/plexmediaserver_init.sh:ro'
+    entrypoint: ["/plexmediaserver_init.sh"]

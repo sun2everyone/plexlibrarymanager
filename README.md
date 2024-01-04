@@ -25,7 +25,7 @@ Modern web browser with Javascript and CSS (Currently tested in Firefox 56.0+ an
 4. Copy <i>config_base.php</i> to <i>config.php</i> and adjust settings (be careful)
 5. Make sure user <i>plex</i> can read new library directory
 6. Configure your webserver for you to have access to this software
-7. Add library to the Plex via it's web interface
+7. Add library to the Plex via it's web interface (do not forget to enable Local Media Assets https://support.plex.tv/articles/200471133-adding-local-subtitles-to-your-media/)
 8. Enjoy
 
 
@@ -44,10 +44,16 @@ Sample:
   usermod -aG www-data plex
 ```
 ### Docker run example
-1. Adjust values in `docker-compose.yml` and `Dockerfile`
-2. `docker build -t plexlibrarymanager:latest .`
+1. Adjust environment values and volume mounts in `docker-compose.yml` and `Dockerfile`. 
+2. Obtain server claim via https://www.plex.tv/claim/ and put contents to `.env` file like this:
+```
+PLEX_CLAIM="obtained-claim-string"
+```
+2. `docker build -t plexlibrarymanager:latest .` Build image for plexlibrarymanager.
 3. `docker-compose up -d`
+4. Navigate to specified ADVERTISE_IP url to finish setup.
 
+If you don't need to run Plex Media Server in docker, you can comment it out in `docker-compose.yml`
 ---------------------------------------------------------------------------------
 Support of other media types may be added in future.
 Please report bugs to https://github.com/sun2everyone/plexlibrarymanager/issues
@@ -77,7 +83,7 @@ Please report bugs to https://github.com/sun2everyone/plexlibrarymanager/issues
 4. Копировать <i>config_base.php</i> в <i>config.php</i> и произвести в последнем необходимые настройки
 5. Убедиться, что пользователь <i>plex</i> имеет доступ на чтение к новой библиотеке
 6. Сконфигурировать веб-сервер для доступа к PLM
-7. Добавить новую библиотеку в Plex с помощью его веб-интерфейса
+7. Добавить новую библиотеку в Plex с помощью его веб-интерфейса (не забудьте включить Local Media Assets https://support.plex.tv/articles/200471133-adding-local-subtitles-to-your-media/)
 8. Пользоваться
 
 
@@ -96,9 +102,16 @@ Please report bugs to https://github.com/sun2everyone/plexlibrarymanager/issues
   usermod -aG www-data plex
 ```
 ### пример запуска с помощью Docker
-1. Подправьте значения в `docker-compose.yml` и `Dockerfile`
-2. `docker build -t plexlibrarymanager:latest .`
+1. Подправьте значения переменных окружения и путей монтирования в `docker-compose.yml` и `Dockerfile`.
+2. Получите токен для сервера на https://www.plex.tv/claim/ и укажите его в файле `.env`:
+```
+PLEX_CLAIM="obtained-claim-string"
+```
+2. `docker build -t plexlibrarymanager:latest .` Соберите образ plexlibrarymanager
 3. `docker-compose up -d`
+4. Для окончания настройки перейдите по ссылке, которую вы указали в ADVERTISE_IP.
+
+Если вам не нужно запускать сам Plex Media Server в докере, закомментируйте его секцию в `docker-compose.yml`
 ---------------------------------------------------------------------------------
 Поддержка других типов медиа-файлов может быть добавлена в будущем.
 Пожалуйста, сообщайте о багах сюда https://github.com/sun2everyone/plexlibrarymanager/issues
