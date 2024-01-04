@@ -1,0 +1,3 @@
+version=1.32.8.7639-fb6452ebf
+plex_build=linux-arm64
+plex_distro=debian

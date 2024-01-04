@@ -13,7 +13,7 @@ if [ ! -f "${PLEX_CONFIG_DIR}/Library/Application Support/Plex Media Server/Scan
 fi
 
 # Hama
-if [ ! -f "${PLEX_CONFIG_DIR}/Library/Application Support/Plex Media Server/Plug-ins/Hama.bundle" ] ; then
+if [ ! -d "${PLEX_CONFIG_DIR}/Library/Application Support/Plex Media Server/Plug-ins/Hama.bundle" ] ; then
     echo "Installing Hama.bundle"
     apt update && apt install -y unzip git
     git clone https://github.com/ZeroQI/Hama.bundle.git "${PLEX_CONFIG_DIR}/Library/Application Support/Plex Media Server/Plug-ins/Hama.bundle"

@@ -51,7 +51,7 @@ PLEX_CLAIM="obtained-claim-string"
 ```
 2. `docker build -t plexlibrarymanager:latest .` Build image for plexlibrarymanager.
 3. `docker-compose up -d`
-4. Navigate to specified ADVERTISE_IP url to finish setup.
+4. To finish setup navigate to specified ADVERTISE_IP url adding `/web`.
 
 If you don't need to run Plex Media Server in docker, you can comment it out in `docker-compose.yml`
 ---------------------------------------------------------------------------------
@@ -109,7 +109,7 @@ PLEX_CLAIM="obtained-claim-string"
 ```
 2. `docker build -t plexlibrarymanager:latest .` Соберите образ plexlibrarymanager
 3. `docker-compose up -d`
-4. Для окончания настройки перейдите по ссылке, которую вы указали в ADVERTISE_IP.
+4. Для окончания настройки перейдите по ссылке, которую вы указали в ADVERTISE_IP добавив к пути `/web`.
 
 Если вам не нужно запускать сам Plex Media Server в докере, закомментируйте его секцию в `docker-compose.yml`
 ---------------------------------------------------------------------------------

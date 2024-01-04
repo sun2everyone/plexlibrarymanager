@@ -1,0 +1,1 @@
+All contents of this folder taken from official docker image https://hub.docker.com/r/plexinc/pms-docker
