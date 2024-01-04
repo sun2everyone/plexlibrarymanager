@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/bash 
+# This script installs Absolute Series Scanner and Hama.bundle in Plex Media Server docker image
 PLEX_CONFIG_DIR="/config"
 PLEX_USER="www-data"
 PLEX_GROUP="plex"
