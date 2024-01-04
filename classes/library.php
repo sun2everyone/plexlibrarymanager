@@ -14,8 +14,15 @@ class Library {
     private $titles = array();
     
     public function __construct($path="",$name="",$type="shows") {
-        if (!is_dir($path) || !is_readable($path) || !is_writable($path)) {
-            exit("Library at \"$path\" unavailable! Incorrect path!");
+        if (!is_dir($path)) {
+            try {
+              mkdir($path,0644,true);
+            } catch (Exception $e) {
+                echo "Caught exception: ",  $e->getMessage(), "\n";
+                exit("Library at \"$path\" unavailable! Can't create path!");
+            } 
+        } elseif (!is_readable($path) || !is_writable($path)) {
+            exit("Library at \"$path\" unavailable! Incorrect path, check permissions!");
         }
         if (!empty($name)) {
             $this->name=$name;
