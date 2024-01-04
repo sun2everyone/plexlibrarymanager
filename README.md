@@ -54,6 +54,7 @@ PLEX_CLAIM="obtained-claim-string"
 4. To finish setup navigate to specified ADVERTISE_IP url adding `/web`.
 
 If you don't need to run Plex Media Server in docker, you can comment it out in `docker-compose.yml`
+
 ---------------------------------------------------------------------------------
 Support of other media types may be added in future.
 Please report bugs to https://github.com/sun2everyone/plexlibrarymanager/issues
@@ -112,6 +113,7 @@ PLEX_CLAIM="obtained-claim-string"
 4. Для окончания настройки перейдите по ссылке, которую вы указали в ADVERTISE_IP добавив к пути `/web`.
 
 Если вам не нужно запускать сам Plex Media Server в докере, закомментируйте его секцию в `docker-compose.yml`
+
 ---------------------------------------------------------------------------------
 Поддержка других типов медиа-файлов может быть добавлена в будущем.
 Пожалуйста, сообщайте о багах сюда https://github.com/sun2everyone/plexlibrarymanager/issues
