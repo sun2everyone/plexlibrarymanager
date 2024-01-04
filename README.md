@@ -43,6 +43,11 @@ Sample:
   chown -R www-data:www-data /var/www/plex
   usermod -aG www-data plex
 ```
+### Docker run example
+1. Adjust values in `docker-compose.yml` and `Dockerfile`
+2. `docker build -t plexlibrarymanager:latest .`
+3. `docker-compose up -d`
+
 ---------------------------------------------------------------------------------
 Support of other media types may be added in future.
 Please report bugs to https://github.com/sun2everyone/plexlibrarymanager/issues
@@ -65,7 +70,7 @@ Please report bugs to https://github.com/sun2everyone/plexlibrarymanager/issues
 ```
 ### Установка:
 
-0. <i>Для аниме-библиотек сначала рекомендуется установать <a href="https://github.com/ZeroQI/Absolute-Series-Scanner">Absolute Series Scanner</a> и <a href="https://github.com/ZeroQI/Hama.bundle">HTTP Anidb Metadata Agent</a></i>
+0. <i>Для аниме-библиотек сначала рекомендуется установить <a href="https://github.com/ZeroQI/Absolute-Series-Scanner">Absolute Series Scanner</a> и <a href="https://github.com/ZeroQI/Hama.bundle">HTTP Anidb Metadata Agent</a></i>
 1. Клоинровать master branch этого репозитория или скачать <a href="https://github.com/sun2everyone/plexlibrarymanager/archive/master.zip">master.zip</a> и извлечь в директорию веб-сервера.
 2. Создать симлинк в директории вебсервера на папку, где хранятся ваши медиа-файлы (например аниме-раздачи)
 3. Создать в директории вебсервера папку для новой Plex-библиотеки
@@ -90,6 +95,10 @@ Please report bugs to https://github.com/sun2everyone/plexlibrarymanager/issues
   chown -R www-data:www-data /var/www/plex
   usermod -aG www-data plex
 ```
+### пример запуска с помощью Docker
+1. Подправьте значения в `docker-compose.yml` и `Dockerfile`
+2. `docker build -t plexlibrarymanager:latest .`
+3. `docker-compose up -d`
 ---------------------------------------------------------------------------------
 Поддержка других типов медиа-файлов может быть добавлена в будущем.
 Пожалуйста, сообщайте о багах сюда https://github.com/sun2everyone/plexlibrarymanager/issues

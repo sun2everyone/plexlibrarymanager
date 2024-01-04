@@ -1,0 +1,13 @@
+version: '3.7'
+services:
+  postgres:
+    image: plexlibrarymanager:latest
+    container_name: plexlibrarymanager
+    environment:
+      LANG: ru_RU.UTF-8
+    ports:
+      - "80:80"
+    volumes:
+      - "/var/www/media:/var/www/plex/media"
+      - "/var/www/library:/var/www/plex/library"
+      - "./config.php:/var/www/html/config.php"
