@@ -98,7 +98,9 @@ function guessEpisodeNumber($name,$title_name="") {
     $name=preg_replace('/\'[^\']*\'/',"",$name); //removing all in 'quotes'
     $name=preg_replace('/"[^\']*"/',"",$name); //removing all in "quotes"
     $name=preg_replace('/s?[0-9]{0,3}ep?/i'," ",$name); //removing s01e, EP and such things before number
-    if(preg_match_all('/(^| )[0-9]{1,3}/',$name,$matches,PREG_SET_ORDER)) {
+    if(preg_match_all('/(^| ) 0[0-9]{1,3}/',$name,$matches,PREG_SET_ORDER)) { //prefer leading zero
+        $num=intval(trim($matches[count($matches)-1][0]));
+    } elseif (preg_match_all('/(^| )[0-9]{1,3}/',$name,$matches,PREG_SET_ORDER)) {
         $num=intval(trim($matches[count($matches)-1][0]));
     }
     return $num;
