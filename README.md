@@ -1,4 +1,6 @@
 # PlexLibraryManager
+*Dev branch may be recent but not fully tested.*
+
 A web-based library manager for Plex Media Server, that helps organizing your media into library for plex to easily recognize it. 
 It uses symlinks, so actually you don't have to rename and move your media files (which is especially useful, when you download them using torrents and whant to continue sharing them with others). Technically, it creates new symlink-based structure, that satisfies <a href="https://support.plex.tv/hc/en-us/sections/200059498-Naming-and-Organizing-TV-Shows">Plex naming convention</a>.
 When adding anime to the library, PlexLibraryManager allows you to adjust episode and season numbers, select priority external media (subtitles and audio tracks) and also to add/delete external media to each episode manually.
