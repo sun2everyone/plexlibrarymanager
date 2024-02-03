@@ -16,7 +16,7 @@ class Library {
     public function __construct($path="",$name="",$type="shows") {
         if (!is_dir($path)) {
             try {
-              mkdir($path,0644,true);
+              mkdir($path,0655,true);
             } catch (Exception $e) {
                 echo "Caught exception: ",  $e->getMessage(), "\n";
                 exit("Library at \"$path\" unavailable! Can't create path!");
